@@ -52,7 +52,7 @@ Some of the tools in this section are still in development and are subject to ch
 
 Bundling is a standard practice aiming to reduce the number of requests that the browser needs to perform in order to deliver the application requested by the user. In essence, the bundler receives as an input a list of entry points and produces one or more bundles. This way, the browser can get the entire application by performing only a few requests, instead of requesting each individual resource separately.
 
-As your application grows bundling everything into a single large bundle would again be counter productive. Explore Code Splitting techniques using Webpacks
+As your application grows bundling everything into a single large bundle would again be counter productive. Explore Code Splitting techniques using Webpack.
 
 **Additional http requests will not be a concern with HTTP/2 because of the [server push](https://http2.github.io/faq/#whats-the-benefit-of-server-push) feature.**
 
@@ -62,6 +62,7 @@ Tools which allows us to bundle our applications efficiently are:
 
 - [Webpack](https://webpack.github.io/) - provides efficient bundling by performing [tree-shaking](#tree-shaking).
 - [Webpack Code Splitting](https://webpack.github.io/docs/code-splitting.html) - Techniques to split your code.
+- [Webpack & http2](https://medium.com/webpack/webpack-http-2-7083ec3f3ce6#.46idrz8kb) - Need for splitting with http2.
 - [Rollup](https://github.com/rollup/rollup) - provides bundling by performing efficient tree-shaking, taking advantage of the static nature of the ES2015 modules.
 - [Google Closure Compiler](https://github.com/google/closure-compiler) - performs plenty of optimizations and provides bundling support. Originally written in Java, since recently it also has a [JavaScript version](https://www.npmjs.com/package/google-closure-compiler-js) which can be [found here](https://www.npmjs.com/package/google-closure-compiler-js).
 - [SystemJS Builder](https://github.com/systemjs/builder) - provides a single-file build for SystemJS of mixed-dependency module trees.
@@ -180,6 +181,7 @@ We can think of the Service Worker as an HTTP proxy which is located in the brow
 **Tooling**
 
 - [Angular Mobile Toolkit](https://github.com/angular/mobile-toolkit) - aims to automate the process of managing Service Workers. It also contains Service Worker for caching static assets, and one for [generating application shell](https://developers.google.com/web/updates/2015/11/app-shell?hl=en).
+- [Offline Plugin for Webpack](https://github.com/NekR/offline-plugin) - Webpack plugin that adds support for Servie Worker with a fall-back to AppCache.
 
 **Resources**
 
@@ -226,6 +228,7 @@ In complex application with huge component tree, where the change detection need
 **Tooling**
 
 - The module which allows us to run our application in a Web Worker is supported by the core team. Examples how it can be used, can be [found here](https://github.com/angular/angular/tree/master/modules/playground/src/web_workers).
+- [Webpack Web Worker Loader](https://github.com/webpack/worker-loader) - A Web Worker Loader for webpack.
 **Resources**
 
 - ["Using Web Workers for more responsive apps"](https://www.youtube.com/watch?v=Kz_zKXiNGSE)
@@ -242,7 +245,7 @@ Server-side rendering solves this issue by pre-rendering the requested page on t
 **Tooling**
 
 - [Angular Universal](https://github.com/angular/universal) - Universal (isomorphic) JavaScript support for Angular 2.
-
+- [Preboot](https://github.com/angular/preboot) - Library to help manage the transition of state (i.e. events, focus, data) from a server-generated web view to a client-generated web view.
 **Resources**
 
 - ["Angular 2 Server Rendering"](https://www.youtube.com/watch?v=0wvZ7gakqV4)
