@@ -52,15 +52,19 @@ Some of the tools in this section are still in development and are subject to ch
 
 Bundling is a standard practice aiming to reduce the number of requests that the browser needs to perform in order to deliver the application requested by the user. In essence, the bundler receives as an input a list of entry points and produces one or more bundles. This way, the browser can get the entire application by performing only a few requests, instead of requesting each individual resource separately.
 
-**Note that this practice may not be required for HTTP/2 because of the [server push](https://http2.github.io/faq/#whats-the-benefit-of-server-push) feature.**
+As your application grows bundling everything into a single large bundle would again be counter productive. Explore Code Splitting techniques using Webpack.
+
+**Additional http requests will not be a concern with HTTP/2 because of the [server push](https://http2.github.io/faq/#whats-the-benefit-of-server-push) feature.**
 
 **Tooling**
 
 Tools which allows us to bundle our applications efficiently are:
 
 - [Webpack](https://webpack.github.io/) - provides efficient bundling by performing [tree-shaking](#tree-shaking).
+- [Webpack Code Splitting](https://webpack.github.io/docs/code-splitting.html) - Techniques to split your code.
+- [Webpack & http2](https://medium.com/webpack/webpack-http-2-7083ec3f3ce6#.46idrz8kb) - Need for splitting with http2.
 - [Rollup](https://github.com/rollup/rollup) - provides bundling by performing efficient tree-shaking, taking advantage of the static nature of the ES2015 modules.
-- [Google Closure Compiler](https://github.com/google/closure-compiler) - performs plenty of optimizations and provides bundling support. Originally written in Java, since recently it has also a [JavaScript version](https://www.npmjs.com/package/google-closure-compiler-js) which can be [found here](https://www.npmjs.com/package/google-closure-compiler-js).
+- [Google Closure Compiler](https://github.com/google/closure-compiler) - performs plenty of optimizations and provides bundling support. Originally written in Java, since recently it also has a [JavaScript version](https://www.npmjs.com/package/google-closure-compiler-js) which can be [found here](https://www.npmjs.com/package/google-closure-compiler-js).
 - [SystemJS Builder](https://github.com/systemjs/builder) - provides a single-file build for SystemJS of mixed-dependency module trees.
 - [Browserify](http://browserify.org/).
 
@@ -143,7 +147,7 @@ The tooling here is not Angular-specific and entirely depends on the web/applica
 - deflate - a data compression algorithm and associated file format that uses a combination of the LZ77 algorithm and Huffman coding.
 - [brotli](https://github.com/google/brotli) - a generic-purpose lossless compression algorithm that compresses data using a combination of a modern variant of the LZ77 algorithm, Huffman coding and 2nd order context modeling, with a compression ratio comparable to the best currently available general-purpose compression methods. It is similar in speed with deflate but offers more dense compression.
 
-*Note:* Brotli is [widely supported yet](http://caniuse.com/#search=brotli).
+*Note:* Brotli is [not widely supported yet](http://caniuse.com/#search=brotli).
 
 **Resources**
 
@@ -177,6 +181,7 @@ We can think of the Service Worker as an HTTP proxy which is located in the brow
 **Tooling**
 
 - [Angular Mobile Toolkit](https://github.com/angular/mobile-toolkit) - aims to automate the process of managing Service Workers. It also contains Service Worker for caching static assets, and one for [generating application shell](https://developers.google.com/web/updates/2015/11/app-shell?hl=en).
+- [Offline Plugin for Webpack](https://github.com/NekR/offline-plugin) - Webpack plugin that adds support for Servie Worker with a fall-back to AppCache.
 
 **Resources**
 
@@ -208,6 +213,7 @@ AoT can be helpful not only for achieving more efficient bundling by performing 
 
 - [@angular/compiler-cli](https://github.com/angular/angular/tree/master/modules/%40angular/compiler-cli) - a drop-in replacement for [tsc](https://www.npmjs.com/package/typescript) which statically analyzes our application and emits TypeScript/JavaScript for the component's templates.
 - [angular2-seed](https://github.com/mgechev/angular2-seed) - a starter project which includes support for AoT compilation.
+- [angular-cli](https://cli.angular.io) Using the `ng serve --prod` 
 
 **Resources**
 
@@ -217,11 +223,13 @@ AoT can be helpful not only for achieving more efficient bundling by performing 
 
 Usual problem in the typical single-page application (SPA) is that our code is usually run in a single thread. This means that if we want to achieve smooth user experience with 60fps we have **at most 16ms** for execution between the individual frames are being rendered, otherwise they'll drop by half.
 
-In complex application with huge component tree, where the change detection needs to perform millions of check each second it will not be hard to start dropping frames. Thanks to the platform agnosticism of Angular and it's decoupled from DOM architecture it's possible to run our entire application (including change detection) in a Web Worker and leave the main UI thread responsible only for rendering.
+In complex application with huge component tree, where the change detection needs to perform millions of check each second it will not be hard to start dropping frames. Thanks to the platform agnosticism of Angular and it being decoupled from DOM architecture it's possible to run our entire application (including change detection) in a Web Worker and leave the main UI thread responsible only for rendering.
 
 **Tooling**
 
 - The module which allows us to run our application in a Web Worker is supported by the core team. Examples how it can be used, can be [found here](https://github.com/angular/angular/tree/master/modules/playground/src/web_workers).
+- [Webpack Web Worker Loader](https://github.com/webpack/worker-loader) - A Web Worker Loader for webpack.
+
 **Resources**
 
 - ["Using Web Workers for more responsive apps"](https://www.youtube.com/watch?v=Kz_zKXiNGSE)
@@ -238,7 +246,7 @@ Server-side rendering solves this issue by pre-rendering the requested page on t
 **Tooling**
 
 - [Angular Universal](https://github.com/angular/universal) - Universal (isomorphic) JavaScript support for Angular 2.
-
+- [Preboot](https://github.com/angular/preboot) - Library to help manage the transition of state (i.e. events, focus, data) from a server-generated web view to a client-generated web view.
 **Resources**
 
 - ["Angular 2 Server Rendering"](https://www.youtube.com/watch?v=0wvZ7gakqV4)
