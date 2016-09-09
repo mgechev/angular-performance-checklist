@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Angular2 Performance Checklist by mgechev</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Angular2 Performance Checklist</h1>
+      <h2 class="project-tagline">Cheatsheet for developing ⚡lightning⚡ fast Angular 2 applications.</h2>
+      <a href="https://github.com/mgechev/angular2-performance-checklist" class="btn">View on GitHub</a>
+      <a href="https://github.com/mgechev/angular2-performance-checklist/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/mgechev/angular2-performance-checklist/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="angular-2-performance-checklist" class="anchor" href="#angular-2-performance-checklist" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Angular 2 Performance Checklist</h1>
+
+<p><img src="/assets/flash.jpg" width="200"></p>
+
+<h2>
+<a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Introduction</h2>
+
+<p>This document contains a list of practices which will help us boost the performance of our Angular 2 applications. "Angular 2 Performance Checklist" covers different topics - from server-side pre-rendering and bundling of our applications, to runtime performance and optimization of the change detection performed by the framework.</p>
+
+<p>The document is divided into two main sections:</p>
+
+<ul>
+<li>Network performance - lists practices that are going to improve mostly the load time of our application. They include methods for latency and bandwidth reduction.</li>
+<li>Runtime performance - practices which improve the runtime performance of our application. They include mostly change detection and rendering related optimizations.</li>
+</ul>
+
+<p>Some practices impact both categories so there could be a slight intersection, however, the differences in the use cases and the implications will be explicitly mentioned.</p>
+
+<p>Most subsections list tools, related to the specific practice, that can make us more efficient by automating our development flow.</p>
+
+<p>Note that most practices are valid for both HTTP/1.1 and HTTP/2. Practices which make an exception will be mentioned by specifying to which version of the protocol they could be applied.</p>
+
+<h2>
+<a id="table-of-content" class="anchor" href="#table-of-content" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Table of Content</h2>
+
+<ul>
+<li>
+<a href="#angular-2-performance-checklist">Angular 2 Performance Checklist</a>
+
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#table-of-content">Table of Content</a></li>
+<li><a href="#network-performance">Network performance</a></li>
+<li><a href="#bundling">Bundling</a></li>
+<li>
+<a href="#minification-and-dead-code-elimination">Minification and Dead code elimination</a>
+
+<ul>
+<li><a href="#tree-shaking">Tree-shaking</a></li>
+</ul>
+</li>
+<li><a href="#ahead-of-time-aot-compilation">Ahead-of-Time (AoT) Compilation</a></li>
+<li><a href="#compression">Compression</a></li>
+<li><a href="#pre-fetching-resources">Pre-fetching Resources</a></li>
+<li><a href="#lazy-loading-of-resources">Lazy-Loading of Resources</a></li>
+<li>
+<a href="#caching">Caching</a>
+
+<ul>
+<li><a href="#using-service-workers">Use Service Workers</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<a href="#runtime-optimizations">Runtime Optimizations</a>
+
+<ul>
+<li><a href="#use-enableprodmode">Use <code>enableProdMode</code></a></li>
+<li><a href="#ahead-of-time-compilation">Ahead-of-Time Compilation</a></li>
+<li><a href="#web-workers">Web Workers</a></li>
+<li><a href="#server-side-rendering">Server-Side Rendering</a></li>
+<li>
+<a href="#change-detection">Change Detection</a>
+
+<ul>
+<li><a href="#changedetectionstrategyonpush"><code>ChangeDetectionStrategy.OnPush</code></a></li>
+<li><a href="#detaching-the-change-detector">Detaching the Change Detector</a></li>
+</ul>
+</li>
+<li><a href="#use-pure-pipes">Use pure pipes</a></li>
+</ul>
+</li>
+<li><a href="#conclusion">Conclusion</a></li>
+<li><a href="#contributing">Contributing</a></li>
+</ul>
+
+<h2>
+<a id="network-performance" class="anchor" href="#network-performance" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Network performance</h2>
+
+<p>Some of the tools in this section are still in development and are subject to change. The Angular core team is working on automating the build process for our applications as much as possible so a lot of things will happen transparently.</p>
+
+<h2>
+<a id="bundling" class="anchor" href="#bundling" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Bundling</h2>
+
+<p>Bundling is a standard practice aiming to reduce the number of requests that the browser needs to perform in order to deliver the application requested by the user. In essence, the bundler receives as an input a list of entry points and produces one or more bundles. This way, the browser can get the entire application by performing only a few requests, instead of requesting each individual resource separately.</p>
+
+<p>As your application grows bundling everything into a single large bundle would again be counter productive. Explore Code Splitting techniques using Webpack.</p>
+
+<p><strong>Additional http requests will not be a concern with HTTP/2 because of the <a href="https://http2.github.io/faq/#whats-the-benefit-of-server-push">server push</a> feature.</strong></p>
+
+<p><strong>Tooling</strong></p>
+
+<p>Tools which allows us to bundle our applications efficiently are:</p>
+
+<ul>
+<li>
+<a href="https://webpack.github.io/">Webpack</a> - provides efficient bundling by performing <a href="#tree-shaking">tree-shaking</a>.</li>
+<li>
+<a href="https://webpack.github.io/docs/code-splitting.html">Webpack Code Splitting</a> - Techniques to split your code.</li>
+<li>
+<a href="https://medium.com/webpack/webpack-http-2-7083ec3f3ce6#.46idrz8kb">Webpack &amp; http2</a> - Need for splitting with http2.</li>
+<li>
+<a href="https://github.com/rollup/rollup">Rollup</a> - provides bundling by performing efficient tree-shaking, taking advantage of the static nature of the ES2015 modules.</li>
+<li>
+<a href="https://github.com/google/closure-compiler">Google Closure Compiler</a> - performs plenty of optimizations and provides bundling support. Originally written in Java, since recently it also has a <a href="https://www.npmjs.com/package/google-closure-compiler-js">JavaScript version</a> which can be <a href="https://www.npmjs.com/package/google-closure-compiler-js">found here</a>.</li>
+<li>
+<a href="https://github.com/systemjs/builder">SystemJS Builder</a> - provides a single-file build for SystemJS of mixed-dependency module trees.</li>
+<li>
+<a href="http://browserify.org/">Browserify</a>.</li>
+</ul>
+
+<p><strong>Resources</strong></p>
+
+<ul>
+<li><a href="http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/">"Building an Angular 2 Application for Production"</a></li>
+<li><a href="http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/">"2.5X Smaller Angular 2 Applications with Google Closure Compiler"</a></li>
+</ul>
+
+<h2>
+<a id="minification-and-dead-code-elimination" class="anchor" href="#minification-and-dead-code-elimination" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Minification and dead code elimination</h2>
+
+<p>These practices allow us to minimize the bandwidth consumption by reducing the payload of our application.</p>
+
+<p><strong>Tooling</strong></p>
+
+<ul>
+<li>
+<a href="https://github.com/mishoo/UglifyJS">Uglify</a> - performs minification such as mangling variables, removal of comments &amp; whitespace, dead code elimination, etc. Written completely in JavaScript, has plugins for all popular task runners.</li>
+<li>
+<a href="https://github.com/google/closure-compiler">Google Closure Compiler</a> - performs similar to uglify type of minification. In advanced mode it transforms the AST of our program aggressively in order to be able to perform even more sophisticated optimizations. It has also a <a href="https://www.npmjs.com/package/google-closure-compiler-js">JavaScript version</a> which can be <a href="https://www.npmjs.com/package/google-closure-compiler-js">found here</a>. GCC also supports <em>most of the ES2015 modules syntax</em> so it can <a href="#tree-shaking">perform tree-shaking</a>.</li>
+</ul>
+
+<p><strong>Resources</strong></p>
+
+<ul>
+<li><a href="http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/">"Building an Angular 2 Application for Production"</a></li>
+<li><a href="http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/">"2.5X Smaller Angular 2 Applications with Google Closure Compiler"</a></li>
+</ul>
+
+<h3>
+<a id="tree-shaking" class="anchor" href="#tree-shaking" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tree-shaking</h3>
+
+<p>For the final version of our applications we usually we don't use the entire code which is provided by Angular and/or any third-party library, even the one that we've written. Thanks to the static nature of the ES2015 modules, we're able to get rid of the code which is not referenced in our apps.</p>
+
+<p><strong>Example</strong></p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// foo.js</span>
+<span class="pl-k">export</span> <span class="pl-smi">foo</span> <span class="pl-k">=</span> () <span class="pl-k">=</span><span class="pl-k">&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>;
+<span class="pl-k">export</span> <span class="pl-smi">bar</span> <span class="pl-k">=</span> () <span class="pl-k">=</span><span class="pl-k">&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>bar<span class="pl-pds">'</span></span>;
+
+<span class="pl-c">// app.js</span>
+<span class="pl-k">import</span> { <span class="pl-smi">foo</span> } <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>./foo<span class="pl-pds">'</span></span>;
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-en">foo</span>());</pre></div>
+
+<p>Once we tree-shake and bundle <code>app.js</code> we'll get:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">let</span> <span class="pl-en">foo</span> <span class="pl-k">=</span> () <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>;
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-en">foo</span>());</pre></div>
+
+<p>This means that the unused export <code>bar</code> will not be included into the final bundle.</p>
+
+<p><strong>Tooling</strong></p>
+
+<ul>
+<li>
+<a href="https://webpack.github.io/">Webpack</a> - provides efficient bundling by performing <a href="#tree-shaking">tree-shaking</a>. Once the application has been bundled, it does not export the unused code so it can be safely considered as dead code and removed by Uglify.</li>
+<li>
+<a href="https://github.com/rollup/rollup">Rollup</a> - provides bundling by performing an efficient tree-shaking, taking advantage of the static nature of the ES2015 modules.</li>
+<li>
+<a href="https://github.com/google/closure-compiler">Google Closure Compiler</a> - performs plenty of optimizations and provides bundling support. Originally written in Java, since recently it has also a <a href="https://www.npmjs.com/package/google-closure-compiler-js">JavaScript version</a> which can be <a href="https://www.npmjs.com/package/google-closure-compiler-js">found here</a>.</li>
+</ul>
+
+<p><em>Node:</em> GCC does not support <code>export *</code> yet, which is essential for building Angular applications because of the heavy usage of the "barrel" pattern.</p>
+
+<p><strong>Resources</strong></p>
+
+<ul>
+<li><a href="http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/">"Building an Angular 2 Application for Production"</a></li>
+<li><a href="http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/">"2.5X Smaller Angular 2 Applications with Google Closure Compiler"</a></li>
+</ul>
+
+<h2>
+<a id="ahead-of-time-aot-compilation" class="anchor" href="#ahead-of-time-aot-compilation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Ahead-of-Time (AoT) Compilation</h2>
+
+<p>A challenge for the available in the wild tools (such as GCC, Rollup, etc.) are the HTML-like templates of the Angular components, which cannot be analyzed with their capabilities. This makes their tree-shaking support less efficient because they're not sure which directives are referenced within the templates. The AoT compiler transpiles the Angular 2 HTML-like templates to JavaScript or TypeScript with ES2015 module imports. This way we are able to efficiently tree-shake during bundling and remove all the unused directives defined by Angular, third-party libraries or by ourselves.</p>
+
+<p><strong>Tooling</strong></p>
+
+<ul>
+<li>
+<a href="https://github.com/angular/angular/tree/master/modules/%40angular/compiler-cli">@angular/compiler-cli</a> - a drop-in replacement for <a href="https://www.npmjs.com/package/typescript">tsc</a> which statically analyzes our application and emits TypeScript/JavaScript for the component's templates.</li>
+</ul>
+
+<p><strong>Resources</strong></p>
+
+<ul>
+<li><a href="http://blog.mgechev.com/2016/08/14/ahead-of-time-compilation-angular-offline-precompilation/">"Ahead-of-Time Compilation in Angular 2"</a></li>
+</ul>
+
+<h2>
+<a id="compression" class="anchor" href="#compression" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Compression</h2>
+
+<p>Compression of the responses' payload is a standard practice for bandwidth usage reduction. By specifying the value of the header <code>Accept-Encoding</code>, the browser hints the server which compression algorithms are available on the client's machine. On the other hand, the server sets value for the <code>Content-Encoding</code> header of the response in order to tell the browser which algorithm has been chosen for compressing the response.</p>
+
+<p><strong>Tooling</strong></p>
+
+<p>The tooling here is not Angular-specific and entirely depends on the web/application server that we're using. Typical compression algorithms are:</p>
+
+<ul>
+<li>deflate - a data compression algorithm and associated file format that uses a combination of the LZ77 algorithm and Huffman coding.</li>
+<li>
+<a href="https://github.com/google/brotli">brotli</a> - a generic-purpose lossless compression algorithm that compresses data using a combination of a modern variant of the LZ77 algorithm, Huffman coding and 2nd order context modeling, with a compression ratio comparable to the best currently available general-purpose compression methods. It is similar in speed with deflate but offers more dense compression.</li>
+</ul>
+
+<p><em>Note:</em> Brotli is <a href="http://caniuse.com/#search=brotli">not widely supported yet</a>.</p>
+
+<p><strong>Resources</strong></p>
+
+<ul>
+<li><a href="https://hacks.mozilla.org/2015/11/better-than-gzip-compression-with-brotli/">"Better than Gzip Compression with Brotli"</a></li>
+<li><a href="http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/">"2.5X Smaller Angular 2 Applications with Google Closure Compiler"</a></li>
+</ul>
+
+<h2>
+<a id="pre-fetching-resources" class="anchor" href="#pre-fetching-resources" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Pre-fetching Resources</h2>
+
+<p>Resource pre-fetching is a great way to improve the user experience. We can either pre-fetch assets (images, styles, modules intended to be <a href="#lazy-loading-of-resources">loaded lazily</a>, etc.) or data. There are different pre-fetching strategies but most of them depend on specifics of the application.</p>
+
+<h2>
+<a id="lazy-loading-of-resources" class="anchor" href="#lazy-loading-of-resources" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Lazy-Loading of Resources</h2>
+
+<p>In case the target application has a huge code base with hundreds of dependencies, the practices listed above may not help us reduce the bundle to a reasonable size (reasonable might be 100K or 2M, it again, completely depends on the business goals).</p>
+
+<p>In such cases a good solution might be to load some of the application's modules lazily. For instance, lets suppose we're building an e-commerce system. In this case we might want to load the admin panel independently from the user-facing UI. Once the administrator has to add a new product we'd want to provide the UI required for that. This could be either only the "Add product page" or the entire admin panel, depending on our use case/business requirements.</p>
+
+<p><strong>Tooling</strong></p>
+
+<ul>
+<li>
+<a href="https://github.com/webpack/webpack">Webpack</a> - allows asynchronous module loading.</li>
+</ul>
+
+<h2>
+<a id="caching" class="anchor" href="#caching" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Caching</h2>
+
+<p>Caching is another common practice intending to speed-up our application by taking advantage of the heuristic that if one resource was recently been requested, it might be requested again in near future.</p>
+
+<p>For caching data we usually use a custom caching mechanism. For caching static assets we can either use the standard browser caching or Service Workers with the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Cache">CacheStorage API</a>.</p>
+
+<h3>
+<a id="use-service-workers" class="anchor" href="#use-service-workers" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Use Service Workers</h3>
+
+<p>We can think of the Service Worker as an HTTP proxy which is located in the browser. All requests sent from the client are first intercepted by the Service Worker which can either handle them or pass them through the network.</p>
+
+<p><strong>Tooling</strong></p>
+
+<ul>
+<li>
+<a href="https://github.com/angular/mobile-toolkit">Angular Mobile Toolkit</a> - aims to automate the process of managing Service Workers. It also contains Service Worker for caching static assets, and one for <a href="https://developers.google.com/web/updates/2015/11/app-shell?hl=en">generating application shell</a>.</li>
+<li>
+<a href="https://github.com/NekR/offline-plugin">Offline Plugin for Webpack</a> - Webpack plugin that adds support for Servie Worker with a fall-back to AppCache.</li>
+</ul>
+
+<p><strong>Resources</strong></p>
+
+<ul>
+<li><a href="https://jakearchibald.com/2014/offline-cookbook/">"The offline cookbook"</a></li>
+</ul>
+
+<h1>
+<a id="runtime-optimizations" class="anchor" href="#runtime-optimizations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Runtime Optimizations</h1>
+
+<p>This section includes practices which can be applied in order to provide smoother user experience with 60 frames per second (fps).</p>
+
+<h2>
+<a id="use-enableprodmode" class="anchor" href="#use-enableprodmode" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Use <code>enableProdMode</code>
+</h2>
+
+<p>In development mode Angular performs some extra checks in order to verify that performing change detection does not result to any additional changes to any of the bindings. This way the frameworks assures that the unidirectional data flow has been followed.</p>
+
+<p>In order to disable these changes for production to not forget to invoke <code>enableProdMode</code>:</p>
+
+<div class="highlight highlight-source-ts"><pre><span class="pl-k">import</span> { enableProdMode } <span class="pl-k">from</span> <span class="pl-s">'@angular/core'</span>;
+
+<span class="pl-k">if</span> (ENV <span class="pl-k">===</span> <span class="pl-s">'production'</span>) {
+  enableProdMode();
+}</pre></div>
+
+<h2>
+<a id="ahead-of-time-compilation" class="anchor" href="#ahead-of-time-compilation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Ahead-of-Time Compilation</h2>
+
+<p>AoT can be helpful not only for achieving more efficient bundling by performing tree-shaking, but also for improving the runtime performance of our applications. The alternative of AoT is Just-in-Time compilation (JiT) which is performed runtime, therefore we can reduce the amount of computations required for rendering of our application by performing the compilation as part of our build process.</p>
+
+<p><strong>Tooling</strong></p>
+
+<ul>
+<li>
+<a href="https://github.com/angular/angular/tree/master/modules/%40angular/compiler-cli">@angular/compiler-cli</a> - a drop-in replacement for <a href="https://www.npmjs.com/package/typescript">tsc</a> which statically analyzes our application and emits TypeScript/JavaScript for the component's templates.</li>
+<li>
+<a href="https://github.com/mgechev/angular2-seed">angular2-seed</a> - a starter project which includes support for AoT compilation.</li>
+<li>
+<a href="https://cli.angular.io">angular-cli</a> Using the <code>ng serve --prod</code> </li>
+</ul>
+
+<p><strong>Resources</strong></p>
+
+<ul>
+<li><a href="http://blog.mgechev.com/2016/08/14/ahead-of-time-compilation-angular-offline-precompilation/">"Ahead-of-Time Compilation in Angular 2"</a></li>
+</ul>
+
+<h2>
+<a id="web-workers" class="anchor" href="#web-workers" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Web Workers</h2>
+
+<p>Usual problem in the typical single-page application (SPA) is that our code is usually run in a single thread. This means that if we want to achieve smooth user experience with 60fps we have <strong>at most 16ms</strong> for execution between the individual frames are being rendered, otherwise they'll drop by half.</p>
+
+<p>In complex application with huge component tree, where the change detection needs to perform millions of check each second it will not be hard to start dropping frames. Thanks to the platform agnosticism of Angular and it being decoupled from DOM architecture it's possible to run our entire application (including change detection) in a Web Worker and leave the main UI thread responsible only for rendering.</p>
+
+<p><strong>Tooling</strong></p>
+
+<ul>
+<li>The module which allows us to run our application in a Web Worker is supported by the core team. Examples how it can be used, can be <a href="https://github.com/angular/angular/tree/master/modules/playground/src/web_workers">found here</a>.</li>
+<li>
+<a href="https://github.com/webpack/worker-loader">Webpack Web Worker Loader</a> - A Web Worker Loader for webpack.</li>
+</ul>
+
+<p><strong>Resources</strong></p>
+
+<ul>
+<li><a href="https://www.youtube.com/watch?v=Kz_zKXiNGSE">"Using Web Workers for more responsive apps"</a></li>
+</ul>
+
+<h2>
+<a id="server-side-rendering" class="anchor" href="#server-side-rendering" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Server-Side Rendering</h2>
+
+<p>A big issue of the traditional SPA is that they cannot be rendered until the entire JavaScript required for their initial rendering is available. This leads to two big problems:</p>
+
+<ul>
+<li>Not all search engines are running the JavaScript associated to the page so they are not able to index the content of dynamic apps properly.</li>
+<li>Poor user experience, since the user will see nothing more than a blank/loading screen until the JavaScript associated with the page is downloaded, parsed and executed.</li>
+</ul>
+
+<p>Server-side rendering solves this issue by pre-rendering the requested page on the server and providing the markup of the rendered page during the initial page load.</p>
+
+<p><strong>Tooling</strong></p>
+
+<ul>
+<li>
+<a href="https://github.com/angular/universal">Angular Universal</a> - Universal (isomorphic) JavaScript support for Angular 2.</li>
+<li><p><a href="https://github.com/angular/preboot">Preboot</a> - Library to help manage the transition of state (i.e. events, focus, data) from a server-generated web view to a client-generated web view.
+<strong>Resources</strong></p></li>
+<li><p><a href="https://www.youtube.com/watch?v=0wvZ7gakqV4">"Angular 2 Server Rendering"</a></p></li>
+<li><a href="https://www.youtube.com/watch?v=TCj_oC3m6_U">"Angular 2 Universal Patterns"</a></li>
+</ul>
+
+<h2>
+<a id="change-detection" class="anchor" href="#change-detection" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Change Detection</h2>
+
+<p>On each asynchronous event Angular performs change detection over the entire component tree. Although the code which detects for changes is optimized for <a href="http://mrale.ph/blog/2012/06/03/explaining-js-vms-in-js-inline-caches.html">inline-caching</a>, this still can be a heavy computation in complex applications. A way to improve the performance of the change detection is to not perform it for subtrees which are not supposed to be changed based on the recent actions.</p>
+
+<h3>
+<a id="changedetectionstrategyonpush" class="anchor" href="#changedetectionstrategyonpush" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><code>ChangeDetectionStrategy.OnPush</code>
+</h3>
+
+<p>The <code>OnPush</code> change detection strategy allows us to disable the change detection mechanism for subtrees of the component tree. By setting the change detection strategy to any component to the value <code>ChangeDetectionStrategy.OnPush</code>, will make the change detection perform <strong>only</strong> when the component have received different inputs. Angular will consider inputs as different when it compares them with the previous inputs by reference, and the result of the reference check is <code>false</code>. In combination with <a href="https://facebook.github.io/immutable-js/">immutable data structures</a> <code>OnPush</code> can bring great performance implications for such "pure" components.</p>
+
+<p><strong>Resources</strong></p>
+
+<ul>
+<li><a href="https://vsavkin.com/change-detection-in-angular-2-4f216b855d4c">"Change Detection in Angular 2"</a></li>
+</ul>
+
+<h3>
+<a id="detaching-the-change-detector" class="anchor" href="#detaching-the-change-detector" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Detaching the Change Detector</h3>
+
+<p>Another way of implementing a custom change detection mechanism is by <code>detach</code>ing and <code>reattach</code>ing the change detector (CD) for given component. Once we <code>detach</code> the CD Angular will not perform check for the entire component subtree.</p>
+
+<p>This practice is typically used when user actions or interactions with an external services trigger the change detection more often than required. In such cases we may want to consider detaching the change detector and reattaching it only when performing change detection is required.</p>
+
+<h2>
+<a id="use-pure-pipes" class="anchor" href="#use-pure-pipes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Use pure pipes</h2>
+
+<p>As argument the <code>@Pipe</code> decorator accepts an object literal with the following format:</p>
+
+<div class="highlight highlight-source-ts"><pre><span class="pl-k">interface</span> <span class="pl-en">PipeMetadata</span> {
+  <span class="pl-v">name</span>: <span class="pl-c1">string</span>;
+  <span class="pl-v">pure</span>: <span class="pl-c1">boolean</span>;
+}</pre></div>
+
+<p>The pure flag indicates that the pipe is not dependent on any global state and does not produce side-effects. This means that the pipe will return the same output when invoked with the same input. This way Angular can cache the outputs for all the input parameters the pipe has been invoked with, and reuse them in order to not have to recompute them on each evaluation.</p>
+
+<p>The default value of the <code>pure</code> property is <code>true</code>.</p>
+
+<h1>
+<a id="conclusion" class="anchor" href="#conclusion" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Conclusion</h1>
+
+<p>The list of practices will dynamically evolve over time with new/updated practices. In case you notice something missing or you think that any of the practices can be improved do not hesitate to fire an issue and/or a PR. For more information please take a look at the "<a href="#contributing">Contributing</a>" section below.</p>
+
+<h1>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contributing</h1>
+
+<p>In case you notice something missing, incomplete or incorrect, a pull request will be greatly appreciated. For discussion of practices which are not included in the document please <a href="https://github.com/mgechev/angular2-performance-checklist">open an issue</a>.</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/mgechev/angular2-performance-checklist">Angular2 Performance Checklist</a> is maintained by <a href="https://github.com/mgechev">mgechev</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
