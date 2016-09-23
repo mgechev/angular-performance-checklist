@@ -213,6 +213,7 @@ AoT can be helpful not only for achieving more efficient bundling by performing 
 
 - [@angular/compiler-cli](https://github.com/angular/angular/tree/master/modules/%40angular/compiler-cli) - a drop-in replacement for [tsc](https://www.npmjs.com/package/typescript) which statically analyzes our application and emits TypeScript/JavaScript for the component's templates.
 - [angular2-seed](https://github.com/mgechev/angular2-seed) - a starter project which includes support for AoT compilation.
+- [angular-webpack-starter](https://github.com/antonybudianto/angular-webpack-starter) - a starter project featuring AoT compilation, lazy-loading, and tree-shaking.
 - [angular-cli](https://cli.angular.io) Using the `ng serve --prod` 
 
 **Resources**
