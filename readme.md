@@ -23,24 +23,24 @@ Note that most practices are valid for both HTTP/1.1 and HTTP/2. Practices which
   - [Introduction](#introduction)
   - [Table of Content](#table-of-content)
   - [Network performance](#network-performance)
-  - [Bundling](#bundling)
-  - [Minification and Dead code elimination](#minification-and-dead-code-elimination)
+    - [Bundling](#bundling)
+    - [Minification and Dead code elimination](#minification-and-dead-code-elimination)
     - [Tree-shaking](#tree-shaking)
-  - [Ahead-of-Time (AoT) Compilation](#ahead-of-time-aot-compilation)
-  - [Compression](#compression)
-  - [Pre-fetching Resources](#pre-fetching-resources)
-  - [Lazy-Loading of Resources](#lazy-loading-of-resources)
-  - [Caching](#caching)
+    - [Ahead-of-Time (AoT) Compilation](#ahead-of-time-aot-compilation)
+    - [Compression](#compression)
+    - [Pre-fetching Resources](#pre-fetching-resources)
+    - [Lazy-Loading of Resources](#lazy-loading-of-resources)
+    - [Caching](#caching)
     - [Use Service Workers](#using-service-workers)
-- [Runtime Optimizations](#runtime-optimizations)
-  - [Use `enableProdMode`](#use-enableprodmode)
-  - [Ahead-of-Time Compilation](#ahead-of-time-compilation)
-  - [Web Workers](#web-workers)
-  - [Server-Side Rendering](#server-side-rendering)
-  - [Change Detection](#change-detection)
-    - [`ChangeDetectionStrategy.OnPush`](#changedetectionstrategyonpush)
-    - [Detaching the Change Detector](#detaching-the-change-detector)
-  - [Use pure pipes](#use-pure-pipes)
+  - [Runtime Optimizations](#runtime-optimizations)
+    - [Use `enableProdMode`](#use-enableprodmode)
+    - [Ahead-of-Time Compilation](#ahead-of-time-compilation)
+    - [Web Workers](#web-workers)
+    - [Server-Side Rendering](#server-side-rendering)
+    - [Change Detection](#change-detection)
+      - [`ChangeDetectionStrategy.OnPush`](#changedetectionstrategyonpush)
+      - [Detaching the Change Detector](#detaching-the-change-detector)
+    - [Use pure pipes](#use-pure-pipes)
 - [Conclusion](#conclusion)
 - [Contributing](#contributing)
 
@@ -48,7 +48,7 @@ Note that most practices are valid for both HTTP/1.1 and HTTP/2. Practices which
 
 Some of the tools in this section are still in development and are subject to change. The Angular core team is working on automating the build process for our applications as much as possible so a lot of things will happen transparently.
 
-## Bundling
+### Bundling
 
 Bundling is a standard practice aiming to reduce the number of requests that the browser needs to perform in order to deliver the application requested by the user. In essence, the bundler receives as an input a list of entry points and produces one or more bundles. This way, the browser can get the entire application by performing only a few requests, instead of requesting each individual resource separately.
 
@@ -73,7 +73,7 @@ Tools which allows us to bundle our applications efficiently are:
 - ["Building an Angular 2 Application for Production"](http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/)
 - ["2.5X Smaller Angular 2 Applications with Google Closure Compiler"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
 
-## Minification and dead code elimination
+### Minification and dead code elimination
 
 These practices allow us to minimize the bandwidth consumption by reducing the payload of our application.
 
@@ -124,7 +124,7 @@ This means that the unused export `bar` will not be included into the final bund
 - ["Building an Angular 2 Application for Production"](http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/)
 - ["2.5X Smaller Angular 2 Applications with Google Closure Compiler"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
 
-## Ahead-of-Time (AoT) Compilation
+### Ahead-of-Time (AoT) Compilation
 
 A challenge for the available in the wild tools (such as GCC, Rollup, etc.) are the HTML-like templates of the Angular components, which cannot be analyzed with their capabilities. This makes their tree-shaking support less efficient because they're not sure which directives are referenced within the templates. The AoT compiler transpiles the Angular 2 HTML-like templates to JavaScript or TypeScript with ES2015 module imports. This way we are able to efficiently tree-shake during bundling and remove all the unused directives defined by Angular, third-party libraries or by ourselves.
 
@@ -136,7 +136,7 @@ A challenge for the available in the wild tools (such as GCC, Rollup, etc.) are 
 
 - ["Ahead-of-Time Compilation in Angular 2"](http://blog.mgechev.com/2016/08/14/ahead-of-time-compilation-angular-offline-precompilation/)
 
-## Compression
+### Compression
 
 Compression of the responses' payload is a standard practice for bandwidth usage reduction. By specifying the value of the header `Accept-Encoding`, the browser hints the server which compression algorithms are available on the client's machine. On the other hand, the server sets value for the `Content-Encoding` header of the response in order to tell the browser which algorithm has been chosen for compressing the response.
 
@@ -154,11 +154,11 @@ The tooling here is not Angular-specific and entirely depends on the web/applica
 - ["Better than Gzip Compression with Brotli"](https://hacks.mozilla.org/2015/11/better-than-gzip-compression-with-brotli/)
 - ["2.5X Smaller Angular 2 Applications with Google Closure Compiler"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
 
-## Pre-fetching Resources
+### Pre-fetching Resources
 
 Resource pre-fetching is a great way to improve the user experience. We can either pre-fetch assets (images, styles, modules intended to be [loaded lazily](#lazy-loading-of-resources), etc.) or data. There are different pre-fetching strategies but most of them depend on specifics of the application.
 
-## Lazy-Loading of Resources
+### Lazy-Loading of Resources
 
 In case the target application has a huge code base with hundreds of dependencies, the practices listed above may not help us reduce the bundle to a reasonable size (reasonable might be 100K or 2M, it again, completely depends on the business goals).
 
@@ -168,7 +168,7 @@ In such cases a good solution might be to load some of the application's modules
 
 - [Webpack](https://github.com/webpack/webpack) - allows asynchronous module loading.
 
-## Caching
+### Caching
 
 Caching is another common practice intending to speed-up our application by taking advantage of the heuristic that if one resource was recently been requested, it might be requested again in near future.
 
@@ -187,11 +187,11 @@ We can think of the Service Worker as an HTTP proxy which is located in the brow
 
 - ["The offline cookbook"](https://jakearchibald.com/2014/offline-cookbook/)
 
-# Runtime Optimizations
+## Runtime Optimizations
 
 This section includes practices which can be applied in order to provide smoother user experience with 60 frames per second (fps).
 
-## Use `enableProdMode`
+### Use `enableProdMode`
 
 In development mode Angular performs some extra checks in order to verify that performing change detection does not result to any additional changes to any of the bindings. This way the frameworks assures that the unidirectional data flow has been followed.
 
@@ -205,7 +205,7 @@ if (ENV === 'production') {
 }
 ```
 
-## Ahead-of-Time Compilation
+### Ahead-of-Time Compilation
 
 AoT can be helpful not only for achieving more efficient bundling by performing tree-shaking, but also for improving the runtime performance of our applications. The alternative of AoT is Just-in-Time compilation (JiT) which is performed runtime, therefore we can reduce the amount of computations required for rendering of our application by performing the compilation as part of our build process.
 
@@ -219,7 +219,7 @@ AoT can be helpful not only for achieving more efficient bundling by performing 
 
 - ["Ahead-of-Time Compilation in Angular 2"](http://blog.mgechev.com/2016/08/14/ahead-of-time-compilation-angular-offline-precompilation/)
 
-## Web Workers
+### Web Workers
 
 Usual problem in the typical single-page application (SPA) is that our code is usually run in a single thread. This means that if we want to achieve smooth user experience with 60fps we have **at most 16ms** for execution between the individual frames are being rendered, otherwise they'll drop by half.
 
@@ -234,7 +234,7 @@ In complex application with huge component tree, where the change detection need
 
 - ["Using Web Workers for more responsive apps"](https://www.youtube.com/watch?v=Kz_zKXiNGSE)
 
-## Server-Side Rendering
+### Server-Side Rendering
 
 A big issue of the traditional SPA is that they cannot be rendered until the entire JavaScript required for their initial rendering is available. This leads to two big problems:
 
@@ -252,11 +252,11 @@ Server-side rendering solves this issue by pre-rendering the requested page on t
 - ["Angular 2 Server Rendering"](https://www.youtube.com/watch?v=0wvZ7gakqV4)
 - ["Angular 2 Universal Patterns"](https://www.youtube.com/watch?v=TCj_oC3m6_U)
 
-## Change Detection
+### Change Detection
 
 On each asynchronous event Angular performs change detection over the entire component tree. Although the code which detects for changes is optimized for [inline-caching](http://mrale.ph/blog/2012/06/03/explaining-js-vms-in-js-inline-caches.html), this still can be a heavy computation in complex applications. A way to improve the performance of the change detection is to not perform it for subtrees which are not supposed to be changed based on the recent actions.
 
-### `ChangeDetectionStrategy.OnPush`
+#### `ChangeDetectionStrategy.OnPush`
 
 The `OnPush` change detection strategy allows us to disable the change detection mechanism for subtrees of the component tree. By setting the change detection strategy to any component to the value `ChangeDetectionStrategy.OnPush`, will make the change detection perform **only** when the component have received different inputs. Angular will consider inputs as different when it compares them with the previous inputs by reference, and the result of the reference check is `false`. In combination with [immutable data structures](https://facebook.github.io/immutable-js/) `OnPush` can bring great performance implications for such "pure" components.
 
@@ -264,13 +264,13 @@ The `OnPush` change detection strategy allows us to disable the change detection
 
 - ["Change Detection in Angular 2"](https://vsavkin.com/change-detection-in-angular-2-4f216b855d4c)
 
-### Detaching the Change Detector
+#### Detaching the Change Detector
 
 Another way of implementing a custom change detection mechanism is by `detach`ing and `reattach`ing the change detector (CD) for given component. Once we `detach` the CD Angular will not perform check for the entire component subtree.
 
 This practice is typically used when user actions or interactions with an external services trigger the change detection more often than required. In such cases we may want to consider detaching the change detector and reattaching it only when performing change detection is required.
 
-## Use pure pipes
+### Use pure pipes
 
 As argument the `@Pipe` decorator accepts an object literal with the following format:
 
