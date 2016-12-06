@@ -31,7 +31,7 @@ Note that most practices are valid for both HTTP/1.1 and HTTP/2. Practices which
     - [Pre-fetching Resources](#pre-fetching-resources)
     - [Lazy-Loading of Resources](#lazy-loading-of-resources)
     - [Caching](#caching)
-    - [Use Service Workers](#using-service-workers)
+    - [Use Service Workers](#use-service-workers)
   - [Runtime Optimizations](#runtime-optimizations)
     - [Use `enableProdMode`](#use-enableprodmode)
     - [Ahead-of-Time Compilation](#ahead-of-time-compilation)
@@ -40,6 +40,7 @@ Note that most practices are valid for both HTTP/1.1 and HTTP/2. Practices which
     - [Change Detection](#change-detection)
       - [`ChangeDetectionStrategy.OnPush`](#changedetectionstrategyonpush)
       - [Detaching the Change Detector](#detaching-the-change-detector)
+      - [Run outside Angular](#run-outside-angular)
     - [Use pure pipes](#use-pure-pipes)
 - [Conclusion](#conclusion)
 - [Contributing](#contributing)
@@ -270,6 +271,71 @@ The `OnPush` change detection strategy allows us to disable the change detection
 Another way of implementing a custom change detection mechanism is by `detach`ing and `reattach`ing the change detector (CD) for given component. Once we `detach` the CD Angular will not perform check for the entire component subtree.
 
 This practice is typically used when user actions or interactions with an external services trigger the change detection more often than required. In such cases we may want to consider detaching the change detector and reattaching it only when performing change detection is required.
+
+#### Run outside Angular
+
+The Angular's change detection mechanism is being triggered thanks to [zone.js](https://github.com/angular/zone.js). Zone.js monkey patches all asynchronous APIs in the browser and triggers the change detection in the end of the execution of any async callback. In **rare cases** we may want given code to be executed outside the context of the Angular Zone and thus, without running change detection mechanism. In such cases we can use the method `runOutsideAngular` of the `NgZone` instance.
+
+In the snippet below, you can see an example for a component which uses this practice. When the `_incrementPoints` method is called the component will start incrementing the `_points` property every 10ms (by default). The incrementation will make the illusion of an animation. Since in this case we don't want to trigger the change detection mechanism for the entire component tree, every 10ms, we can run `_incrementPoints` outside the context of the Angular's zone and update the DOM manually (see the `points` setter).
+
+```ts
+@Component({
+  template: '<span #label></span>'
+})
+class PointAnimationComponent {
+
+  @Input() duration = 1000;
+  @Input() stepDuration = 10;
+  @ViewChild('label') label: ElementRef;
+
+  @Input() set points(val: number) {
+    this._points = val;
+    if (this.label) {
+      this.label.nativeElement.innerText = this._pipe.transform(this.points, '1.0-0');
+    }
+  }
+  get points() {
+    return this._points;
+  }
+
+  private _incrementInterval: any;
+  private _points: number = 0;
+
+  constructor(private _zone: NgZone, private _pipe: DecimalPipe) {}
+
+  ngOnChanges(changes: any) {
+    const change = changes.points;
+    if (!change) {
+      return;
+    }
+    if (typeof change.previousValue !== 'number') {
+      this.points = change.currentValue;
+    } else {
+      this.points = change.previousValue;
+      this._ngZone.runOutsideAngular(() => {
+        this._incrementBrowniePoints(change.currentValue);
+      });
+    }
+  }
+
+  private _incrementPoints(newVal: number) {
+    const diff = newVal - this.points;
+    const step = this.stepDuration * (diff / this.duration);
+    const initialPoints = this.points;
+    this._incrementInterval = setInterval(() => {
+      let nextPoints = Math.ceil(initialPoints + diff);
+      if (this.points >= nextPoints) {
+        this.points = initialPoints + diff;
+        clearInterval(this._incrementInterval);
+      } else {
+        this.points += step;
+      }
+    }, this.stepDuration);
+  }
+}
+```
+
+**Warning**: Use this practice **very carefully only when you're sure what you are doing** because if not used properly it can lead to an inconsistent state of the DOM.
 
 ### Use pure pipes
 
