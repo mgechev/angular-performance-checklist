@@ -89,7 +89,7 @@ These practices allow us to minimize the bandwidth consumption by reducing the p
 
 ### Tree-shaking
 
-For the final version of our applications we usually we don't use the entire code which is provided by Angular and/or any third-party library, even the one that we've written. Thanks to the static nature of the ES2015 modules, we're able to get rid of the code which is not referenced in our apps.
+For the final version of our applications we usually don't use the entire code which is provided by Angular and/or any third-party library, even the one that we've written. Thanks to the static nature of the ES2015 modules, we're able to get rid of the code which is not referenced in our apps.
 
 **Example**
 
@@ -117,7 +117,7 @@ This means that the unused export `bar` will not be included into the final bund
 - [Rollup](https://github.com/rollup/rollup) - provides bundling by performing an efficient tree-shaking, taking advantage of the static nature of the ES2015 modules.
 - [Google Closure Compiler](https://github.com/google/closure-compiler) - performs plenty of optimizations and provides bundling support. Originally written in Java, since recently it has also a [JavaScript version](https://www.npmjs.com/package/google-closure-compiler-js) which can be [found here](https://www.npmjs.com/package/google-closure-compiler-js).
 
-*Node:* GCC does not support `export *` yet, which is essential for building Angular applications because of the heavy usage of the "barrel" pattern.
+*Note:* GCC does not support `export *` yet, which is essential for building Angular applications because of the heavy usage of the "barrel" pattern.
 
 **Resources**
 
@@ -247,6 +247,7 @@ Server-side rendering solves this issue by pre-rendering the requested page on t
 
 - [Angular Universal](https://github.com/angular/universal) - Universal (isomorphic) JavaScript support for Angular 2.
 - [Preboot](https://github.com/angular/preboot) - Library to help manage the transition of state (i.e. events, focus, data) from a server-generated web view to a client-generated web view.
+
 **Resources**
 
 - ["Angular 2 Server Rendering"](https://www.youtube.com/watch?v=0wvZ7gakqV4)
