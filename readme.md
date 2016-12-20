@@ -362,3 +362,7 @@ The list of practices will dynamically evolve over time with new/updated practic
 
 In case you notice something missing, incomplete or incorrect, a pull request will be greatly appreciated. For discussion of practices which are not included in the document please [open an issue](https://github.com/mgechev/angular2-performance-checklist/issues).
 
+# License
+
+MIT
+
