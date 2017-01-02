@@ -1,4 +1,4 @@
-# Angular 2 Performance Checklist
+# Angular Performance Checklist
 
 <img src="./assets/flash.jpg" width="200">
 
