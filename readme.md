@@ -42,6 +42,7 @@ Note that most practices are valid for both HTTP/1.1 and HTTP/2. Practices which
       - [Detaching the Change Detector](#detaching-the-change-detector)
       - [Run outside Angular](#run-outside-angular)
     - [Use pure pipes](#use-pure-pipes)
+    - [Use `trackBy` option for `*ngFor` directive](#use-trackby-option-for-ngfor-directive)
 - [Conclusion](#conclusion)
 - [Contributing](#contributing)
 
@@ -353,6 +354,45 @@ interface PipeMetadata {
 The pure flag indicates that the pipe is not dependent on any global state and does not produce side-effects. This means that the pipe will return the same output when invoked with the same input. This way Angular can cache the outputs for all the input parameters the pipe has been invoked with, and reuse them in order to not have to recompute them on each evaluation.
 
 The default value of the `pure` property is `true`.
+
+### Use `trackBy` option for `*ngFor` directive
+
+The `*ngFor` directive is used for rendering a collection. By default `*ngFor` doesn't know how to identify each item of the given collection.
+
+When the collection is changed in some way then the whole DOM tree is destroyed and recreated again. This is acceptable if the collection is totally different. But most times we have just a slightly modified collection (e.g. collection is sorted or one item is added/removed/changed). Anyway DOM tree is destroyed and recreated from the scratch again. This is unnecessary and, what even more important, may lead to poor performance of the whole app, particularly on a big collection of data.
+
+To modify this behavior it is up to developer to provide custom tracking function as `trackBy` option for the `*ngFor` directive. Tracking function takes two arguments: `index` and `item`. Angular uses the value returned from tracking function to track items identity.
+
+**Example**
+
+```typescript
+@Component({
+  selector: 'yt-feed',
+  template: `
+  <h1>Your video feed</h1>
+  <yt-player *ngFor="let video of feed; trackBy: trackById" [video]="video"></yt-player>
+`
+})
+export class YtFeedComponent {
+  feed = [
+    {
+      id: 3849, // note "id" field, we refer to it in "trackById" function
+      title: "Angular in 60 minutes",
+      url: "http://youtube.com/ng2-in-60-min",
+      likes: "29345"
+    },
+    // ...
+  ];
+
+  trackById(index, item) {
+    return item.id;
+  }
+}
+```
+**Resources**
+
+- ["NgFor directive"](https://angular.io/docs/ts/latest/api/common/index/NgFor-directive.html) - official documentation for `*ngFor`
+- ["Angular 2 — Improve performance with trackBy"](https://netbasal.com/angular-2-improve-performance-with-trackby-cc147b5104e5) - shows gif demonstration of the approach
 
 # Conclusion
 
