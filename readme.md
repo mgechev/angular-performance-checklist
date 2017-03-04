@@ -4,7 +4,7 @@
 
 ## Introduction
 
-This document contains a list of practices which will help us boost the performance of our Angular 2 applications. "Angular 2 Performance Checklist" covers different topics - from server-side pre-rendering and bundling of our applications, to runtime performance and optimization of the change detection performed by the framework.
+This document contains a list of practices which will help us boost the performance of our Angular applications. "Angular Performance Checklist" covers different topics - from server-side pre-rendering and bundling of our applications, to runtime performance and optimization of the change detection performed by the framework.
 
 The document is divided into two main sections:
 
@@ -19,7 +19,7 @@ Note that most practices are valid for both HTTP/1.1 and HTTP/2. Practices which
 
 ## Table of Content
 
-- [Angular 2 Performance Checklist](#angular-2-performance-checklist)
+- [Angular Performance Checklist](#angular-2-performance-checklist)
   - [Introduction](#introduction)
   - [Table of Content](#table-of-content)
   - [Network performance](#network-performance)
@@ -72,8 +72,8 @@ Tools which allows us to bundle our applications efficiently are:
 
 **Resources**
 
-- ["Building an Angular 2 Application for Production"](http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/)
-- ["2.5X Smaller Angular 2 Applications with Google Closure Compiler"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
+- ["Building an Angular Application for Production"](http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/)
+- ["2.5X Smaller Angular Applications with Google Closure Compiler"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
 
 ### Minification and dead code elimination
 
@@ -86,8 +86,8 @@ These practices allow us to minimize the bandwidth consumption by reducing the p
 
 **Resources**
 
-- ["Building an Angular 2 Application for Production"](http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/)
-- ["2.5X Smaller Angular 2 Applications with Google Closure Compiler"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
+- ["Building an Angular Application for Production"](http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/)
+- ["2.5X Smaller Angular Applications with Google Closure Compiler"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
 
 ### Tree-shaking
 
@@ -123,12 +123,12 @@ This means that the unused export `bar` will not be included into the final bund
 
 **Resources**
 
-- ["Building an Angular 2 Application for Production"](http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/)
-- ["2.5X Smaller Angular 2 Applications with Google Closure Compiler"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
+- ["Building an Angular Application for Production"](http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/)
+- ["2.5X Smaller Angular Applications with Google Closure Compiler"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
 
 ### Ahead-of-Time (AoT) Compilation
 
-A challenge for the available in the wild tools (such as GCC, Rollup, etc.) are the HTML-like templates of the Angular components, which cannot be analyzed with their capabilities. This makes their tree-shaking support less efficient because they're not sure which directives are referenced within the templates. The AoT compiler transpiles the Angular 2 HTML-like templates to JavaScript or TypeScript with ES2015 module imports. This way we are able to efficiently tree-shake during bundling and remove all the unused directives defined by Angular, third-party libraries or by ourselves.
+A challenge for the available in the wild tools (such as GCC, Rollup, etc.) are the HTML-like templates of the Angular components, which cannot be analyzed with their capabilities. This makes their tree-shaking support less efficient because they're not sure which directives are referenced within the templates. The AoT compiler transpiles the Angular HTML-like templates to JavaScript or TypeScript with ES2015 module imports. This way we are able to efficiently tree-shake during bundling and remove all the unused directives defined by Angular, third-party libraries or by ourselves.
 
 **Tooling**
 
@@ -136,7 +136,7 @@ A challenge for the available in the wild tools (such as GCC, Rollup, etc.) are 
 
 **Resources**
 
-- ["Ahead-of-Time Compilation in Angular 2"](http://blog.mgechev.com/2016/08/14/ahead-of-time-compilation-angular-offline-precompilation/)
+- ["Ahead-of-Time Compilation in Angular"](http://blog.mgechev.com/2016/08/14/ahead-of-time-compilation-angular-offline-precompilation/)
 
 ### Compression
 
@@ -154,7 +154,7 @@ The tooling here is not Angular-specific and entirely depends on the web/applica
 **Resources**
 
 - ["Better than Gzip Compression with Brotli"](https://hacks.mozilla.org/2015/11/better-than-gzip-compression-with-brotli/)
-- ["2.5X Smaller Angular 2 Applications with Google Closure Compiler"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
+- ["2.5X Smaller Angular Applications with Google Closure Compiler"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
 
 ### Pre-fetching Resources
 
@@ -219,7 +219,7 @@ AoT can be helpful not only for achieving more efficient bundling by performing 
 
 **Resources**
 
-- ["Ahead-of-Time Compilation in Angular 2"](http://blog.mgechev.com/2016/08/14/ahead-of-time-compilation-angular-offline-precompilation/)
+- ["Ahead-of-Time Compilation in Angular"](http://blog.mgechev.com/2016/08/14/ahead-of-time-compilation-angular-offline-precompilation/)
 
 ### Web Workers
 
@@ -247,13 +247,13 @@ Server-side rendering solves this issue by pre-rendering the requested page on t
 
 **Tooling**
 
-- [Angular Universal](https://github.com/angular/universal) - Universal (isomorphic) JavaScript support for Angular 2.
+- [Angular Universal](https://github.com/angular/universal) - Universal (isomorphic) JavaScript support for Angular.
 - [Preboot](https://github.com/angular/preboot) - Library to help manage the transition of state (i.e. events, focus, data) from a server-generated web view to a client-generated web view.
 
 **Resources**
 
-- ["Angular 2 Server Rendering"](https://www.youtube.com/watch?v=0wvZ7gakqV4)
-- ["Angular 2 Universal Patterns"](https://www.youtube.com/watch?v=TCj_oC3m6_U)
+- ["Angular Server Rendering"](https://www.youtube.com/watch?v=0wvZ7gakqV4)
+- ["Angular Universal Patterns"](https://www.youtube.com/watch?v=TCj_oC3m6_U)
 
 ### Change Detection
 
@@ -265,7 +265,7 @@ The `OnPush` change detection strategy allows us to disable the change detection
 
 **Resources**
 
-- ["Change Detection in Angular 2"](https://vsavkin.com/change-detection-in-angular-2-4f216b855d4c)
+- ["Change Detection in Angular"](https://vsavkin.com/change-detection-in-angular-2-4f216b855d4c)
 
 #### Detaching the Change Detector
 
@@ -392,7 +392,7 @@ export class YtFeedComponent {
 **Resources**
 
 - ["NgFor directive"](https://angular.io/docs/ts/latest/api/common/index/NgFor-directive.html) - official documentation for `*ngFor`
-- ["Angular 2 — Improve performance with trackBy"](https://netbasal.com/angular-2-improve-performance-with-trackby-cc147b5104e5) - shows gif demonstration of the approach
+- ["Angular — Improve performance with trackBy"](https://netbasal.com/angular-2-improve-performance-with-trackby-cc147b5104e5) - shows gif demonstration of the approach
 
 # Conclusion
 
