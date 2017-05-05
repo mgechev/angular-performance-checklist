@@ -183,7 +183,7 @@ We can think of the Service Worker as an HTTP proxy which is located in the brow
 **Tooling**
 
 - [Angular Mobile Toolkit](https://github.com/angular/mobile-toolkit) - aims to automate the process of managing Service Workers. It also contains Service Worker for caching static assets, and one for [generating application shell](https://developers.google.com/web/updates/2015/11/app-shell?hl=en).
-- [Offline Plugin for Webpack](https://github.com/NekR/offline-plugin) - Webpack plugin that adds support for Servie Worker with a fall-back to AppCache.
+- [Offline Plugin for Webpack](https://github.com/NekR/offline-plugin) - Webpack plugin that adds support for Service Worker with a fall-back to AppCache.
 
 **Resources**
 
