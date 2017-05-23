@@ -199,7 +199,7 @@ For caching data we usually use a custom caching mechanism. For caching static a
 
 To make the perceived performance of your application faster, use an [Application Shell](https://developers.google.com/web/updates/2015/11/app-shell).
 
-The application shell is the minimum user interface that we show to the users in order to indicate them that the application will be delivered soon. For generating an application shell dynamically you can use Angular Universal with custom directives which show/hide elements depending on whether the used rendering platform (i.e. hide everything except the App Shell when using `platform-server`).
+The application shell is the minimum user interface that we show to the users in order to indicate them that the application will be delivered soon. For generating an application shell dynamically you can use Angular Universal with custom directives which conditionally show elements depending on the used rendering platform (i.e. hide everything except the App Shell when using `platform-server`).
 
 **Tooling**
 
