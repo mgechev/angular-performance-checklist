@@ -69,7 +69,9 @@ Tools which allows us to bundle our applications efficiently are:
 - [Rollup](https://github.com/rollup/rollup) - provides bundling by performing efficient tree-shaking, taking advantage of the static nature of the ES2015 modules.
 - [Google Closure Compiler](https://github.com/google/closure-compiler) - performs plenty of optimizations and provides bundling support. Originally written in Java, since recently it also has a [JavaScript version](https://www.npmjs.com/package/google-closure-compiler-js) which can be [found here](https://www.npmjs.com/package/google-closure-compiler-js).
 - [SystemJS Builder](https://github.com/systemjs/builder) - provides a single-file build for SystemJS of mixed-dependency module trees.
-- [Browserify](http://browserify.org/).
+- [Browserify](http://browserify.org/) - Provides a single-file, and follows the require dependency tree, and bundles them into a new file.
+  - [watchify](https://github.com/substack/watchify) - Watch mode for Browserify builds.
+  - [browserify-hmr](https://github.com/AgentME/browserify-hmr) - Hot module replacement plugin for Browserify.
 
 **Resources**
 
