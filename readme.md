@@ -32,6 +32,7 @@ Note that most practices are valid for both HTTP/1.1 and HTTP/2. Practices which
     - [Lazy-Loading of Resources](#lazy-loading-of-resources)
     - [Don't lazy-load default route](#dont-lazy-load-the-default-route)
     - [Caching](#caching)
+    - [Create Application Shell](#create-application-shell)
     - [Use Service Workers](#use-service-workers)
   - [Runtime Optimizations](#runtime-optimizations)
     - [Use `enableProdMode`](#use-enableprodmode)
@@ -194,6 +195,21 @@ Caching is another common practice intending to speed-up our application by taki
 
 For caching data we usually use a custom caching mechanism. For caching static assets we can either use the standard browser caching or Service Workers with the [CacheStorage API](https://developer.mozilla.org/en-US/docs/Web/API/Cache).
 
+### Create Application Shell
+
+To make the perceived performance of your application faster, provide an [Application Shell](https://developers.google.com/web/updates/2015/11/app-shell).
+
+The application shell is the minimum user interface that we show to the users in order to indicate them that the application will be delivered soon. For generating an application shell dynamically you can use Angular Universal with custom directives which show/hide elements depending on whether the used rendering platform (i.e. hide everything except the App Shell when using `platform-server`).
+
+**Tooling**
+
+- [Angular Mobile Toolkit](https://github.com/angular/mobile-toolkit) - aims to automate the process of managing Service Workers. It also contains Service Worker for caching static assets, and one for [generating application shell](https://developers.google.com/web/updates/2015/11/app-shell?hl=en).
+- [Angular Universal](https://github.com/angular/angular/tree/master/packages/platform-server) - Universal (isomorphic) JavaScript support for Angular.
+
+**Resources**
+
+- ["Instant Loading Web Apps with an Application Shell Architecture"](https://developers.google.com/web/updates/2015/11/app-shell)
+
 ### Use Service Workers
 
 We can think of the Service Worker as an HTTP proxy which is located in the browser. All requests sent from the client are first intercepted by the Service Worker which can either handle them or pass them through the network.
@@ -265,7 +281,7 @@ Server-side rendering solves this issue by pre-rendering the requested page on t
 
 **Tooling**
 
-- [Angular Universal](https://github.com/angular/universal) - Universal (isomorphic) JavaScript support for Angular.
+- [Angular Universal](https://github.com/angular/angular/tree/master/packages/platform-server) - Universal (isomorphic) JavaScript support for Angular.
 - [Preboot](https://github.com/angular/preboot) - Library to help manage the transition of state (i.e. events, focus, data) from a server-generated web view to a client-generated web view.
 
 **Resources**
