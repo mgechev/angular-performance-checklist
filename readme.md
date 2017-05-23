@@ -32,7 +32,7 @@ Note that most practices are valid for both HTTP/1.1 and HTTP/2. Practices which
     - [Lazy-Loading of Resources](#lazy-loading-of-resources)
     - [Don't lazy-load default route](#dont-lazy-load-the-default-route)
     - [Caching](#caching)
-    - [Create Application Shell](#create-application-shell)
+    - [Create an Application Shell](#create-an-application-shell)
     - [Use Service Workers](#use-service-workers)
   - [Runtime Optimizations](#runtime-optimizations)
     - [Use `enableProdMode`](#use-enableprodmode)
@@ -195,7 +195,7 @@ Caching is another common practice intending to speed-up our application by taki
 
 For caching data we usually use a custom caching mechanism. For caching static assets we can either use the standard browser caching or Service Workers with the [CacheStorage API](https://developer.mozilla.org/en-US/docs/Web/API/Cache).
 
-### Create Application Shell
+### Create an Application Shell
 
 To make the perceived performance of your application faster, provide an [Application Shell](https://developers.google.com/web/updates/2015/11/app-shell).
 
