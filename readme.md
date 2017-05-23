@@ -30,6 +30,7 @@ Note that most practices are valid for both HTTP/1.1 and HTTP/2. Practices which
     - [Compression](#compression)
     - [Pre-fetching Resources](#pre-fetching-resources)
     - [Lazy-Loading of Resources](#lazy-loading-of-resources)
+    - [Don't lazy-load default route](#dont-lazy-load-the-default-route)
     - [Caching](#caching)
     - [Use Service Workers](#use-service-workers)
   - [Runtime Optimizations](#runtime-optimizations)
@@ -170,6 +171,23 @@ In such cases a good solution might be to load some of the application's modules
 
 - [Webpack](https://github.com/webpack/webpack) - allows asynchronous module loading.
 
+### Don't Lazy-Load the Default Route
+
+Lets suppose we have the following routing configuration:
+
+```ts
+// Bad practice
+const routes: Routes = [
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: 'dashboard',  loadChildren: './dashboard.module#DashboardModule' },
+  { path: 'heroes', loadChildren: './heroes.module#HeroesModule' }
+];
+```
+
+The first time the user opens the application using the url: https://example.com/ they will be redirected to `/dashboard` which will trigger the lazy-route with path `dashboard`. In order Angular to render the bootstrap component of the module, it will has to download the file `dashboard.module` and all of its dependencies. Later, the file needs to be parsed by the JavaScript VM and evaluated.
+
+Triggering extra HTTP requests and performing unnecessary computations during the initial page load is a bad practice since it slows down the initial page rendering. Always declare the default page route as non-lazy.
+
 ### Caching
 
 Caching is another common practice intending to speed-up our application by taking advantage of the heuristic that if one resource was recently been requested, it might be requested again in near future.
@@ -215,7 +233,7 @@ AoT can be helpful not only for achieving more efficient bundling by performing 
 
 - [@angular/compiler-cli](https://github.com/angular/angular/tree/master/modules/%40angular/compiler-cli) - a drop-in replacement for [tsc](https://www.npmjs.com/package/typescript) which statically analyzes our application and emits TypeScript/JavaScript for the component's templates.
 - [angular2-seed](https://github.com/mgechev/angular2-seed) - a starter project which includes support for AoT compilation.
-- [angular-cli](https://cli.angular.io) Using the `ng serve --prod` 
+- [angular-cli](https://cli.angular.io) Using the `ng serve --prod`
 
 **Resources**
 
