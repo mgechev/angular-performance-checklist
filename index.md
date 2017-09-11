@@ -1,6 +1,6 @@
-# Angular 2 Performance Checklist
+# Angular Performance Checklist
 
-<img src="./assets/flash.jpg" width="200">
+<img src="https://raw.githubusercontent.com/mgechev/angular-performance-checklist/master/assets/flash.png" width="200">
 
 ## Introduction
 
