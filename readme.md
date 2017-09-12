@@ -359,7 +359,7 @@ class PointAnimationComponent {
     } else {
       this.points = change.previousValue;
       this._ngZone.runOutsideAngular(() => {
-        this._incrementBrowniePoints(change.currentValue);
+        this._incrementPoints(change.currentValue);
       });
     }
   }
