@@ -25,6 +25,7 @@ Note that most practices are valid for both HTTP/1.1 and HTTP/2. Practices which
   - [Network performance](#network-performance)
     - [Bundling](#bundling)
     - [Minification and Dead code elimination](#minification-and-dead-code-elimination)
+    - [Remove template whitespace](#remove-template-whitespace)
     - [Tree-shaking](#tree-shaking)
     - [Ahead-of-Time (AoT) Compilation](#ahead-of-time-aot-compilation)
     - [Compression](#compression)
@@ -90,6 +91,14 @@ These practices allow us to minimize the bandwidth consumption by reducing the p
 
 - ["Building an Angular Application for Production"](http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/)
 - ["2.5X Smaller Angular Applications with Google Closure Compiler"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
+
+### Remove template whitespace
+
+Although we don't see the whitespace character (a character matching the `\s` regex) it is still represented by bytes which are transfered over the network. If we reduce the whitespace from our templates to minimum we will be respectively able to drop the bundle size of the AoT code even further.
+
+Thankfully, we don't have to do this manually. The `ComponentMetadata` interface provides the property `preserveWhitespaces` which by default has value `true`, because removing the whitespace always may influence the DOM layout. In case we set the property to `false` Angular will trim the unnecessary whitespace which will lead to further reduction of the bundle size.
+
+- [preserveWhitespaces in the Angular docs](https://angular.io/api/core/Component#preserveWhitespaces)
 
 ### Tree-shaking
 
