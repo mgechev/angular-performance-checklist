@@ -65,8 +65,8 @@ As your application grows bundling everything into a single large bundle would a
 
 Tools which allows us to bundle our applications efficiently are:
 
-- [Webpack](https://webpack.github.io/) - provides efficient bundling by performing [tree-shaking](#tree-shaking).
-- [Webpack Code Splitting](https://webpack.github.io/docs/code-splitting.html) - Techniques to split your code.
+- [Webpack](https://webpack.js.org) - provides efficient bundling by performing [tree-shaking](#tree-shaking).
+- [Webpack Code Splitting](https://webpack.js.org/guides/code-splitting/) - Techniques to split your code.
 - [Webpack & http2](https://medium.com/webpack/webpack-http-2-7083ec3f3ce6#.46idrz8kb) - Need for splitting with http2.
 - [Rollup](https://github.com/rollup/rollup) - provides bundling by performing efficient tree-shaking, taking advantage of the static nature of the ES2015 modules.
 - [Google Closure Compiler](https://github.com/google/closure-compiler) - performs plenty of optimizations and provides bundling support. Originally written in Java, since recently it also has a [JavaScript version](https://www.npmjs.com/package/google-closure-compiler-js) which can be [found here](https://www.npmjs.com/package/google-closure-compiler-js).
@@ -126,7 +126,7 @@ This means that the unused export `bar` will not be included into the final bund
 
 **Tooling**
 
-- [Webpack](https://webpack.github.io/) - provides efficient bundling by performing [tree-shaking](#tree-shaking). Once the application has been bundled, it does not export the unused code so it can be safely considered as dead code and removed by Uglify.
+- [Webpack](https://webpack.js.org) - provides efficient bundling by performing [tree-shaking](#tree-shaking). Once the application has been bundled, it does not export the unused code so it can be safely considered as dead code and removed by Uglify.
 - [Rollup](https://github.com/rollup/rollup) - provides bundling by performing an efficient tree-shaking, taking advantage of the static nature of the ES2015 modules.
 - [Google Closure Compiler](https://github.com/google/closure-compiler) - performs plenty of optimizations and provides bundling support. Originally written in Java, since recently it has also a [JavaScript version](https://www.npmjs.com/package/google-closure-compiler-js) which can be [found here](https://www.npmjs.com/package/google-closure-compiler-js).
 
