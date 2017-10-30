@@ -400,11 +400,11 @@ The default value of the `pure` property is `true`.
 
 ### Use `trackBy` option for `*ngFor` directive
 
-The `*ngFor` directive is used for rendering a collection. By default `*ngFor` doesn't know how to identify each item of the given collection.
+The `*ngFor` directive is used for rendering a collection. By default `*ngFor` identifies object uniqueness by reference.
 
-When the collection is changed in some way then the whole DOM tree is destroyed and recreated again. This is acceptable if the collection is totally different. But most times we have just a slightly modified collection (e.g. collection is sorted or one item is added/removed/changed). Anyway DOM tree is destroyed and recreated from the scratch again. This is unnecessary and, what even more important, may lead to poor performance of the whole app, particularly on a big collection of data.
+Which means when developer breaks reference to object during updating item's content Angular treats it as removal of the old object and addition of the new object. This effects in destroying old DOM node in the list and adding new DOM node on its place.
 
-To modify this behavior it is up to developer to provide custom tracking function as `trackBy` option for the `*ngFor` directive. Tracking function takes two arguments: `index` and `item`. Angular uses the value returned from tracking function to track items identity.
+Developer can provide a hint for angular how to identify object uniqueness: custom tracking function as the `trackBy` option for the `*ngFor` directive. Tracking function takes two arguments: `index` and `item`. Angular uses the value returned from tracking function to track items identity. It is very common to use ID of the particular record as the unique key.
 
 **Example**
 
