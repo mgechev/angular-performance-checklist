@@ -46,6 +46,7 @@ Note that most practices are valid for both HTTP/1.1 and HTTP/2. Practices which
       - [Run outside Angular](#run-outside-angular)
     - [Use pure pipes](#use-pure-pipes)
     - [Use `trackBy` option for `*ngFor` directive](#use-trackby-option-for-ngfor-directive)
+    - [Optimize template expressions](#optimize-template-expressions)
 - [Conclusion](#conclusion)
 - [Contributing](#contributing)
 
@@ -431,6 +432,15 @@ export class YtFeedComponent {
 
 - ["NgFor directive"](https://angular.io/docs/ts/latest/api/common/index/NgFor-directive.html) - official documentation for `*ngFor`
 - ["Angular — Improve performance with trackBy"](https://netbasal.com/angular-2-improve-performance-with-trackby-cc147b5104e5) - shows gif demonstration of the approach
+
+### Optimize template expressions
+
+Angular executes template expressions after every change detection cycle. Change detection cycles are triggered by many asynchronous activities such as promise resolutions, http results, timer events, keypresses and mouse moves.
+
+Expressions should finish quickly or the user experience may drag, especially on slower devices. Consider caching values when their computation is expensive.
+
+**Resources**
+- [quick-execution](https://angular.io/guide/template-syntax#quick-execution) - official documentation for template expressions
 
 # Conclusion
 
