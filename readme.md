@@ -441,6 +441,7 @@ Expressions should finish quickly or the user experience may drag, especially on
 
 **Resources**
 - [quick-execution](https://angular.io/guide/template-syntax#quick-execution) - official documentation for template expressions
+- [Increasing Performance - more than a pipe dream](https://youtu.be/I6ZvpdRM1eQ) - ng-conf video in youtube. Using pipe instead of function in interpolation expression
 
 # Conclusion
 
