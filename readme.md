@@ -401,9 +401,12 @@ The pure flag indicates that the pipe is not dependent on any global state and d
 The default value of the `pure` property is `true`.
 
 ### `*ngFor` directive
+
+The `*ngFor` directive is used for rendering a collection.
+
 #### Use `trackBy` option
 
-The `*ngFor` directive is used for rendering a collection. By default `*ngFor` identifies object uniqueness by reference.
+By default `*ngFor` identifies object uniqueness by reference.
 
 Which means when developer breaks reference to object during updating item's content Angular treats it as removal of the old object and addition of the new object. This effects in destroying old DOM node in the list and adding new DOM node on its place.
 
