@@ -451,8 +451,8 @@ To reduce rendering time, try the following:
 
 - ["NgFor directive"](https://angular.io/docs/ts/latest/api/common/index/NgFor-directive.html) - official documentation for `*ngFor`
 - ["Angular — Improve performance with trackBy"](https://netbasal.com/angular-2-improve-performance-with-trackby-cc147b5104e5) - shows gif demonstration of the approach
-- [Component Dev Kit (CDK) Virtual Scrolling](https://material.angular.io/cdk/scrolling/overview)
-- [ngx-virtual-scroller](https://github.com/rintoj/ngx-virtual-scroller)
+- [Component Dev Kit (CDK) Virtual Scrolling](https://material.angular.io/cdk/scrolling/overview) - API description
+- [ngx-virtual-scroller](https://github.com/rintoj/ngx-virtual-scroller) - displays a virtual, "infinite" list
 
 ### Optimize template expressions
 
