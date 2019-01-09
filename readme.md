@@ -179,6 +179,7 @@ In such cases a good solution might be to load some of the application's modules
 **Tooling**
 
 - [Webpack](https://github.com/webpack/webpack) - allows asynchronous module loading.
+- [ngx-quicklink](https://github.com/mgechev/ngx-quicklink) - router preloading strategy which automatically downloads the lazy-loaded modules associated with all the visible links on the screen
 
 ### Don't Lazy-Load the Default Route
 
