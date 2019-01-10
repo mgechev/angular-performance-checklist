@@ -45,7 +45,9 @@ Note that most practices are valid for both HTTP/1.1 and HTTP/2. Practices which
       - [Detaching the Change Detector](#detaching-the-change-detector)
       - [Run outside Angular](#run-outside-angular)
     - [Use pure pipes](#use-pure-pipes)
-    - [Use `trackBy` option for `*ngFor` directive](#use-trackby-option-for-ngfor-directive)
+    - [`*ngFor` directive](#ngfor-directive)
+      - [Use `trackBy` option](#use-trackby-option)
+      - [Minimize DOM elements](#minimize-dom-elements)
     - [Optimize template expressions](#optimize-template-expressions)
 - [Conclusion](#conclusion)
 - [Contributing](#contributing)
@@ -398,9 +400,13 @@ The pure flag indicates that the pipe is not dependent on any global state and d
 
 The default value of the `pure` property is `true`.
 
-### Use `trackBy` option for `*ngFor` directive
+### `*ngFor` directive
 
-The `*ngFor` directive is used for rendering a collection. By default `*ngFor` identifies object uniqueness by reference.
+The `*ngFor` directive is used for rendering a collection.
+
+#### Use `trackBy` option
+
+By default `*ngFor` identifies object uniqueness by reference.
 
 Which means when developer breaks reference to object during updating item's content Angular treats it as removal of the old object and addition of the new object. This effects in destroying old DOM node in the list and adding new DOM node on its place.
 
@@ -432,10 +438,22 @@ export class YtFeedComponent {
   }
 }
 ```
+
+#### Minimize DOM elements
+
+Rendering the DOM elements is usually the most expensive operation when adding elements to the UI. The main work is usually caused by inserting the element into the DOM and applying the styles. If `*ngFor` renders a lot of elements, browsers (especially older ones) may slow down and need more time to finish rendering of all elements. This is not specific to Angular.
+
+To reduce rendering time, try the following:
+- Apply virtual scrolling via [CDK](https://material.angular.io/cdk/scrolling/overview) or [ngx-virtual-scroller](https://github.com/rintoj/ngx-virtual-scroller)
+- Reducing the amount of DOM elements rendered in `*ngFor` section of your template. Usually unneeded/unused DOM elements arise from extending the template again and again. Rethinking its structure probably makes things much easier.
+- Use [`ng-container`](https://angular.io/guide/structural-directives#ngcontainer) where possible
+
 **Resources**
 
 - ["NgFor directive"](https://angular.io/docs/ts/latest/api/common/index/NgFor-directive.html) - official documentation for `*ngFor`
 - ["Angular — Improve performance with trackBy"](https://netbasal.com/angular-2-improve-performance-with-trackby-cc147b5104e5) - shows gif demonstration of the approach
+- [Component Dev Kit (CDK) Virtual Scrolling](https://material.angular.io/cdk/scrolling/overview) - API description
+- [ngx-virtual-scroller](https://github.com/rintoj/ngx-virtual-scroller) - displays a virtual, "infinite" list
 
 ### Optimize template expressions
 
