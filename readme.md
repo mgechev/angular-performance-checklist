@@ -133,12 +133,11 @@ This means that the unused export `bar` will not be included into the final bund
 
 ### Tree-Shakeable-Providers
 
-In Angular 6, the angular team provided a way to make your services tree-shakeable, meaning they will not be included in the final bundle if they're not being used or injected in other services or components. This can be done by defining a "providedIn" attribute when decorating your service with @Injectable() and removing it from the "providers" attribute of your ngModule declaration as follows.
+Since Angular 6, The angular team provided a new API to allow services to be tree-shakeable, meaning they will not be included in the final bundle unless they're being used by other services or components. This can be done through the "providedIn" attribute when using the @Injectable() decorator and removing it from the "providers" attribute of your ngModule declaration as follows.
 
 Before:
-```
 app.module.ts
-
+```
 import { NgModule } from '@angular/core'
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
@@ -158,8 +157,8 @@ import { MyService } from './app.service'
 export class AppModule { }
 ```
 
-```
 my-service.service.ts
+```
 import { Injectable } from '@angular/core'
 
 @Injectable()
@@ -169,21 +168,8 @@ export class MyService {
 ```
 
 After:
-```
-my-service.service.ts
-import { Injectable } from '@angular/core'
-
-@Injectable({
-  providedIn: 'root'
-})
-export class MyService {
-
-}
-
-```
-```
 app.module.ts
-
+```
 import { NgModule } from '@angular/core'
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
@@ -200,6 +186,18 @@ import { environment } from '../environments/environment'
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+```
+
+my-service.service.ts
+```
+import { Injectable } from '@angular/core'
+
+@Injectable({
+  providedIn: 'root'
+})
+export class MyService {
+
+}
 ```
 
 **Tooling**
