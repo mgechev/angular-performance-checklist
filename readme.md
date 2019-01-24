@@ -133,10 +133,12 @@ This means that the unused export `bar` will not be included into the final bund
 
 ### Tree-Shakeable-Providers
 
-Since Angular 6, The angular team provided a new API to allow services to be tree-shakeable, meaning they will not be included in the final bundle unless they're being used by other services or components. 
-This can be done by using the `"providedIn"` attribute when using the `@Injectable()` decorator and removing it from the `providers` attribute of your `ngModule` declaration as follows.
+Since the release of Angular 6, The angular team provided a new feature to allow services to be tree-shakeable, meaning that your services will not be included in the final bundle unless they're being used by other services or components. This can help reduce the bundle size by removing unused code from the bundle.
+
+This can be done by using the `providedIn` attribute which defines which `NgModule` the service should be declared in, when using the `@Injectable()` decorator and removing it from the `providers` attribute of your `NgModule` declaration as follows.
 
 Before:
+
 app.module.ts
 ```
 import { NgModule } from '@angular/core'
@@ -169,6 +171,7 @@ export class MyService {
 ```
 
 After:
+
 app.module.ts
 ```
 import { NgModule } from '@angular/core'
