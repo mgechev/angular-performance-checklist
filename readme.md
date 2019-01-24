@@ -27,6 +27,7 @@ Note that most practices are valid for both HTTP/1.1 and HTTP/2. Practices which
     - [Minification and Dead code elimination](#minification-and-dead-code-elimination)
     - [Remove template whitespace](#remove-template-whitespace)
     - [Tree-shaking](#tree-shaking)
+    - [Tree-shakeable-providers](#tree-shakeable-providers)
     - [Ahead-of-Time (AoT) Compilation](#ahead-of-time-aot-compilation)
     - [Compression](#compression)
     - [Pre-fetching Resources](#pre-fetching-resources)
@@ -129,6 +130,77 @@ console.log(foo());
 ```
 
 This means that the unused export `bar` will not be included into the final bundle.
+
+### Tree-Shakeable-Providers
+
+In Angular 6, the angular team provided a way to make your services tree-shakeable, meaning they will not be included in the final bundle if they're not being used or injected in other services or components. This can be done by defining a "providedIn" attribute when decorating your service with @Injectable() and removing it from the "providers" attribute of your ngModule declaration as follows.
+
+Before:
+```
+app.module.ts
+
+import { NgModule } from '@angular/core'
+import { AppRoutingModule } from './app-routing.module'
+import { AppComponent } from './app.component'
+import { environment } from '../environments/environment'
+import { MyService } from './app.service'
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    ...
+  ],
+  providers: [MyService],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
+
+```
+my-service.service.ts
+import { Injectable } from '@angular/core'
+
+@Injectable()
+export class MyService {
+
+}
+```
+
+After:
+```
+my-service.service.ts
+import { Injectable } from '@angular/core'
+
+@Injectable({
+  providedIn: 'root'
+})
+export class MyService {
+
+}
+
+```
+```
+app.module.ts
+
+import { NgModule } from '@angular/core'
+import { AppRoutingModule } from './app-routing.module'
+import { AppComponent } from './app.component'
+import { environment } from '../environments/environment'
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    ...
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
 
 **Tooling**
 
