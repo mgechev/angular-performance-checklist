@@ -203,7 +203,11 @@ export class MyService {
 
 }
 ```
+
 If MyService is not injected in any component/service, then it will not be included in the bundle.
+
+**Resources**
+-[Angular Providers](https://angular.io/guide/providers)
 
 **Tooling**
 
