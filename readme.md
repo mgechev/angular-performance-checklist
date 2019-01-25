@@ -133,14 +133,14 @@ This means that the unused export `bar` will not be included into the final bund
 
 ### Tree-Shakeable-Providers
 
-Since the release of Angular 6, The angular team provided a new feature to allow services to be tree-shakeable, meaning that your services will not be included in the final bundle unless they're being used by other services or components. This can help reduce the bundle size by removing unused code from the bundle.
+Since the release of Angular version 6, The angular team provided a new feature to allow services to be tree-shakeable, meaning that your services will not be included in the final bundle unless they're being used by other services or components. This can help reduce the bundle size by removing unused code from the bundle.
 
 You can make your services tree-shakeable by using the `providedIn` attribute to define where the service should be initialized when using the `@Injectable()` decorator. Then you should remove it from the `providers` attribute of your `NgModule` declaration as well as its import statement as follows.
 
 Before:
 
-app.module.ts
-```
+```ts
+// app.module.ts
 import { NgModule } from '@angular/core'
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
@@ -160,20 +160,18 @@ import { MyService } from './app.service'
 export class AppModule { }
 ```
 
-my-service.service.ts
-```
+```ts
+// my-service.service.ts 
 import { Injectable } from '@angular/core'
 
 @Injectable()
-export class MyService {
-
-}
+export class MyService { }
 ```
 
 After:
 
-app.module.ts
-```
+```ts
+// app.module.ts
 import { NgModule } from '@angular/core'
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
@@ -192,19 +190,17 @@ import { environment } from '../environments/environment'
 export class AppModule { }
 ```
 
-my-service.service.ts
-```
+```ts
+// my-service.service.ts
 import { Injectable } from '@angular/core'
 
 @Injectable({
   providedIn: 'root'
 })
-export class MyService {
-
-}
+export class MyService { }
 ```
 
-If MyService is not injected in any component/service, then it will not be included in the bundle.
+If `MyService` is not injected in any component/service, then it will not be included in the bundle.
 
 **Resources**
 -[Angular Providers](https://angular.io/guide/providers)
