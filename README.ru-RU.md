@@ -360,17 +360,17 @@ In complex application with huge component tree, where the change detection need
 
 ### Server-Side Rendering
 
-A big issue of the traditional SPA is that they cannot be rendered until the entire JavaScript required for their initial rendering is available. This leads to two big problems:
+Большая проблема традиционных SPA заключается в том, что их содержимое не может быть отрисовано пока не загрузится весь JavaScript, потому что весь рендеринг происходит после. Отсюда мы имеем две большие проблемы:
 
-- Not all search engines are running the JavaScript associated to the page so they are not able to index the content of dynamic apps properly.
-- Poor user experience, since the user will see nothing more than a blank/loading screen until the JavaScript associated with the page is downloaded, parsed and executed.
+- Не все поисковые сервисы запускают JavaScript, содержащийся в приложениях, поэтому они не могут получить содержимое динамических веб-страниц.
+- Не самый лучший UX, так как пользователь не увидит ничего, кроме пустой/загрузочной страницы, пока весь JavaScript, содержащийся на странице, не загрузится, не распарсится и не выполнится.
 
-Server-side rendering solves this issue by pre-rendering the requested page on the server and providing the markup of the rendered page during the initial page load.
+Server-side rendering решает эту проблему пре-рендерингом запрашиваемой страницы на сервере и отправкой готового шаблона во время инициациализации приложения.
 
 **Tooling**
 
-- [Angular Universal](https://github.com/angular/angular/tree/master/packages/platform-server) - Universal (isomorphic) JavaScript support for Angular.
-- [Preboot](https://github.com/angular/preboot) - Library to help manage the transition of state (i.e. events, focus, data) from a server-generated web view to a client-generated web view.
+- [Angular Universal](https://github.com/angular/angular/tree/master/packages/platform-server) - Universal (изоморфная) JavaScript поддержка для Angular.
+- [Preboot](https://github.com/angular/preboot) - Библиотека для управления переноса состояния страницы (т.е. events, focus, data), которые были сгенерированы на сервере, на страницу, отображаемую в браузере
 
 **Resources**
 
@@ -379,11 +379,11 @@ Server-side rendering solves this issue by pre-rendering the requested page on t
 
 ### Change Detection
 
-On each asynchronous event Angular performs change detection over the entire component tree. Although the code which detects for changes is optimized for [inline-caching](http://mrale.ph/blog/2012/06/03/explaining-js-vms-in-js-inline-caches.html), this still can be a heavy computation in complex applications. A way to improve the performance of the change detection is to not perform it for subtrees which are not supposed to be changed based on the recent actions.
+При каждом асинхронном событии Angular вызывает change detection для всего дерева компонентов. Несмотря на то что код, который обнаруживает изменения, оптимизирован для [inline-caching](http://mrale.ph/blog/2012/06/03/explaining-js-vms-in-js-inline-caches.html), он все равно может затратным для больших и сложных приложений. Способ, который поможет улучшить производительность change detection, заключается в том, что change detection не должен выполняться для поддеревьев компонента, в которых не было изменений.
 
 #### `ChangeDetectionStrategy.OnPush`
 
-The `OnPush` change detection strategy allows us to disable the change detection mechanism for subtrees of the component tree. By setting the change detection strategy to any component to the value `ChangeDetectionStrategy.OnPush`, will make the change detection perform **only** when the component have received different inputs. Angular will consider inputs as different when it compares them with the previous inputs by reference, and the result of the reference check is `false`. In combination with [immutable data structures](https://facebook.github.io/immutable-js/) `OnPush` can bring great performance implications for such "pure" components.
+`ChangeDetectionStrategy.OnPush` позволяет нам отключить механизм change detection для дерева компонентов. Указав для change detection strategy в компоненте значение `ChangeDetectionStrategy.OnPush`, изменения будут срабатывать **только** тогда, когда компонент получил inputs, отличающиеся от предыдущих. Angular сравнивает предыдущие и текущие inputs по ссылке, и когда результат проверки равен `false`, то inputs помечаются как изменившиеся. В сочетании с [иммутабельными структурами данных](https://facebook.github.io/immutable-js/), `OnPush` улучшает производительность для "чистых" компонентов.
 
 **Resources**
 
@@ -480,17 +480,17 @@ The default value of the `pure` property is `true`.
 
 ### `*ngFor` directive
 
-The `*ngFor` directive is used for rendering a collection.
+Директива `*ngFor` используется для отрисовки коллекции.
 
 #### Use `trackBy` option
 
-By default `*ngFor` identifies object uniqueness by reference.
+По умолчанию `*ngFor` сравнивает объекты по ссылке.
 
-Which means when developer breaks reference to object during updating item's content Angular treats it as removal of the old object and addition of the new object. This effects in destroying old DOM node in the list and adding new DOM node on its place.
+Это значит, что когда разработчик меняет ссылку на объект во время изменения содержимого элемента, Angular распознает это как удаление старого объекта и создание нового. Это способствует уничтожению старого DOM элемента из списка и добавлению нового на его место.
 
-Developer can provide a hint for angular how to identify object uniqueness: custom tracking function as the `trackBy` option for the `*ngFor` directive. Tracking function takes two arguments: `index` and `item`. Angular uses the value returned from tracking function to track items identity. It is very common to use ID of the particular record as the unique key.
+Разработчик может указать, как Angular будет идентифицировать уникальность объекта: кастомная индексирующая функция в виде параметра `trackBy` для директивы `*ngFor`. Данная функция принимает два параметра: `index` и `item`. Angular использует значение, возвращаемое функцией, для идентификации элементов. Очень часто используют ID определенного элемента в качестве уникального ключа.
 
-**Example**
+**Пример**
 
 ```typescript
 @Component({
@@ -503,7 +503,7 @@ Developer can provide a hint for angular how to identify object uniqueness: cust
 export class YtFeedComponent {
   feed = [
     {
-      id: 3849, // note "id" field, we refer to it in "trackById" function
+      id: 3849, // обратите внимание на поле "id", мы ссылаемся на него в "trackById" функции
       title: "Angular in 60 minutes",
       url: "http://youtube.com/ng2-in-60-min",
       likes: "29345"
@@ -535,13 +535,13 @@ To reduce rendering time, try the following:
 
 ### Optimize template expressions
 
-Angular executes template expressions after every change detection cycle. Change detection cycles are triggered by many asynchronous activities such as promise resolutions, http results, timer events, keypresses and mouse moves.
+Angular извлекает выражения в шаблонах после каждого срабатывания цикла change detection. Change detection срабатывает вследствие асинхронных вызовов, например, выполнение промисов, получение ответа http, нажатие клавиш и движение курсором мыши.
 
-Expressions should finish quickly or the user experience may drag, especially on slower devices. Consider caching values when their computation is expensive.
+Такие выражения должны завершаться быстро, иначе пользователь может замечать "дергания", особенно на слабых девайсах. Поэтому,  если сталкиваетесь с затратными вычислениями, стоит подумать о кэшировании.
 
-**Resources**
-- [quick-execution](https://angular.io/guide/template-syntax#quick-execution) - official documentation for template expressions
-- [Increasing Performance - more than a pipe dream](https://youtu.be/I6ZvpdRM1eQ) - ng-conf video in youtube. Using pipe instead of function in interpolation expression
+**Полезные материалы**
+- [quick-execution](https://angular.io/guide/template-syntax#quick-execution) - официальная документация по выражениям в шаблонах
+- [Increasing Performance - more than a pipe dream](https://youtu.be/I6ZvpdRM1eQ) - ng-conf видеозапись на youtube. Использование pipe вместо функции для интерполяции строки
 
 # Conclusion
 
@@ -549,7 +549,7 @@ The list of practices will dynamically evolve over time with new/updated practic
 
 # Contributing
 
-In case you notice something missing, incomplete or incorrect, a pull request will be greatly appreciated. For discussion of practices which are not included in the document please [open an issue](https://github.com/mgechev/angular2-performance-checklist/issues).
+В случае если вы заметите недостающую, незавершенную или некорректную информацию, вы можете сделать pull request, это будет очень ценно для нас. Для обсуждения лучших практик, которые не включены в документацию, пожалуйста, [создайте issue на github](https://github.com/mgechev/angular2-performance-checklist/issues).
 
 # License
 
