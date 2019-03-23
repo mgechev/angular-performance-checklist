@@ -2,38 +2,38 @@
 
 <img src="./assets/flash.png" width="1000">
 
-[中文版](./README.zh-CN.md)
-## Introduction
+[中文版](./README.zh-CN.md) [Русский](./README.ru-RU.md)
+## Вступление
 
-This document contains a list of practices which will help us boost the performance of our Angular applications. "Angular Performance Checklist" covers different topics - from server-side pre-rendering and bundling of our applications, to runtime performance and optimization of the change detection performed by the framework.
+В этой статье описаны полезные практики, которые помогут вам улучшить производительность ваших приложений на Angular. "Angular Performance Checklist" покрывает множество вопросов — от server-side pre-rendering и сборки приложений, до производительности в runtime и оптимизации change detection, который выполняется Angular.
 
-The document is divided into two main sections:
+Эта статья разделена на два основных блока:
 
-- Network performance - lists practices that are going to improve mostly the load time of our application. They include methods for latency and bandwidth reduction.
-- Runtime performance - practices which improve the runtime performance of our application. They include mostly change detection and rendering related optimizations.
+- Network performance содержит в себе список практик, следуя которым, вы ускорите загрузку ваших приложений. Он также включает в себя способы оптимизации задержек и повышает эффективность в условиях медленого интернета.
+- Runtime performance - содержит в себе практики, которые улучшат производительность ваших приложений в runtime. Они включают в себя оптимизации change detection и rendering.
 
-Some practices impact both categories so there could be a slight intersection, however, the differences in the use cases and the implications will be explicitly mentioned.
+Некоторые методы оптимизаций могут находиться сразу в двух котегориях, поэтому может быть небольшое пересечение. Однако, в этом случае будут перечислены различия в вариантах использования, а также их последствия.
 
-Most subsections list tools, related to the specific practice, that can make us more efficient by automating our development flow.
+Большинство инструментов связаны со специфичными проблемами. Эти инструменты помогут вам улучшить качество разработки за счет автоматизации процесса.
 
-Note that most practices are valid for both HTTP/1.1 and HTTP/2. Practices which make an exception will be mentioned by specifying to which version of the protocol they could be applied.
+Обратите внимание, что большинство практик применимы к HTTP/1.1 и HTTP/2. В практиках, где делаются исключения, будут пометки о том, для какой версии протокола они предназначены.
 
-## Table of Content
+## Содержание
 
-- [Angular Performance Checklist](#angular-performance-checklist)
-  - [Introduction](#introduction)
-  - [Table of Content](#table-of-content)
+- [Angular Performance Checklist](#angular-2-performance-checklist)
+  - [Вступление](#Вступление)
+  - [Содержание](#Содержание)
   - [Network performance](#network-performance)
     - [Bundling](#bundling)
-    - [Minification and dead code elimination](#minification-and-dead-code-elimination)
+    - [Minification and Dead code elimination](#minification-and-dead-code-elimination)
     - [Remove template whitespace](#remove-template-whitespace)
     - [Tree-shaking](#tree-shaking)
-    - [Tree-Shakeable Providers](#tree-shakeable-providers)
+    - [Tree-shakeable providers](#tree-shakeable-providers)
     - [Ahead-of-Time (AoT) Compilation](#ahead-of-time-aot-compilation)
     - [Compression](#compression)
     - [Pre-fetching Resources](#pre-fetching-resources)
     - [Lazy-Loading of Resources](#lazy-loading-of-resources)
-    - [Don't Lazy-Load the Default Route](#dont-lazy-load-the-default-route)
+    - [Don't lazy-load default route](#dont-lazy-load-the-default-route)
     - [Caching](#caching)
     - [Use Application Shell](#use-application-shell)
     - [Use Service Workers](#use-service-workers)
@@ -53,61 +53,60 @@ Note that most practices are valid for both HTTP/1.1 and HTTP/2. Practices which
     - [Optimize template expressions](#optimize-template-expressions)
 - [Conclusion](#conclusion)
 - [Contributing](#contributing)
-- [License](#license)
 
 ## Network performance
 
-Some of the tools in this section are still in development and are subject to change. The Angular core team is working on automating the build process for our applications as much as possible so a lot of things will happen transparently.
+Некоторые из инструментов в этом разделе все еще находятся в разработке и в будущем могут быть изменены. Команда разработчиков Angular занимается тем, чтобы максимально автоматизировать процесс сборки для наших приложений и сделать большинство вещей проще в использовании.
 
 ### Bundling
 
-Bundling is a standard practice aiming to reduce the number of requests that the browser needs to perform in order to deliver the application requested by the user. In essence, the bundler receives as an input a list of entry points and produces one or more bundles. This way, the browser can get the entire application by performing only a few requests, instead of requesting each individual resource separately.
+Bundling - это стандартная практика, направленная на уменьшение количества запросов браузером, которые он должен выполнить для загрузки приложения. По сути, в качестве входных параметров, bundler получает список модулей. Таким образом, браузер может загрузить все приложение, выполнив всего несколько запросов, вместо того, чтобы по отдельности запрашивать каждый модуль.
 
-As your application grows bundling everything into a single large bundle would again be counter productive. Explore Code Splitting techniques using Webpack.
+Скорее всего, по мере разработки вашего приложения, объединение всех модулей в один станет не эффективным. Поэтому рассмотрите Code Splitting, который можно сделать с помощью Webpack.
 
-**Additional http requests will not be a concern with HTTP/2 because of the [server push](https://http2.github.io/faq/#whats-the-benefit-of-server-push) feature.**
+**Дополнительные http запросы не будут происходить в HTTP/2 из-за его функции [server push](https://http2.github.io/faq/#whats-the-benefit-of-server-push).**
 
 **Tooling**
 
-Tools which allows us to bundle our applications efficiently are:
+Инструменты, которые позволяют эффективно упаковывать в модуль ваше приложение:
 
-- [Webpack](https://webpack.js.org) - provides efficient bundling by performing [tree-shaking](#tree-shaking).
-- [Webpack Code Splitting](https://webpack.js.org/guides/code-splitting/) - Techniques to split your code.
-- [Webpack & http2](https://medium.com/webpack/webpack-http-2-7083ec3f3ce6#.46idrz8kb) - Need for splitting with http2.
-- [Rollup](https://github.com/rollup/rollup) - provides bundling by performing efficient tree-shaking, taking advantage of the static nature of the ES2015 modules.
-- [Google Closure Compiler](https://github.com/google/closure-compiler) - performs plenty of optimizations and provides bundling support. Originally written in Java, since recently it also has a [JavaScript version](https://www.npmjs.com/package/google-closure-compiler-js) which can be [found here](https://www.npmjs.com/package/google-closure-compiler-js).
-- [SystemJS Builder](https://github.com/systemjs/builder) - provides a single-file build for SystemJS of mixed-dependency module trees.
+- [Webpack](https://webpack.js.org) - обеспечивает эффективное объединение кода выполняя [tree-shaking](#tree-shaking).
+- [Webpack Code Splitting](https://webpack.js.org/guides/code-splitting/) - технология для разделения вашего кода.
+- [Webpack & http2](https://medium.com/webpack/webpack-http-2-7083ec3f3ce6#.46idrz8kb) - требуется для разделения кода в HTTP/2.
+- [Rollup](https://github.com/rollup/rollup) - позволяет объединять код, применяя tree-shaking, и используя преимущество статичных импортов модулей ES2015.
+- [Google Closure Compiler](https://github.com/google/closure-compiler) - выполняет множество оптимизаций и обеспечивает объединение кода. Изначально был написан на Java, но также имеет реализацию на JavaScript [JavaScript](https://www.npmjs.com/package/google-closure-compiler-js), которую можете [найти здесь](https://www.npmjs.com/package/google-closure-compiler-js).
+- [SystemJS Builder](https://github.com/systemjs/builder) - обеспечивает сборку приложения в один файл с помощью SystemJS и имеет поддержку зависимостей с различными версиями.
 - [Browserify](http://browserify.org/).
-- [ngx-build-modern](https://github.com/manfredsteyer/ngx-build-plus/tree/master/ngx-build-modern) - plugin for Angular-CLI which builds the application bundle in two variants:
-  1. For modern browsers with ES2015 modules and specific polyfills resulting in a smaller bundle.
-  2. Additional legacy version using different polyfills and compiler target (as it is by default).
+- [ngx-build-modern](https://github.com/manfredsteyer/ngx-build-plus/tree/master/ngx-build-modern) - плагин для Angular CLI, который может собирать приложение в двух версиях:
+  1. Для современных браузеров с модулями ES2015 и основные полифиламы, что делает bundle меньше;
+  2. Дополнительная легаси версия, использующая остальные полифилы и другой compiler target (по-умолчанию).
 
 **Resources**
 
-- ["Building an Angular Application for Production"](http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/)
-- ["2.5X Smaller Angular Applications with Google Closure Compiler"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
+- ["Сборка Angular приложения для Production"](http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/)
+- ["Сборка Angular приложения в 2.5X меньше вместе с Google Closure Compiler"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
 
 ### Minification and dead code elimination
 
-These practices allow us to minimize the bandwidth consumption by reducing the payload of our application.
+В случае медленного интернет соединения эти методы позволяют нам оптимизировать загрузку приложения за счет уменьшения его веса.
 
 **Tooling**
 
-- [Uglify](https://github.com/mishoo/UglifyJS) - performs minification such as mangling variables, removal of comments & whitespace, dead code elimination, etc. Written completely in JavaScript, has plugins for all popular task runners.
-- [Google Closure Compiler](https://github.com/google/closure-compiler) - performs similar to uglify type of minification. In advanced mode it transforms the AST of our program aggressively in order to be able to perform even more sophisticated optimizations. It has also a [JavaScript version](https://www.npmjs.com/package/google-closure-compiler-js) which can be [found here](https://www.npmjs.com/package/google-closure-compiler-js). GCC also supports *most of the ES2015 modules syntax* so it can [perform tree-shaking](#tree-shaking).
+- [Uglify](https://github.com/mishoo/UglifyJS) - делает минификацию кода, a именно уменьшает размер переменных, удаляет комментарии и пробелы, а также мертвый код и т.д. Он написан полностью на JavaScript, и имеет плагины для всех популярных task runners.
+- [Google Closure Compiler](https://github.com/google/closure-compiler) - работает аналогично uglify. В продвинутом режиме он принудительно преобразует AST вашего приложения, чтобы проводить еще более сложные оптимизации. Он так же имеет [JavaScript версию](https://www.npmjs.com/package/google-closure-compiler-js), которую можно [найти здесь](https://www.npmjs.com/package/google-closure-compiler-js). GCC имеет *почти полную поддержку модулей ES2015*, поэтому может [делать tree-shaking](#tree-shaking). 
 
 **Resources**
 
-- ["Building an Angular Application for Production"](http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/)
-- ["2.5X Smaller Angular Applications with Google Closure Compiler"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
+- ["Сборка Angular приложения для Production"](http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/)
+- ["Сборка Angular приложения в 2.5X меньше вместе с Google Closure Compiler"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
 
 ### Remove template whitespace
 
-Although we don't see the whitespace character (a character matching the `\s` regex) it is still represented by bytes which are transfered over the network. If we reduce the whitespace from our templates to minimum we will be respectively able to drop the bundle size of the AoT code even further.
+Хотя мы и не видим символ пробела (соотвествующий регулярному выражению `\s`), он все еще представлен байтами, которые передаются по сети. Однако, если мы максимально уменьшим количество пустых значений в шаблонах, то мы сможем уменьшить размер итогового AoT-кода.
 
-Thankfully, we don't have to do this manually. The `ComponentMetadata` interface provides the property `preserveWhitespaces` which by default has value `false`, because removing the whitespace always may influence the DOM layout. In case we set the property to `false` Angular will trim the unnecessary whitespace which will lead to further reduction of the bundle size.
+К счастью, нам не нужно делать это вручную. В интерфейсе `ComponentMetadata` есть свойство `preserveWhitespaces`. Так как удаление пробелов может повлиять на DOM, оно по умолчанию имеет значение `false`. В случае, если мы установим свойство в `false`, то Angular очистит код от ненужных пробелов, что приведет к дополнительному уменьшению размера модуля.
 
-- [preserveWhitespaces in the Angular docs](https://angular.io/api/core/Component#preserveWhitespaces)
+- [Об preserveWhitespaces в документации Angular](https://angular.io/api/core/Component#preserveWhitespaces)
 
 ### Tree-shaking
 
@@ -224,7 +223,7 @@ If `MyService` is not injected in any component/service, then it will not be inc
 
 ### Ahead-of-Time (AoT) Compilation
 
-A challenge for the available in the wild tools (such as GCC, Rollup, etc.) are the HTML-like templates of the Angular components, which cannot be analyzed with their capabilities. This makes their tree-shaking support less efficient because they're not sure which directives are referenced within the templates. The AoT compiler transpiles the Angular HTML-like templates to JavaScript or TypeScript with ES2015 module imports. This way we are able to efficiently tree-shake during bundling and remove all the unused directives defined by Angular, third-party libraries or by ourselves.
+Проблемой низкоуровневых инструментов (таких как GCC, Rollup и т.д.) является то, что они не анализируют HTML-подобные шаблоны Angular компонентов. Это делает менее эффективной поддержку tree-shaking, потому что они не знают, на какие директивы имеются ссылки в шаблонах. Компилятор AoT конвертирует HTML-подобные шаблоны в JavaScript или TypeScript с импортами ES2015 модулей. Таким образом, мы можем эффективно делать tree-shaking во время сборки и удалять все неиспользуемые директивы, которые могут быть определенны Angular'ом, сторонними библиотеками или нашим приложением.
 
 **Resources**
 
@@ -232,19 +231,19 @@ A challenge for the available in the wild tools (such as GCC, Rollup, etc.) are 
 
 ### Compression
 
-Compression of the responses' payload is a standard practice for bandwidth usage reduction. By specifying the value of the header `Accept-Encoding`, the browser hints the server which compression algorithms are available on the client's machine. On the other hand, the server sets value for the `Content-Encoding` header of the response in order to tell the browser which algorithm has been chosen for compressing the response.
+Сжатие ответов является стандартной практикой уменьшения используемого трафика для загрузки приложения. Указав заголовок `Accept-Encoding`, браузер говорит серверу, какие алгоритмы сжатия он поддерживает на клиентском компьютере. В свою очередь сервер в заголовке ответа устанавливает значение для `Content-Encoding`, чтобы сообщить браузеру, какой алгоритм сжатия был применен.
 
 **Tooling**
 
-The tooling here is not Angular-specific and entirely depends on the web/application server that we're using. Typical compression algorithms are:
+Инструменты, приведенные здесь, не являются специфичными для Angular, и полностью зависит от используемого веб сервера. И вот основные инструменты для сжатия:
 
-- deflate - a data compression algorithm and associated file format that uses a combination of the LZ77 algorithm and Huffman coding.
-- [brotli](https://github.com/google/brotli) - a generic-purpose lossless compression algorithm that compresses data using a combination of a modern variant of the LZ77 algorithm, Huffman coding and 2nd order context modeling, with a compression ratio comparable to the best currently available general-purpose compression methods. It is similar in speed with deflate but offers more dense compression.
+- deflate - алгоритмы сжатия данных, связанных с конкретным форматом файла, который использует комбинацию алгоритма LZ77 и Код Хаффмана. 
+- [brotli](https://github.com/google/brotli) - алгоритм сжатия общего назначения без потерь, который сжимает данные, используя комбинацию современного варианта алгоритма LZ77, Кода Хаффмана и моделирование контекста 2-го порядка, со степенью сжатия, сопостовимой с лучшими в настоящее время способами сжатия общего назначения. Это сравнимо по скорости с deflate, но имеет лучшее сжатие.
 
 **Resources**
 
-- ["Better than Gzip Compression with Brotli"](https://hacks.mozilla.org/2015/11/better-than-gzip-compression-with-brotli/)
-- ["2.5X Smaller Angular Applications with Google Closure Compiler"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
+- ["Лучшее сжатие, чем Gzip с использованием Brotli"](https://hacks.mozilla.org/2015/11/better-than-gzip-compression-with-brotli/)
+- ["Сборка Angular приложения в 2.5X меньше вместе с Google Closure Compiler"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
 
 ### Pre-fetching Resources
 
@@ -303,12 +302,12 @@ The application shell is the minimum user interface that we show to the users in
 
 ### Use Service Workers
 
-We can think of the Service Worker as an HTTP proxy which is located in the browser. All requests sent from the client are first intercepted by the Service Worker which can either handle them or pass them through the network.
+Мы думаем о Service Worker, как о HTTP-прокси, который находится в браузере. Все запросы, которые отправляются клиентом, перехватываются Service Worker. Он может обработать их или передать дальше по сети.
 
 **Tooling**
 
-- [Angular Service Worker](https://angular.io/guide/service-worker-intro) - aims to automate the process of managing Service Workers. It also contains Service Worker for caching static assets, and one for [generating application shell](https://developers.google.com/web/updates/2015/11/app-shell?hl=en).
-- [Offline Plugin for Webpack](https://github.com/NekR/offline-plugin) - Webpack plugin that adds support for Service Worker with a fall-back to AppCache.
+- [Angular Service Worker](https://angular.io/guide/service-worker-intro) - направлен на автоматизацию процесса управления Service Worker. Он так же содержит Service Worker для кэширования статических ресурсов и [генерацию application shell](https://developers.google.com/web/updates/2015/11/app-shell?hl=en).
+- [Offline Plugin для Webpack](https://github.com/NekR/offline-plugin) - Webpack плагин добавляющий поддержку Service Worker с fall-back для AppCache.
 
 **Resources**
 
@@ -316,13 +315,13 @@ We can think of the Service Worker as an HTTP proxy which is located in the brow
 
 ## Runtime Optimizations
 
-This section includes practices which can be applied in order to provide smoother user experience with 60 frames per second (fps).
+В этом разделе приведены рекомендации, которые необходимы для обеспечания плавной работы UI со скоростью 60 кадров в секунду (fps).
 
 ### Use `enableProdMode`
 
-In development mode Angular performs some extra checks in order to verify that performing change detection does not result to any additional changes to any of the bindings. This way the frameworks assures that the unidirectional data flow has been followed.
+В development режиме Angular вызывает дополнительные проверки изменений, чтобы убедиться, что change detection не приводит к каким-либо дополнительным изменениям. Таким образом, Angular гарантирует, что соблюден однонаправленный поток данных.
 
-In order to disable these changes for production do not forget to invoke `enableProdMode`:
+Чтобы отключить эти проверки для production, не забудьте вызвать `enableProdMode`:
 
 ```typescript
 import { enableProdMode } from '@angular/core';
@@ -334,7 +333,7 @@ if (ENV === 'production') {
 
 ### Ahead-of-Time Compilation
 
-AoT can be helpful not only for achieving more efficient bundling by performing tree-shaking, but also for improving the runtime performance of our applications. The alternative of AoT is Just-in-Time compilation (JiT) which is performed runtime, therefore we can reduce the amount of computations required for rendering of our application by performing the compilation as part of our build process.
+AoT может быть не только полезен для достижения более эффективной сборки приложения, путем применения tree-shaking, но также для повышения производительности наших приложений в runtime. Альтернативой AoT является компиляция Just-in-Time (JiT), который выполняется в runtime. Поэтому AoT позволяет уменьшить количество вычислений, необходимых для рендеринга нашего приложения, выполняя компиляцию во время сборки.
 
 **Tooling**
 
@@ -343,7 +342,7 @@ AoT can be helpful not only for achieving more efficient bundling by performing 
 
 **Resources**
 
-- ["Ahead-of-Time Compilation in Angular"](http://blog.mgechev.com/2016/08/14/ahead-of-time-compilation-angular-offline-precompilation/)
+- ["Ahead-of-Time Compilation в Angular"](http://blog.mgechev.com/2016/08/14/ahead-of-time-compilation-angular-offline-precompilation/)
 
 ### Web Workers
 
@@ -548,7 +547,7 @@ Angular извлекает выражения в шаблонах после к�
 
 # Conclusion
 
-The list of practices will dynamically evolve over time with new/updated practices. In case you notice something missing or you think that any of the practices can be improved do not hesitate to fire an issue and/or a PR. For more information please take a look at the "[Contributing](#contributing)" section below.
+Представленный список со временем будет постепенно развиваться добавлением и обновлением текущих практик. Если вы заметили, что чего-то не хватает, или считаете, что какие-то практики можно улучшить, то не стесняйтесь создавать issue и/или PR. Для более подробной информации об этом, пожалуйста, посмотрите раздел [Contributing](#contributing)", который находится ниже.
 
 # Contributing
 
