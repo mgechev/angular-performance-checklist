@@ -110,7 +110,7 @@ Bundling - это стандартная практика, направленн�
 
 ### Tree-shaking
 
-For the final version of our applications we usually don't use the entire code which is provided by Angular and/or any third-party library, even the one that we've written. Thanks to the static nature of the ES2015 modules, we're able to get rid of the code which is not referenced in our apps.
+В собранной версии приложения обычно не нужен весь код, который есть в Angular, сторонних библиотеках, или даже тот, который мы сами написали. Поэтому благодаря тому, что при импорте модулей ES2015 явно указывается что именно импортируется, можно избавиться от кода, который не был использован в приложении.
 
 **Example**
 
@@ -123,36 +123,35 @@ export bar = () => 'bar';
 import { foo } from './foo';
 console.log(foo());
 ```
-Once we tree-shake and bundle `app.js` we'll get:
+После tree-shaking и сборки `app.js` мы получим:
 
 ```javascript
 let foo = () => 'foo';
 console.log(foo());
 ```
 
-This means that the unused export `bar` will not be included into the final bundle.
+Это значит, что не использованный экспорт `bar` не будет включен в bundle.
 
 **Tooling**
+- [Webpack](https://webpack.js.org) - предоставляет эффективную сборку с использованием [tree-shaking](#tree-shaking). После сборки приложения не экспортируется код, который не был использован. Таким образом код может быть помечен как dead code и удален с помощью Uglify.
+- [Rollup](https://github.com/rollup/rollup) - предоставляет сборку с использованием tree-shaking, за счет статических импортов модулей ES2015.
+- [Google Closure Compiler](https://github.com/google/closure-compiler) - предлагает множество оптимизаций и предоставляет возможность сборки приложения. Изначально он был написан на Java, но с недавнего времени поддерживает и [версию для JavaScript](https://www.npmjs.com/package/google-closure-compiler-js).
 
-- [Webpack](https://webpack.js.org) - provides efficient bundling by performing [tree-shaking](#tree-shaking). Once the application has been bundled, it does not export the unused code so it can be safely considered as dead code and removed by Uglify.
-- [Rollup](https://github.com/rollup/rollup) - provides bundling by performing an efficient tree-shaking, taking advantage of the static nature of the ES2015 modules.
-- [Google Closure Compiler](https://github.com/google/closure-compiler) - performs plenty of optimizations and provides bundling support. Originally written in Java, since recently it has also a [JavaScript version](https://www.npmjs.com/package/google-closure-compiler-js) which can be [found here](https://www.npmjs.com/package/google-closure-compiler-js).
-
-*Note:* GCC does not support `export *` yet, which is essential for building Angular applications because of the heavy usage of the "barrel" pattern.
+*Обратите внимание:* GCC еще не поддерживает `export *`. Однако функция важна для сборки Angular приложений из-за широкого использования "barrel" файлов.
 
 **Resources**
 
-- ["Building an Angular Application for Production"](http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/)
-- ["2.5X Smaller Angular Applications with Google Closure Compiler"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
-- ["Using pipeable operators in RxJS"](https://github.com/ReactiveX/rxjs/blob/master/doc/pipeable-operators.md)
+- ["Сборка Angular приложения для Production"](http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/)
+- ["Сборка Angular приложения в 2.5X меньше вместе с Google Closure Compiler"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
+- ["Использование pipeable операторов в RxJS"](https://github.com/ReactiveX/rxjs/blob/master/doc/pipeable-operators.md)
 
-### Tree-Shakeable Providers
+### Tree-shakeable providers
 
-Since the release of Angular version 6, The angular team provided a new feature to allow services to be tree-shakeable, meaning that your services will not be included in the final bundle unless they're being used by other services or components. This can help reduce the bundle size by removing unused code from the bundle.
+Начиная с версии Angular 6, команда Angular представила новую фичу, которая позволяет делать tree-shakable сервисы. Это значит, что сервисы не будут включены в финальный бандл пока они не будут использованы другими сервисами или компонентами. Это помогает уменьшить размер итогового бандла за счет удаления неиспользуемого кода.
 
-You can make your services tree-shakeable by using the `providedIn` attribute to define where the service should be initialized when using the `@Injectable()` decorator. Then you should remove it from the `providers` attribute of your `NgModule` declaration as well as its import statement as follows.
+Используя аттрибут `providedIn` в декораторе `@Injectable()` можно определить место, где сервис должен быть инициализирован и сделать его tree-shakeable. После этого нужно удалить его из аттрибута `providers` в инициализации `NgModule`, а также из импортов в файле `NgModule`.
 
-Before:
+До:
 
 ```ts
 // app.module.ts
@@ -183,7 +182,7 @@ import { Injectable } from '@angular/core'
 export class MyService { }
 ```
 
-After:
+После:
 
 ```ts
 // app.module.ts
@@ -215,7 +214,7 @@ import { Injectable } from '@angular/core'
 export class MyService { }
 ```
 
-If `MyService` is not injected in any component/service, then it will not be included in the bundle.
+Если `MyService` не используется ни в одном компоненте/сервисе/директиве, то он не будет включен в итоговый bundle.
 
 **Resources**
 
@@ -247,7 +246,7 @@ If `MyService` is not injected in any component/service, then it will not be inc
 
 ### Pre-fetching Resources
 
-Resource pre-fetching is a great way to improve the user experience. We can either pre-fetch assets (images, styles, modules intended to be [loaded lazily](#lazy-loading-of-resources), etc.) or data. There are different pre-fetching strategies but most of them depend on specifics of the application.
+Предзагрузка ресурсов это отличный способ улучшить user experience. Мы можем загружать заранее как ассеты (изображения, стили, модули предназначенные для [lazy load](#lazy-loading-of-resources) и т.д.), так и данные. Существуют различные стратегии предзагрузки, но в большинстве случаев их использование зависит от специфики вашего приложения.
 
 ### Lazy-Loading of Resources
 
@@ -281,20 +280,19 @@ const routes: Routes = [
 
 ### Caching
 
-Caching is another common practice intending to speed-up our application by taking advantage of the heuristic that if one resource was recently been requested, it might be requested again in near future.
+Кэширование - это еще одна распространенная практика, направленная на ускорение работы нашего приложения за счет использования предположения о том, что если недавно был запрошен один ресурс, он может быть запрошен снова в ближайшем будущем.
 
-For caching data we usually use a custom caching mechanism. For caching static assets we can either use the standard browser caching or Service Workers with the [CacheStorage API](https://developer.mozilla.org/en-US/docs/Web/API/Cache).
+Для кэширования данных мы обычно используем кастомные методы. Для кэширования статических ресурсов мы можем использовать стандартные механизмы в браузере или Service Workers с [CacheStorage API](https://developer.mozilla.org/en-US/docs/Web/API/Cache).
 
 ### Use Application Shell
+Для того, чтобы быстрее отобразить пользователю часть страницы используйте [Application Shell](https://developers.google.com/web/updates/2015/11/app-shell).
 
-To make the perceived performance of your application faster, use an [Application Shell](https://developers.google.com/web/updates/2015/11/app-shell).
-
-The application shell is the minimum user interface that we show to the users in order to indicate them that the application will be delivered soon. For generating an application shell dynamically you can use Angular Universal with custom directives which conditionally show elements depending on the used rendering platform (i.e. hide everything except the App Shell when using `platform-server`).
+Application Shell - это минимальный пользовательский интерфейс, который мы показываем пользователям, чтобы показать, что приложение будет доступно в ближайшее время. Для динамического создания оболочки приложения вы можете использовать Angular Universal с пользовательскими директивами, которые по условиям отображают элементы в зависимости от используемой платформы рендеринга (т.е. скрывают все, кроме оболочки приложения, при использовании `platform-server`).
 
 **Tooling**
 
-- [Angular Service Worker](https://angular.io/guide/service-worker-intro) - aims to automate the process of managing Service Workers. It also contains Service Worker for caching static assets, and one for [generating application shell](https://developers.google.com/web/updates/2015/11/app-shell?hl=en).
-- [Angular Universal](https://github.com/angular/angular/tree/master/packages/platform-server) - Universal (isomorphic) JavaScript support for Angular.
+- [Angular Service Worker](https://angular.io/guide/service-worker-intro) - стремится автоматизировать процесс настройки Service Workers. Он включает в себя Service Worker для кэширования статичных ресурсов и инструмент для [генерации application shell](https://developers.google.com/web/updates/2015/11/app-shell?hl=en).
+- [Angular Universal](https://github.com/angular/angular/tree/master/packages/platform-server) - Universal (изоморфный) JavaScript для Angular.
 
 **Resources**
 
