@@ -252,21 +252,21 @@ Resource pre-fetching is a great way to improve the user experience. We can eith
 
 ### Lazy-Loading of Resources
 
-In case the target application has a huge code base with hundreds of dependencies, the practices listed above may not help us reduce the bundle to a reasonable size (reasonable might be 100K or 2M, it again, completely depends on the business goals).
+Когда приложение обладает большой кодовой базой с сотней зависимостей, подходы, описанные выше, могут оказаться бесполезными с точки зрения снижения размеров бандла (до разумных показателей 100кб или 2мб, но это полностью зависит от бизнес целей).
 
-In such cases a good solution might be to load some of the application's modules lazily. For instance, lets suppose we're building an e-commerce system. In this case we might want to load the admin panel independently from the user-facing UI. Once the administrator has to add a new product we'd want to provide the UI required for that. This could be either only the "Add product page" or the entire admin panel, depending on our use case/business requirements.
+В таком случае разумно подгружать модули частично, лениво. Например, допустим, разрабатываемое приложение - это площадка для электронной торговли. В таком случае мы бы хотели, чтобы панель администратора загружалась независимо от интерфейса пользователя. Если, например, администратор должен добавить новый продукт, мы бы хотели обеспечить загрузку только необходимого для этого модуля. Это могла бы быть просто страница с добавлением продукта или вся панель администратора, в зависимости от бизнес логики приложения.
 
 **Tooling**
 
-- [Webpack](https://github.com/webpack/webpack) - allows asynchronous module loading.
-- [ngx-quicklink](https://github.com/mgechev/ngx-quicklink) - router preloading strategy which automatically downloads the lazy-loaded modules associated with all the visible links on the screen
+- [Webpack](https://github.com/webpack/webpack) - обеспечивает асинхронную загрузку модулей
+- [ngx-quicklink](https://github.com/mgechev/ngx-quicklink) - стратегия предварительной загрузки роутера, которая обеспечивает автоматическую ленивую загрузку модулей, связанных со всеми видимыми ссылками на экране
 
 ### Don't Lazy-Load the Default Route
 
-Lets suppose we have the following routing configuration:
+Предположим, имеется следующая конфигурация роутинга:
 
 ```ts
-// Bad practice
+// Плохой пример
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'dashboard',  loadChildren: './dashboard.module#DashboardModule' },
@@ -274,9 +274,11 @@ const routes: Routes = [
 ];
 ```
 
-The first time the user opens the application using the url: https://example.com/ they will be redirected to `/dashboard` which will trigger the lazy-route with path `dashboard`. In order Angular to render the bootstrap component of the module, it will has to download the file `dashboard.module` and all of its dependencies. Later, the file needs to be parsed by the JavaScript VM and evaluated.
+В первый раз пользователь открывает приложения, используя адрес: https://example.com/. После этого он будет перенаправлен на `/dashboard`, после чего будет произведена ленивая загрузка `DashboardModule`. 
 
-Triggering extra HTTP requests and performing unnecessary computations during the initial page load is a bad practice since it slows down the initial page rendering. Consider declaring the default page route as non-lazy.
+Для того, чтобы Angular отобразил начальный компонент модуля, необходимо загрузить файл `dashboard.module` и все его зависимости. После этого файл должен быть проанализирован виртуальной машиной JavaScript и оценен.
+
+Запуск дополнительных HTTP-запросов и выполнение ненужных вычислений во время начальной загрузки страницы является плохой практикой, поскольку она замедляет стартовый рендеринг страницы. Поэтому рассмотрите возможность объявления страницы по умолчанию в обход ленивой загрузки модулей.
 
 ### Caching
 
@@ -345,18 +347,18 @@ AoT can be helpful not only for achieving more efficient bundling by performing 
 
 ### Web Workers
 
-Usual problem in the typical single-page application (SPA) is that our code is usually run in a single thread. This means that if we want to achieve smooth user experience with 60fps we have **at most 16ms** for execution between the individual frames are being rendered, otherwise they'll drop by half.
+Проблема типичного одностраничного приложения (SPA) заключается в том, что код выполняется в одом потоке. Это означает, что если мы хотим добиться плавного UX с 60fps, то у нас есть **максимум 16мс** для выполнения вычислений между кадрами. В противном случае UI будет тормозить.
 
-In complex application with huge component tree, where the change detection needs to perform millions of check each second it will not be hard to start dropping frames. Thanks to the platform agnosticism of Angular and it being decoupled from DOM architecture it's possible to run our entire application (including change detection) in a Web Worker and leave the main UI thread responsible only for rendering.
+В сложном приложении с серьезным деревом компонентов, где change detection должно выполнять миллионы проверок ежесекундно, нетрудно потерять целые кадры. Благодаря абстрагированности платформы Angular, а именно тому, что она отделена от архитектуры DOM, можно запустить наше приложение (включая change detection) в Web Worker, оставив основной поток ответственным только за рендеринг UI.
 
 **Tooling**
 
-- The module which allows us to run our application in a Web Worker is supported by the core team. Examples how it can be used, can be [found here](https://github.com/angular/angular/tree/master/modules/playground/src/web_workers).
-- [Webpack Web Worker Loader](https://github.com/webpack/worker-loader) - A Web Worker Loader for webpack.
+- Модуль, который позволяет запускать приложение в Web Worker, поддерживается командой Angular. Примеры использования, можно [найти здесь](https://github.com/angular/angular/tree/master/modules/playground/src/web_workers).
+- [Webpack Web Worker Loader](https://github.com/webpack/worker-loader) - загрузчик Web Worker для webpack.
 
 **Resources**
 
-- ["Using Web Workers for more responsive apps"](https://www.youtube.com/watch?v=Kz_zKXiNGSE)
+- ["Использование Web Workers для большей отзывчивости приложений"](https://www.youtube.com/watch?v=Kz_zKXiNGSE)
 
 ### Server-Side Rendering
 
@@ -519,19 +521,19 @@ export class YtFeedComponent {
 
 #### Minimize DOM elements
 
-Rendering the DOM elements is usually the most expensive operation when adding elements to the UI. The main work is usually caused by inserting the element into the DOM and applying the styles. If `*ngFor` renders a lot of elements, browsers (especially older ones) may slow down and need more time to finish rendering of all elements. This is not specific to Angular.
+Рендеринг DOM элементов обычно является самой дорогой операцией, например, при добавлении элементов в UI. Основные затраты вызваны вставкой элемента в DOM и применением стилей. Если `*ngFor` рендерит множество элементов, браузер (особенно старый) может тормозить, поэтому ему может потребоваться больше времени, чтобы отрендерить все элементы. Но это не относится к оптимизациям в Angular.
 
-To reduce rendering time, try the following:
-- Apply virtual scrolling via [CDK](https://material.angular.io/cdk/scrolling/overview) or [ngx-virtual-scroller](https://github.com/rintoj/ngx-virtual-scroller)
-- Reducing the amount of DOM elements rendered in `*ngFor` section of your template. Usually unneeded/unused DOM elements arise from extending the template again and again. Rethinking its structure probably makes things much easier.
-- Use [`ng-container`](https://angular.io/guide/structural-directives#ngcontainer) where possible
+Чтобы снизить количество времени на рендеринг, попробуйте следующее:
+- Виртуальная прокрутка посредством [CDK](https://material.angular.io/cdk/scrolling/overview) или [ngx-virtual-scroller](https://github.com/rintoj/ngx-virtual-scroller)
+- Уменьшение количества DOM элементов, отображаемых с помощью `*ngFor` в шаблоне. Обычно ненужные/неиспользуемые DOM элементы возникают в результате расширения шаблона. Переосмысление структуры, скорее всего, сделает шаблон более простым.
+- Используйте [`ng-container`](https://angular.io/guide/structural-directives#ngcontainer), где это возможно
 
 **Resources**
 
-- ["NgFor directive"](https://angular.io/docs/ts/latest/api/common/index/NgFor-directive.html) - official documentation for `*ngFor`
-- ["Angular — Improve performance with trackBy"](https://netbasal.com/angular-2-improve-performance-with-trackby-cc147b5104e5) - shows gif demonstration of the approach
-- [Component Dev Kit (CDK) Virtual Scrolling](https://material.angular.io/cdk/scrolling/overview) - API description
-- [ngx-virtual-scroller](https://github.com/rintoj/ngx-virtual-scroller) - displays a virtual, "infinite" list
+- ["NgFor directive"](https://angular.io/docs/ts/latest/api/common/index/NgFor-directive.html) - официальная документация для `*ngFor`
+- ["Angular — Improve performance with trackBy"](https://netbasal.com/angular-2-improve-performance-with-trackby-cc147b5104e5) - gif-демонстрация подходов
+- [Component Dev Kit (CDK) Virtual Scrolling](https://material.angular.io/cdk/scrolling/overview) - описание API
+- [ngx-virtual-scroller](https://github.com/rintoj/ngx-virtual-scroller) - отображает виртуальный, "бесконечный" список
 
 ### Optimize template expressions
 
