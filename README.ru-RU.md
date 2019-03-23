@@ -394,17 +394,17 @@ Server-side rendering решает эту проблему пре-рендери
 
 #### Detaching the Change Detector
 
-Another way of implementing a custom change detection mechanism is by `detach`ing and `reattach`ing the change detector (CD) for given component. Once we `detach` the CD Angular will not perform check for the entire component subtree.
+Другой реализацией кастомного механизма отслеживания изменений является открепление и прикрепления отслеживания изменений (CD) для конкретного компонента. Как только мы открепляем CD, Angular не будет делать проверки для компонента и всей его низлежащей структуры.
 
-This practice is typically used when user actions or interactions with an external services trigger the change detection more often than required. In such cases we may want to consider detaching the change detector and reattaching it only when performing change detection is required.
+Данная практика обычно используется, когда действия или взаимодействия пользователя со внешними сервисами запускают цикл отслеживания изменений чаще, чем это действительно необходимо. В таких ситуациях мы можем откреплять отслеживания измненений и прикреплять его обратно, когда нужно совершить проверку изменений.
 
 #### Run outside Angular
 
-The Angular's change detection mechanism is being triggered thanks to [zone.js](https://github.com/angular/zone.js). Zone.js monkey patches all asynchronous APIs in the browser and triggers the change detection in the end of the execution of any async callback. In **rare cases** we may want given code to be executed outside the context of the Angular Zone and thus, without running change detection mechanism. In such cases we can use the method `runOutsideAngular` of the `NgZone` instance.
+В основе механизма отслеживания изменений в Angular лежит [zone.js](https://github.com/angular/zone.js). Zone.js патчит все асинхронные API в браузере и запускает отслеживание изменений в конце исполнения любой асинхронной функции. В **редких** случаях может быть необходимо исполнить код вне контекста Angular Zone и тогда механизм отслежвания изменений не будет вызван. В таких случаях мы можем использовать метод `runOutsideAngular` из `NgZone`.
 
-**Example**
+**Пример**
 
-In the snippet below, you can see an example for a component which uses this practice. When the `_incrementPoints` method is called the component will start incrementing the `_points` property every 10ms (by default). The incrementation will make the illusion of an animation. Since in this case we don't want to trigger the change detection mechanism for the entire component tree, every 10ms, we can run `_incrementPoints` outside the context of the Angular's zone and update the DOM manually (see the `points` setter).
+В отрывке кода далее, вы можете увидеть пример компонента с использованием данной практики. Когда метод `_incrementPoints` вызван, компонент начнет инкрементировать свойство `_points` каждые 10 мс (по умолчанию). Инкрементация создаст иллюзию анимации. Т.к. в данной ситуации мы не хотим вызывать проверку изменений для всего древа компонентов каждые 10 секунд, мы можем вызвать `_incrementPoints` вне контекста Angular Zone и обновить DOM вручную (`points` сеттер метод).
 
 ```ts
 @Component({
@@ -463,11 +463,11 @@ class PointAnimationComponent {
 }
 ```
 
-**Warning**: Use this practice **very carefully only when you're sure what you are doing** because if not used properly it can lead to an inconsistent state of the DOM. Also note that the code above is not going to run in WebWorkers. In order to make it WebWorker-compatible, you need to set the label's value by using the Angular's renderer.
+**Обратите внимание**: Используйте эту практику **очень осторожно и только тогда, когда вы знаете, что делаете**, потому что при некорректном использовании это может привести к неустойчивому состоянию DOM. Также обратите внимание, что код выше не расчитан для запуска в WebWorkers. Если это необходимо, вы можете сделать его WebWorker совместимым, для этого нужно установить label's value используя Angular Renderer.
 
 ### Use pure pipes
 
-As argument the `@Pipe` decorator accepts an object literal with the following format:
+Аргумент декоратора `@Pipe` принимает объекты в следующем формате:
 
 ```typescript
 interface PipeMetadata {
@@ -476,9 +476,10 @@ interface PipeMetadata {
 }
 ```
 
-The pure flag indicates that the pipe is not dependent on any global state and does not produce side-effects. This means that the pipe will return the same output when invoked with the same input. This way Angular can cache the outputs for all the input parameters the pipe has been invoked with, and reuse them in order to not have to recompute them on each evaluation.
+Свойство pure означает, что pipe не зависит от какого-либо глобального состояния и не производит сторонних эффектов. Т.е. возвращаемое значение всегда будет одинаковым для конкретного входного аргумента. Таким образом Angular может кэшировать выходы для всех входных аргументов, передаваемых в этот pipe, и переиспользовать их в дальнейшем для избежания повторных вычислений.
 
-The default value of the `pure` property is `true`.
+Значение по умолчанию свойства `pure` является `true`.
+
 
 ### `*ngFor` directive
 
