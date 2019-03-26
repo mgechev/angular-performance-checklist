@@ -2,19 +2,32 @@
 
 <img src="./assets/flash.png" width="1000">
 
-[中文版](./README.zh-CN.md) [Русский](./README.ru-RU.md)
-## Introduction
+[中文版](./README.zh-CN.md) [Русский](./README.ru-RU.md) [Português](./README.pt-BR.md)
 
+## Introdução
+
+Este documento contém uma lista de boas práticas que vão nos ajudar a melhorar a performance das nossas aplicações. O "Checklist de Performance do Angular" cobre diferentes tópicos - de pré renderização no servidor e criação do pacote da nossa aplicação até performance em tempo de execu'ão e otimização do sistema de detecção de mudança feita pelo framework.
+<!--
 This document contains a list of practices which will help us boost the performance of our Angular applications. "Angular Performance Checklist" covers different topics - from server-side pre-rendering and bundling of our applications, to runtime performance and optimization of the change detection performed by the framework.
+-->
 
-The document is divided into two main sections:
+Este documento é dividio em duas seções principais:
+<!--The document is divided into two main sections:-->
 
-- Network performance - lists practices that are going to improve mostly the load time of our application. They include methods for latency and bandwidth reduction.
-- Runtime performance - practices which improve the runtime performance of our application. They include mostly change detection and rendering related optimizations.
+- Performance de rede - Lista de práticas que vão melhorar o tempo de carregamento da nossa aplicação. Ela inclui métodos para redução de latência e consumo de rede.
+<!--
+- Network performance - lists practices that are going to improve mostly the load time of our application. They include methods for latency and bandwidth reduction.-->
+- Performance de Execução - Práticas que melhoram a performance de execução da nossa aplicação. Ela inclui principalmente otimizações de detecção de mudança e renderização
+<!--
+- Runtime performance - practices which improve the runtime performance of our application. They include mostly change detection and rendering related optimizations.-->
 
-Some practices impact both categories so there could be a slight intersection, however, the differences in the use cases and the implications will be explicitly mentioned.
+Algumas práticas impactam nas duas categorias então pode haver alguma interceção, mas de qualquer forma, as diferenças nos casos de uso e implicações serão explicitamente mencionadas.
 
-Most subsections list tools, related to the specific practice, that can make us more efficient by automating our development flow.
+<!--Some practices impact both categories so there could be a slight intersection, however, the differences in the use cases and the implications will be explicitly mentioned.-->
+
+A maioria das subseções com lista de ferramentas, relacionadas a prática específicas, podem nos fazer mais eficientes ao automatizar o nosso fluxo de desenvolvimento
+
+<!--Most subsections list tools, related to the specific practice, that can make us more efficient by automating our development flow.-->
 
 Note that most practices are valid for both HTTP/1.1 and HTTP/2. Practices which make an exception will be mentioned by specifying to which version of the protocol they could be applied.
 
