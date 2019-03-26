@@ -302,6 +302,9 @@ The application shell is the minimum user interface that we show to the users in
 
 We can think of the Service Worker as an HTTP proxy which is located in the browser. All requests sent from the client are first intercepted by the Service Worker which can either handle them or pass them through the network.
 
+You can add a Service Worker to your Angular project by running
+``` ng add @angular/pwa ```
+
 **Tooling**
 
 - [Angular Service Worker](https://angular.io/guide/service-worker-intro) - aims to automate the process of managing Service Workers. It also contains Service Worker for caching static assets, and one for [generating application shell](https://developers.google.com/web/updates/2015/11/app-shell?hl=en).
@@ -310,6 +313,7 @@ We can think of the Service Worker as an HTTP proxy which is located in the brow
 **Resources**
 
 - ["The offline cookbook"](https://jakearchibald.com/2014/offline-cookbook/)
+- ["Getting started with service workers"](https://angular.io/guide/service-worker-getting-started)
 
 ## Runtime Optimizations
 
