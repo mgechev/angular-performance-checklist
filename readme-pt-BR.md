@@ -69,7 +69,7 @@ Bundling ou empacotamento é uma prática padrão que visa reduzir o número de 
 Conforme a sua aplicação cresce, juntar tudo em um único bundle gigante pode ser contra-produtivo. Explore técnicas de Code Splitting utilizando o webpack.
 
 
-**Requisições http adicionais não são um problema no HTTP/S por causa do recurso de [server push](https://http2.github.io/faq/#whats-the-benefit-of-server-push).**
+**Requisições http adicionais não são um problema no HTTP/2 por causa do recurso de [server push](https://http2.github.io/faq/#whats-the-benefit-of-server-push).**
 
 **Ferramentas**
 
