@@ -24,12 +24,12 @@ Note que a maioria das práticas são válidas tanto para HTTP/1.1 quanto para H
 
 ## Sumário
 
-- [Checklist de Performance do Angular](#angular-2-performance-checklist)
-  - [Introdução](#introduction)
-  - [Sumário](#table-of-content)
-  - [Performance de Rede](#network-performance)
+- [Checklist de Performance do Angular](#checklist-de-performance-do-angular)
+  - [Introdução](#introducao)
+  - [Sumário](#sumario)
+  - [Performance de Rede](#performance-de-rede)
     - [Bundling](#bundling)
-    - [Minificação e eliminação de código não utilizado](#minification-and-dead-code-elimination)
+    - [Minificação e eliminação de código não utilizado](#minificacao-e-eliminacao-de-codigo-nao-utilizado)
     - [Remover espaço em branco do template](#remove-template-whitespace)
     - [Tree-shaking](#tree-shaking)
     - [Tree-shakeable providers](#tree-shakeable-providers)
@@ -58,37 +58,38 @@ Note que a maioria das práticas são válidas tanto para HTTP/1.1 quanto para H
 - [Conclusão](#conclusion)
 - [Contribuindo](#contributing)
 
-## Network performance
+## Performance de Rede
 
-Some of the tools in this section are still in development and are subject to change. The Angular core team is working on automating the build process for our applications as much as possible so a lot of things will happen transparently.
+algumas dessas ferramentas desta seção ainda estão em desenvolvimento e estão sujeitas a mudança. A equipe do core do Angular está trabalhando em automatizar o máximo possível o processo de build para que muitas coisas fiquem mais transparentes.
 
-### Bundling
+### Bundling (Empacotamento)
 
-Bundling is a standard practice aiming to reduce the number of requests that the browser needs to perform in order to deliver the application requested by the user. In essence, the bundler receives as an input a list of entry points and produces one or more bundles. This way, the browser can get the entire application by performing only a few requests, instead of requesting each individual resource separately.
+Bundling ou empacotamento é uma prática padrão que visa reduzir o número de requisições que o browser precisa fazer para entregar a aplicação pedida pelo usuário. Na essência, o bundler recebe uma lista de entry points (Ex. Arquivos JS e CSS), junta esses arquivos e produz um ou mais bundles. Desta forma o browser pode baixar uma aplicação inteira fazendo apenas algumas requisições ao invés de baixar cada arquivo separado.
 
-As your application grows bundling everything into a single large bundle would again be counter productive. Explore Code Splitting techniques using Webpack.
+Conforme a sua aplicação cresce, juntar tudo em um único bundle gigante pode ser contra-produtivo. Explore técnicas de Code Splitting utilizando o webpack.
 
-**Additional http requests will not be a concern with HTTP/2 because of the [server push](https://http2.github.io/faq/#whats-the-benefit-of-server-push) feature.**
 
-**Tooling**
+**Requisições http adicionais não são um problema no HTTP/S por causa do recurso de [server push](https://http2.github.io/faq/#whats-the-benefit-of-server-push).**
 
-Tools which allows us to bundle our applications efficiently are:
+**Ferramentas**
 
-- [Webpack](https://webpack.js.org) - provides efficient bundling by performing [tree-shaking](#tree-shaking).
-- [Webpack Code Splitting](https://webpack.js.org/guides/code-splitting/) - Techniques to split your code.
-- [Webpack & http2](https://medium.com/webpack/webpack-http-2-7083ec3f3ce6#.46idrz8kb) - Need for splitting with http2.
-- [Rollup](https://github.com/rollup/rollup) - provides bundling by performing efficient tree-shaking, taking advantage of the static nature of the ES2015 modules.
-- [Google Closure Compiler](https://github.com/google/closure-compiler) - performs plenty of optimizations and provides bundling support. Originally written in Java, since recently it also has a [JavaScript version](https://www.npmjs.com/package/google-closure-compiler-js) which can be [found here](https://www.npmjs.com/package/google-closure-compiler-js).
-- [SystemJS Builder](https://github.com/systemjs/builder) - provides a single-file build for SystemJS of mixed-dependency module trees.
+Ferramentas que nos permitem criar bundles para as nossas aplicações de forma eficiente:
+
+- [Webpack](https://webpack.js.org) - provê um bundle eficiente por fazer uso do [tree-shaking](#tree-shaking).
+- [Webpack Code Splitting](https://webpack.js.org/guides/code-splitting/) - Técnicas para dividir o seu código.
+- [Webpack & http2](https://medium.com/webpack/webpack-http-2-7083ec3f3ce6#.46idrz8kb) - Necessário para dividir o código usando http2.
+- [Rollup](https://github.com/rollup/rollup) - provê bundles fazendo uso eficiente do tree-shaking, tendo como vantagem a natuzera estática dos módulos ES2015.
+- [Google Closure Compiler](https://github.com/google/closure-compiler) - faz várias otimizações e provê suporte a bundles. Originalmente escrito em Java, recentemente ganhou uma [Versão em javascript](https://www.npmjs.com/package/google-closure-compiler-js) que pode ser [encontrada aqui](https://www.npmjs.com/package/google-closure-compiler-js).
+- [SystemJS Builder](https://github.com/systemjs/builder) - provê um bundle de um único arquivo para módulos mixos de injeção de dependencia para o SystemJS
 - [Browserify](http://browserify.org/).
-- [ngx-build-modern](https://github.com/manfredsteyer/ngx-build-plus/tree/master/ngx-build-modern) - plugin for Angular-CLI which builds the application bundle in two variants:
-  1. For modern browsers with ES2015 modules and specific polyfills resulting in a smaller bundle.
-  2. Additional legacy version using different polyfills and compiler target (as it is by default).
+- [ngx-build-modern](https://github.com/manfredsteyer/ngx-build-plus/tree/master/ngx-build-modern) - Plugin para o Angular-CLI que cria bundles de duas formas:
+  1. Para browsers modernos com módulos do ES2015 e polyfills específicos resultando em um bundle menor.
+  2. Código legado adicional usando diferentes polyfills (Padrão)
 
-**Resources**
+**Recursos**
 
-- ["Building an Angular Application for Production"](http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/)
-- ["2.5X Smaller Angular Applications with Google Closure Compiler"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
+- ["Construindo uma aplicação em Angular para Produção (Em Inglês)"](http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/)
+- ["Aplicações em Angular 2.5x menor com Google Closure Compiler (Em Inglês)"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
 
 ### Minification and dead code elimination
 
