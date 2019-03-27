@@ -91,23 +91,23 @@ Ferramentas que nos permitem criar bundles para as nossas aplicações de forma 
 - ["Construindo uma aplicação em Angular para Produção (Em Inglês)"](http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/)
 - ["Aplicações em Angular 2.5x menor com Google Closure Compiler (Em Inglês)"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
 
-### Minification and dead code elimination
+### Minificação e Eliminação de Código Morto
 
-These practices allow us to minimize the bandwidth consumption by reducing the payload of our application.
+Essas práticas nos permitem minimizar o consumo de rede reduzindo o tamanho (Payload) da nossa aplicação.
 
-**Tooling**
+**Ferramentas**
 
-- [Uglify](https://github.com/mishoo/UglifyJS) - performs minification such as mangling variables, removal of comments & whitespace, dead code elimination, etc. Written completely in JavaScript, has plugins for all popular task runners.
-- [Google Closure Compiler](https://github.com/google/closure-compiler) - performs similar to uglify type of minification. In advanced mode it transforms the AST of our program aggressively in order to be able to perform even more sophisticated optimizations. It has also a [JavaScript version](https://www.npmjs.com/package/google-closure-compiler-js) which can be [found here](https://www.npmjs.com/package/google-closure-compiler-js). GCC also supports *most of the ES2015 modules syntax* so it can [perform tree-shaking](#tree-shaking).
+- [Uglify](https://github.com/mishoo/UglifyJS) - Faz a minificação como reduzir o tamanho do nome das variáveis, remover espaços e comentários, eliminação de código morto, etc. Completamente escrito em JavaScript, tem vários plugins para todos os task runners populares.
+- [Google Closure Compiler](https://github.com/google/closure-compiler) - Faz a minificação similar ao uglify. No modo avançado transforma agressivamente a árvore sintática abstrata da nossa aplicação para que seja feita otimizações mais sofisticadas. Também possui uma [versão em JavaScript](https://www.npmjs.com/package/google-closure-compiler-js) que pode ser [encontrada aqui](https://www.npmjs.com/package/google-closure-compiler-js). GCC também suporte *a maioria dos módulos do ES2015* então também pode [realizar o tree-shaking](#tree-shaking).
 
-**Resources**
+**Recursos**
 
-- ["Building an Angular Application for Production"](http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/)
-- ["2.5X Smaller Angular Applications with Google Closure Compiler"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
+- ["Construindo uma aplicação em Angular para Produção (Em Inglês)"](http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/)
+- ["Aplicações em Angular 2.5x menor com Google Closure Compiler (Em Inglês)"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
 
-### Remove template whitespace
+### Remover espaços em branco do template
 
-Although we don't see the whitespace character (a character matching the `\s` regex) it is still represented by bytes which are transfered over the network. If we reduce the whitespace from our templates to minimum we will be respectively able to drop the bundle size of the AoT code even further.
+Mesmo que a gente não veja os espaços em branco ( um caracter que bata com a regex `\s`) eles ainda são representados em bytes que são transferidos pela rede. Se reduzirmos os espaços em branco dos nossos templates também reduziremos o tamanho do código da nossa aplicação.
 
 Thankfully, we don't have to do this manually. The `ComponentMetadata` interface provides the property `preserveWhitespaces` which by default has value `false`, because removing the whitespace always may influence the DOM layout. In case we set the property to `false` Angular will trim the unnecessary whitespace which will lead to further reduction of the bundle size.
 
