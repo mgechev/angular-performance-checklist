@@ -109,15 +109,15 @@ Essas práticas nos permitem minimizar o consumo de rede reduzindo o tamanho (Pa
 
 Mesmo que a gente não veja os espaços em branco ( um caracter que bata com a regex `\s`) eles ainda são representados em bytes que são transferidos pela rede. Se reduzirmos os espaços em branco dos nossos templates também reduziremos o tamanho do código da nossa aplicação.
 
-Thankfully, we don't have to do this manually. The `ComponentMetadata` interface provides the property `preserveWhitespaces` which by default has value `false`, because removing the whitespace always may influence the DOM layout. In case we set the property to `false` Angular will trim the unnecessary whitespace which will lead to further reduction of the bundle size.
+Ao menos não precisamos fazer isso manualmente. A interface `ComponentMetadata` provê a propriedade `preseveWhitespaces` que por padrão possui o valor `false`, porque os espaços em branco sempre podem influencia o layout do DOM. Caso mudamos esse valor para `true` o Angular vai remover os espaços em brancos desnecessários, levando a uma diminuição do tamanho final do bundle.
+- [preserveWhitespaces na documentação do Angular (Em inglês)](https://angular.io/api/core/Component#preserveWhitespaces)
 
-- [preserveWhitespaces in the Angular docs](https://angular.io/api/core/Component#preserveWhitespaces)
 
 ### Tree-shaking
 
-For the final version of our applications we usually don't use the entire code which is provided by Angular and/or any third-party library, even the one that we've written. Thanks to the static nature of the ES2015 modules, we're able to get rid of the code which is not referenced in our apps.
+Para a versão final das nossas aplicações, normalmente nós não usamos todo o código fornecido pelo Angular e/ou por bibliotecas de terceiros, até mesmo daquelas que nós escrevemos. Graças a natureza estática dos módulos ES2015, nós conseguimos nos livrar do código que não é utilizado nos nossos apps.
 
-**Example**
+**Exemplo**
 
 ```javascript
 // foo.js
@@ -128,14 +128,14 @@ export bar = () => 'bar';
 import { foo } from './foo';
 console.log(foo());
 ```
-Once we tree-shake and bundle `app.js` we'll get:
+Quando fazemos o tree-shake e compilamos o `app.js` nós temos
 
 ```javascript
 let foo = () => 'foo';
 console.log(foo());
 ```
 
-This means that the unused export `bar` will not be included into the final bundle.
+Isso significa que não vamos incluir no nosso bundle final o export `bar` não utiizado
 
 **Tooling**
 
