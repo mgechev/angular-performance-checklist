@@ -19,44 +19,44 @@ Algumas práticas impactam nas duas categorias então pode haver alguma interce�
 
 A maioria das subseções com lista de ferramentas, relacionadas a prática específicas, podem nos fazer mais eficientes ao automatizar o nosso fluxo de desenvolvimento
 
+Note que a maioria das práticas são válidas tanto para HTTP/1.1 quanto para HTTP2. Práticas que servem apenas para um protocolo específico será mencionado a versão que ele se aplica.
 
-Note that most practices are valid for both HTTP/1.1 and HTTP/2. Practices which make an exception will be mentioned by specifying to which version of the protocol they could be applied.
 
-## Table of Content
+## Sumário
 
-- [Angular Performance Checklist](#angular-2-performance-checklist)
-  - [Introduction](#introduction)
-  - [Table of Content](#table-of-content)
-  - [Network performance](#network-performance)
+- [Checklist de Performance do Angular](#angular-2-performance-checklist)
+  - [Introdução](#introduction)
+  - [Sumário](#table-of-content)
+  - [Performance de Rede](#network-performance)
     - [Bundling](#bundling)
-    - [Minification and Dead code elimination](#minification-and-dead-code-elimination)
-    - [Remove template whitespace](#remove-template-whitespace)
+    - [Minificação e eliminação de código não utilizado](#minification-and-dead-code-elimination)
+    - [Remover espaço em branco do template](#remove-template-whitespace)
     - [Tree-shaking](#tree-shaking)
     - [Tree-shakeable providers](#tree-shakeable-providers)
-    - [Ahead-of-Time (AoT) Compilation](#ahead-of-time-aot-compilation)
-    - [Compression](#compression)
-    - [Pre-fetching Resources](#pre-fetching-resources)
-    - [Lazy-Loading of Resources](#lazy-loading-of-resources)
-    - [Don't lazy-load default route](#dont-lazy-load-the-default-route)
-    - [Caching](#caching)
-    - [Use Application Shell](#use-application-shell)
+    - [Compilação antes do tempo - Ahead-of-Time (AoT)](#ahead-of-time-aot-compilation)
+    - [Compressão](#compression)
+    - [Pré Carregamento (Pre-fetching) de Recursos](#pre-fetching-resources)
+    - [Lazy-Loading de Recursos](#lazy-loading-of-resources)
+    - [Não faça lazy-load com a rota padrão](#dont-lazy-load-the-default-route)
+    - [Cache](#caching)
+    - [Use o shell da aplicação](#use-application-shell)
     - [Use Service Workers](#use-service-workers)
-  - [Runtime Optimizations](#runtime-optimizations)
-    - [Use `enableProdMode`](#use-enableprodmode)
-    - [Ahead-of-Time Compilation](#ahead-of-time-compilation)
+  - [Otimizações de Execução](#runtime-optimizations)
+    - [Habilite o `enableProdMode`](#use-enableprodmode)
+    - [Compilação Ahead-of-Time](#ahead-of-time-compilation)
     - [Web Workers](#web-workers)
-    - [Server-Side Rendering](#server-side-rendering)
-    - [Change Detection](#change-detection)
+    - [Renderização no Servidor](#server-side-rendering)
+    - [Detenção de Mudança](#change-detection)
       - [`ChangeDetectionStrategy.OnPush`](#changedetectionstrategyonpush)
-      - [Detaching the Change Detector](#detaching-the-change-detector)
-      - [Run outside Angular](#run-outside-angular)
-    - [Use pure pipes](#use-pure-pipes)
-    - [`*ngFor` directive](#ngfor-directive)
-      - [Use `trackBy` option](#use-trackby-option)
-      - [Minimize DOM elements](#minimize-dom-elements)
-    - [Optimize template expressions](#optimize-template-expressions)
-- [Conclusion](#conclusion)
-- [Contributing](#contributing)
+      - [Removendo o Change Detector](#detaching-the-change-detector)
+      - [Execute código fora do angular](#run-outside-angular)
+    - [Use pipes puros](#use-pure-pipes)
+    - [Diretiva `*ngFor`](#ngfor-directive)
+      - [Use a opção `trackBy`](#use-trackby-option)
+      - [Minimize os elementos do DOM](#minimize-dom-elements)
+    - [Otimize os template expressions ({{expression}})](#optimize-template-expressions)
+- [Conclusão](#conclusion)
+- [Contribuindo](#contributing)
 
 ## Network performance
 
