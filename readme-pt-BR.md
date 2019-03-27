@@ -9,7 +9,7 @@
 Este documento contém uma lista de boas práticas que vão nos ajudar a melhorar a performance das nossas aplicações. O "Checklist de Performance do Angular" cobre diferentes tópicos - de pré renderização no servidor e criação do pacote da nossa aplicação até performance em tempo de execução e otimização do sistema de detecção de mudança feita pelo framework.
 
 
-Este documento é dividio em duas seções principais:
+Este documento é dividido em duas seções principais:
 
 - Performance de rede - Lista de práticas que vão melhorar o tempo de carregamento da nossa aplicação. Ela inclui métodos para redução de latência e consumo de rede.
 
