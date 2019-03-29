@@ -139,25 +139,26 @@ Isso significa que não vamos incluir no nosso bundle final o export `bar` não 
 
 **Tooling**
 
-- [Webpack](https://webpack.js.org) - provides efficient bundling by performing [tree-shaking](#tree-shaking). Once the application has been bundled, it does not export the unused code so it can be safely considered as dead code and removed by Uglify.
-- [Rollup](https://github.com/rollup/rollup) - provides bundling by performing an efficient tree-shaking, taking advantage of the static nature of the ES2015 modules.
-- [Google Closure Compiler](https://github.com/google/closure-compiler) - performs plenty of optimizations and provides bundling support. Originally written in Java, since recently it has also a [JavaScript version](https://www.npmjs.com/package/google-closure-compiler-js) which can be [found here](https://www.npmjs.com/package/google-closure-compiler-js).
+- [Webpack](https://webpack.js.org) - provê um bundle eficiente fazendo uso do [tree-shaking](#tree-shaking). Uma vez que a aplicação foi empacotada (bundled), ele não exporta o código não utilizado então pode seguramente se considerado código morto e removido pelo Uglify.
+- [Rollup](https://github.com/rollup/rollup) - provê um bundle eficiente fazendo uso do tree-shaking, tendo como vantagem a natureza estática dos módulos ES2015.
+- [Google Closure Compiler](https://github.com/google/closure-compiler) - faz otimizações e tem suporte ao empacotamento (Bundling) Originalmente escrito em Java, recentemente ganhou uma [Versão em javascript](https://www.npmjs.com/package/google-closure-compiler-js) que pode ser [encontrada aqui](https://www.npmjs.com/package/google-closure-compiler-js).
 
-*Note:* GCC does not support `export *` yet, which is essential for building Angular applications because of the heavy usage of the "barrel" pattern.
+*nota:* GCC ainda não suporte `export *`, que é essencial na construções de aplicações em Angular por causa do uso do padrão "barrel".
 
-**Resources**
+**Recursos**
 
-- ["Building an Angular Application for Production"](http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/)
-- ["2.5X Smaller Angular Applications with Google Closure Compiler"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
-- ["Using pipeable operators in RxJS"](https://github.com/ReactiveX/rxjs/blob/master/doc/pipeable-operators.md)
+- ["Construindo uma aplicação em Angular para Produção (Em Inglês)"](http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/)
+- ["Aplicações em Angular 2.5x menor com Google Closure Compiler (Em Inglês)"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
+- ["Usando operadores encadeados (Pipeable) no RxJS (Em Ingles)"](https://github.com/ReactiveX/rxjs/blob/master/doc/pipeable-operators.md)
 
 ### Tree-Shakeable Providers
 
-Since the release of Angular version 6, The angular team provided a new feature to allow services to be tree-shakeable, meaning that your services will not be included in the final bundle unless they're being used by other services or components. This can help reduce the bundle size by removing unused code from the bundle.
+Desde a versão 6 do Angular, o time do angular forneceu novas feature para permitir que as services possam fazer uso do tree-shake. Isso significa que as suas services não serão incluídas no seu bundle final a não ser que elas estejam sendo utilizadas por outras services ou componentes. Isso ajuda a reduzir o tamanho do bundle reduzindo a quantidade de código não usado.
 
-You can make your services tree-shakeable by using the `providedIn` attribute to define where the service should be initialized when using the `@Injectable()` decorator. Then you should remove it from the `providers` attribute of your `NgModule` declaration as well as its import statement as follows.
+Você pode fazer as suas services usarem o tree-shake definindo o atributo `provideIn` com o lugar em que a service deve ser inicializada quando usando o decorator `@Injectable()`. Dessa forma, você pode removê-los do atributo `providers` do seu `NgModule` da seguinte forma:
 
-Before:
+
+Antes:
 
 ```ts
 // app.module.ts
@@ -174,21 +175,21 @@ import { MyService } from './app.service'
   imports: [
     ...
   ],
-  providers: [MyService],
+  providers: [MinhaService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
 ```
 
 ```ts
-// my-service.service.ts 
+// minha-service.service.ts 
 import { Injectable } from '@angular/core'
 
 @Injectable()
-export class MyService { }
+export class MinhaService { }
 ```
 
-After:
+Depois:
 
 ```ts
 // app.module.ts
@@ -211,31 +212,33 @@ export class AppModule { }
 ```
 
 ```ts
-// my-service.service.ts
+// minha-service.service.ts
 import { Injectable } from '@angular/core'
 
 @Injectable({
   providedIn: 'root'
 })
-export class MyService { }
+export class MinhaService { }
 ```
 
-If `MyService` is not injected in any component/service, then it will not be included in the bundle.
+Se `MinhaService` não for injetada em nenhum componente/service, ela não vai ser incluída no bundle final
+
+**Recursos**
+
+- [Angular Providers (Em Inglês)](https://angular.io/guide/providers)
+
+### Compilação a Ahead-of-Time (AoT)
+
+Um desafio para as ferramentas existentes por aí(Como o GCC, Rollup, etc) são os templates em tipo-HTML dos componentes, que não podem ser analizados com as suas capacidades. Isso faz o suporte ao tree-shaking menos eficientes porque eles não sabem quais diretivas estão sendo utilizadas dentro dos templates. O Compilar AoT transpila os templates do Angular para JavaScript ou TypeScript com os imports do ES2015. Dessa forma, nós conseguimos fazer um tree-shake eficiente durante o processo de bundling e removemos todas as diretivas não utilizadas que foram definidas pelo Angular, bibliotecas de terceiros ou por nós mesmos.
+
 
 **Resources**
 
-- [Angular Providers](https://angular.io/guide/providers)
+- ["Compilação Ahead-of-Time no Angular (Em Inglês)"](http://blog.mgechev.com/2016/08/14/ahead-of-time-compilation-angular-offline-precompilation/)
 
-### Ahead-of-Time (AoT) Compilation
+### Compressão
 
-A challenge for the available in the wild tools (such as GCC, Rollup, etc.) are the HTML-like templates of the Angular components, which cannot be analyzed with their capabilities. This makes their tree-shaking support less efficient because they're not sure which directives are referenced within the templates. The AoT compiler transpiles the Angular HTML-like templates to JavaScript or TypeScript with ES2015 module imports. This way we are able to efficiently tree-shake during bundling and remove all the unused directives defined by Angular, third-party libraries or by ourselves.
-
-**Resources**
-
-- ["Ahead-of-Time Compilation in Angular"](http://blog.mgechev.com/2016/08/14/ahead-of-time-compilation-angular-offline-precompilation/)
-
-### Compression
-
+Comprimir as respostas do servidor é uma prática para reduzir o consumo de banda. Ao especificar o valor do cabeçalho `Accept-Encoding`, o browser diz para o servidor quais são os algoritmos disponíveis na máquina do cliente. Do outro lado, o servidor seta o valor do cabeçalho `Content-Encoding` da resposta com a finalidade de dizer ao browser quais algoritmos foram escolhidos para comprimir as respostas.
 Compression of the responses' payload is a standard practice for bandwidth usage reduction. By specifying the value of the header `Accept-Encoding`, the browser hints the server which compression algorithms are available on the client's machine. On the other hand, the server sets value for the `Content-Encoding` header of the response in order to tell the browser which algorithm has been chosen for compressing the response.
 
 **Tooling**
@@ -250,27 +253,29 @@ The tooling here is not Angular-specific and entirely depends on the web/applica
 - ["Better than Gzip Compression with Brotli"](https://hacks.mozilla.org/2015/11/better-than-gzip-compression-with-brotli/)
 - ["2.5X Smaller Angular Applications with Google Closure Compiler"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
 
-### Pre-fetching Resources
+### Pré-Carregamento de Recursos
 
-Resource pre-fetching is a great way to improve the user experience. We can either pre-fetch assets (images, styles, modules intended to be [loaded lazily](#lazy-loading-of-resources), etc.) or data. There are different pre-fetching strategies but most of them depend on specifics of the application.
+O pré-carregamento de recursos é uma ótima forma de melhorar a experiência do usuário. Nós podemos inclusive pré-carregar (pre-fetch) assets (imagens, css, módulos que serão carregados com [lazy load](#lazy-loading-of-resources), etc) ou dados. Existem diferentes estratégias de pré-carregamento mas a maioria depende da especificidade da aplicação
 
-### Lazy-Loading of Resources
 
-In case the target application has a huge code base with hundreds of dependencies, the practices listed above may not help us reduce the bundle to a reasonable size (reasonable might be 100K or 2M, it again, completely depends on the business goals).
+### Carregamento Tardio de Recursos (Lazy Load)
 
-In such cases a good solution might be to load some of the application's modules lazily. For instance, lets suppose we're building an e-commerce system. In this case we might want to load the admin panel independently from the user-facing UI. Once the administrator has to add a new product we'd want to provide the UI required for that. This could be either only the "Add product page" or the entire admin panel, depending on our use case/business requirements.
+Caso a aplicação tenha uma abse de código muito grande, com centenas de dependencias, a prática listada acima pode não nos ajudar a reduzir o tamanho do pacote da nossa aplicação para um tamanho aceitável (Aceitável pode ser 100K ou 2M. Isso, de novo, depende completamente do objetivo da aplicação)
+
+Nesses casos, uma boa solução pode ser carregar alguns comentes da aplicação tardiamente. Por exemplo, vamos supor que estamos construindo um sistema de ecommerce. Nesse caso, nós gostariamos de carregar o painel de administração independentemente da interface que os usuários irão ver. Uma vez que o administrador cadastro um novo produto, a gente quer fornecer a interface para aquele produto. Pode ser apenas a página de adicionar um produto ou o painel inteiro, dependendo dos requisitos do negócio.
 
 **Tooling**
 
 - [Webpack](https://github.com/webpack/webpack) - allows asynchronous module loading.
 - [ngx-quicklink](https://github.com/mgechev/ngx-quicklink) - router preloading strategy which automatically downloads the lazy-loaded modules associated with all the visible links on the screen
 
-### Don't Lazy-Load the Default Route
+### Não use Lazy-Load na rota padrão
 
+Vamos supor que nós temos a seguinte configuração de rota
 Lets suppose we have the following routing configuration:
 
 ```ts
-// Bad practice
+// Má Prática
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'dashboard',  loadChildren: './dashboard.module#DashboardModule' },
@@ -278,21 +283,21 @@ const routes: Routes = [
 ];
 ```
 
-The first time the user opens the application using the url: https://example.com/ they will be redirected to `/dashboard` which will trigger the lazy-route with path `dashboard`. In order Angular to render the bootstrap component of the module, it will has to download the file `dashboard.module` and all of its dependencies. Later, the file needs to be parsed by the JavaScript VM and evaluated.
+A primeira vez que o usuário abrir a aplicação usando a url: https://exemplo.com ele vão ser redirecionado para o `/dashboard` que vai disparar a rota `dashboard` que está configurada para carregar com lazy lado. Para o Angular conseguir renderizar o componente do módulo, ele vai ter que baixar o arquivo `dashboard.module` e todas as suas dependências. Depois, os arquivos serão lidos pelo JavaScript VM e então processados.
 
-Triggering extra HTTP requests and performing unnecessary computations during the initial page load is a bad practice since it slows down the initial page rendering. Consider declaring the default page route as non-lazy.
+Disparar uma requisição HTTP extra e fazer processamento desnecessário durante o carregamento da página inicial é uma má prática já que aumenta o tempo para renderizar a página inicial. Considere declarar a rota padrão sem usar o Lazy-Load
 
-### Caching
+### Cache
 
-Caching is another common practice intending to speed-up our application by taking advantage of the heuristic that if one resource was recently been requested, it might be requested again in near future.
 
-For caching data we usually use a custom caching mechanism. For caching static assets we can either use the standard browser caching or Service Workers with the [CacheStorage API](https://developer.mozilla.org/en-US/docs/Web/API/Cache).
+Cache é outra forma bem comum para acelerar a nossa aplicação tendo como heurística que se um recurso foi recentemente requisitado, ele pode ser requisitado em um futuro próximo.
+Para o cache, nós normalmente utilizamos macanismos customizados de Cache. Para arquivos estáticos nós podemos usar o cache padrão do navegador ou usar Service Workers com o [CacheStorage API](https://developer.mozilla.org/en-US/docs/Web/API/Cache).
 
-### Use Application Shell
+### Use uma Casca da Aplicação
 
-To make the perceived performance of your application faster, use an [Application Shell](https://developers.google.com/web/updates/2015/11/app-shell).
+Para fazer a performance percebida da sua aplicação, use uma [Casca da Aplicação](https://developers.google.com/web/updates/2015/11/app-shell).
 
-The application shell is the minimum user interface that we show to the users in order to indicate them that the application will be delivered soon. For generating an application shell dynamically you can use Angular Universal with custom directives which conditionally show elements depending on the used rendering platform (i.e. hide everything except the App Shell when using `platform-server`).
+A casca da aplicação é uma interface mínima, que mostra aos usuários como a aplicação será entregue a eles. Para gerar uma casca da aplicação dinamicamente, você pode usar o Angular Universao com diretivas customizadas que condicionalmente exibe os elementos dependendo da plataforma onde está sendo renderizados (Exemplo: Esconda tudo exceto a Casca da Aplicação quando estiver usando `platform-server`).
 
 **Tooling**
 
@@ -305,7 +310,7 @@ The application shell is the minimum user interface that we show to the users in
 
 ### Use Service Workers
 
-We can think of the Service Worker as an HTTP proxy which is located in the browser. All requests sent from the client are first intercepted by the Service Worker which can either handle them or pass them through the network.
+Nós podemos pensar no Service Worker com um proxy HTTP que fica no Browser. Todas as requisiçõs feitas do cliente são interceptadas pelo Service Worker que pode processá-las ou passar adiante para a rede.
 
 You can add a Service Worker to your Angular project by running
 ``` ng add @angular/pwa ```
@@ -320,15 +325,15 @@ You can add a Service Worker to your Angular project by running
 - ["The offline cookbook"](https://jakearchibald.com/2014/offline-cookbook/)
 - ["Getting started with service workers"](https://angular.io/guide/service-worker-getting-started)
 
-## Runtime Optimizations
+## Otimizações em tempode execução
 
-This section includes practices which can be applied in order to provide smoother user experience with 60 frames per second (fps).
+Essa seção inclui práticas que podem ser aplicadas para fornecer uma experiencia fluída para os nossos usuários com 60 frames por segundo (fps)
 
 ### Use `enableProdMode`
 
-In development mode Angular performs some extra checks in order to verify that performing change detection does not result to any additional changes to any of the bindings. This way the frameworks assures that the unidirectional data flow has been followed.
+No modo de desenvolvimento, o Angular faz algumas checagens extras para verificar se o sistema de detecção de mudança não resultou em nenhuma diferença para nenhum dos bindings. Dessa forma, a framework garante que o fluxo unidirecional dos dados está sendo seguido.
 
-In order to disable these changes for production do not forget to invoke `enableProdMode`:
+Para desabilitar essas checagens adicionais em produção, não se esqueça de executar `enableProdMode`: 
 
 ```typescript
 import { enableProdMode } from '@angular/core';
@@ -338,9 +343,9 @@ if (ENV === 'production') {
 }
 ```
 
-### Ahead-of-Time Compilation
+### Compilação Ahead-of-Time
 
-AoT can be helpful not only for achieving more efficient bundling by performing tree-shaking, but also for improving the runtime performance of our applications. The alternative of AoT is Just-in-Time compilation (JiT) which is performed runtime, therefore we can reduce the amount of computations required for rendering of our application by performing the compilation as part of our build process.
+AoT pode ser útil não apenas por fazer bundles mais eficientes usando o tree-shake, mas também por fornecer performence em tempo de execução na nossa aplicação. A Alternativa ao AoT é a Compilação em Tempo de Execução (Just-in-Time [JiT]) que é feita durante a execução do código, portante nós podemos reduzir a quantidade de processamento  necessária para a nossa aplicação fazendo com que a compilação seja parte do processo de build
 
 **Tooling**
 
@@ -353,9 +358,10 @@ AoT can be helpful not only for achieving more efficient bundling by performing 
 
 ### Web Workers
 
-Usual problem in the typical single-page application (SPA) is that our code is usually run in a single thread. This means that if we want to achieve smooth user experience with 60fps we have **at most 16ms** for execution between the individual frames are being rendered, otherwise they'll drop by half.
+Um problema típico das aplicações Single-Page (Single-Page Apllications [SPA]) é que noss código normalemte roda em uma única thread. Isso significa que se nós quisermos fornecer uma experiência mais fluída aos nossos usuários com 60fps nós temos **no máximo 16ms** para executar cada frame que será renderizado, caso contrário essa valor cai pela metade.
 
-In complex application with huge component tree, where the change detection needs to perform millions of check each second it will not be hard to start dropping frames. Thanks to the platform agnosticism of Angular and it being decoupled from DOM architecture it's possible to run our entire application (including change detection) in a Web Worker and leave the main UI thread responsible only for rendering.
+Em aplicações complexas com um DOM muito grande, onde o sistema de detecção de mudança precisa realizar milhares de checagens a cada segundo não vai ser muito difícil começar a perder frames. Graças a plataforma agnóstica do Angular e ele ser desacoplado da arquitetura do DOM é possível rodar a nossa aplicação inteira, (inclusive a detecção de mudanças) em um Web Worker e deixar a thread principal responsável apenas pela renderização da interface.
+
 
 **Tooling**
 
@@ -368,12 +374,12 @@ In complex application with huge component tree, where the change detection need
 
 ### Server-Side Rendering
 
-A big issue of the traditional SPA is that they cannot be rendered until the entire JavaScript required for their initial rendering is available. This leads to two big problems:
+Um grande problema das SPA é que elas não podem ser renderizadas até que todo o Javascript necessário para a renderização inicial esteja disponível. Isso nos leva a 2 grandes problemas:
 
-- Not all search engines are running the JavaScript associated to the page so they are not able to index the content of dynamic apps properly.
-- Poor user experience, since the user will see nothing more than a blank/loading screen until the JavaScript associated with the page is downloaded, parsed and executed.
+- Nem todos os motores de busca estão rodando o Javascript associado a página ent então elas não conseguem indexar adequadamente o conteúdo dinâmico da nossa aplicação
+- Má experiência para o usuário, já que ele não vai ver nada do que uma tela em branco  ou carregando até que todo o JavaScript associado à página seja baixado, processado e executado.
 
-Server-side rendering solves this issue by pre-rendering the requested page on the server and providing the markup of the rendered page during the initial page load.
+A renderização no lado do Servidor (SSR) resolve esses problemas pré-renderizando estas páginas no servidor e fornecendo o conteúdo da página durante a etapa inicial de carregamento.
 
 **Tooling**
 
@@ -562,3 +568,4 @@ In case you notice something missing, incomplete or incorrect, a pull request wi
 # License
 
 MIT
+
