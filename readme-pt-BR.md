@@ -312,6 +312,10 @@ A casca da aplicação é uma interface mínima, que mostra aos usuários como a
 
 Nós podemos pensar no Service Worker com um proxy HTTP que fica no Browser. Todas as requisiçõs feitas do cliente são interceptadas pelo Service Worker que pode processá-las ou passar adiante para a rede.
 
+Você pode adicionar um Service Worker ao seu projeto ocm o seguinte comando
+``` ng add @angular/pwa ```
+
+
 **Ferramentas**
 
 - [Angular Service Worker](https://angular.io/guide/service-worker-intro) - aims to automate the process of managing Service Workers. It also contains Service Worker for caching static assets, and one for [generating application shell](https://developers.google.com/web/updates/2015/11/app-shell?hl=en).
@@ -320,7 +324,7 @@ Nós podemos pensar no Service Worker com um proxy HTTP que fica no Browser. Tod
 **Recursos**
 
 - ["The offline cookbook"](https://jakearchibald.com/2014/offline-cookbook/)
-- ["Getting started with service workers"](https://angular.io/guide/service-worker-getting-started)
+- ["Iniciando com Service Workers (Em Inglês)"](https://angular.io/guide/service-worker-getting-started)
 
 ## Otimizações em tempode execução
 
