@@ -2,7 +2,10 @@
 
 <img src="./assets/flash.png" width="1000">
 
-[中文版](./README.zh-CN.md) [Русский](./README.ru-RU.md)
+- [中文版](./README.zh-CN.md)
+- [Русский](./README.ru-RU.md)
+- [Português](./readme-pt-BR.md)
+
 ## Introduction
 
 This document contains a list of practices which will help us boost the performance of our Angular applications. "Angular Performance Checklist" covers different topics - from server-side pre-rendering and bundling of our applications, to runtime performance and optimization of the change detection performed by the framework.
