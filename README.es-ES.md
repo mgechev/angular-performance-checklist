@@ -42,17 +42,17 @@ Tenga en cuenta que la mayoría de prácticas son válidas para HTTP/1.1 y HTTP/
     - [Use Application Shell](#shell-de-la-aplicación)
     - [Use Service Workers](#service-workers)
   - [Optimizaciones en ejecución](#optimizaciones-en-ejecución)
-    - [Utilizar `enableProdMode`](#enableProdMode)
+    - [Utilizar enableProdMode](#enableProdMode)
     - [Compilación Ahead-of-Time](#compilación-ahead-of-time)
     - [Web Workers](#web-workers)
     - [Server-Side Rendering](#server-side-rendering)
     - [Detección del cambio](#detección-del-cambio)
-      - [`ChangeDetectionStrategy.OnPush`](#changedetectionstrategyonpush)
+      - [ChangeDetectionStrategy.OnPush](#changedetectionstrategyonpush)
       - [Desacoplando el detector de cambios](#desacoplando-el-detector-de-cambios)
       - [Ejecución fuera de Angular](#ejecución-fuera-de-Angular)
     - [Pipes puros](#pipes-puros)
-    - [Directiva `*ngFor`](#directiva-ngFor)
-      - [Utilizar opción `trackBy`](#utilizar-opción-trackBy)
+    - [Directiva *ngFor](#directiva-ngFor)
+      - [Utilizar opción trackBy](#utilizar-opción-trackBy)
       - [Minimizar elementos del DOM](#minimizar-elementos-del-DOM)
     - [Optimizar expresiones en plantilla](#optimizar-expresiones-en-plantilla-Template-expressions)
 - [Conclusión](#conclusión)
@@ -78,7 +78,7 @@ Las herramientas que nos permiten empaquetar nuestras aplicaciones de forma efic
 - [Webpack Code Splitting](https://webpack.js.org/guides/code-splitting/) - Técnicas para dividir el código.
 - [Webpack & http2](https://medium.com/webpack/webpack-http-2-7083ec3f3ce6#.46idrz8kb) - Necesario para dividir el código usando http2.
 - [Rollup](https://github.com/rollup/rollup) - Ofrece un bundle eficiente haciendo uso de "tree-shaking", aprovechando la naturaleza estática de los módulos ES2015.
-- [Google Closure Compiler](https://github.com/google/closure-compiler) - realiza un montón de optimizaciones y proporciona soporte para el bundle. Originalmente escrito en Java, desde hace poco también tiene una [version JavaScript](https://www.npmjs.com/package/google-closure-compiler-js) la cual puede encontrarse [aquí](https://www.npmjs.com/package/google-closure-compiler-js).
+- [Google Closure Compiler](https://github.com/google/closure-compiler) - realiza un montón de optimizaciones y proporciona soporte para el bundle. Originalmente escrito en Java, desde hace poco también tiene una [version JavaScript](https://www.npmjs.com/package/google-closure-compiler) la cual puede encontrarse [aquí](https://www.npmjs.com/package/google-closure-compiler).
 - [SystemJS Builder](https://github.com/systemjs/builder) - Proporciona la generación de un único archivo para módulos mixtos de inyección de dependencias de SystemJS.
 - [Browserify](http://browserify.org/).
 - [ngx-build-modern](https://github.com/manfredsteyer/ngx-build-plus/tree/master/ngx-build-modern) - plugin para Angular-CLI el cual genera paquetes de dos maneras:
@@ -97,7 +97,7 @@ Estas prácticas nos permiten minimizar el consumo de ancho de banda reduciendo 
 **Herramientas**
 
 - [Uglify](https://github.com/mishoo/UglifyJS) - Realiza la minificación como el nombre de las variables, elimina comentarios y espacios en blanco, elimina código no utilizado (dead code), etc. Escrito completamente en JavaScript, tiene varios plugins para todos los task runners más populares.
-- [Google Closure Compiler](https://github.com/google/closure-compiler) - Realiza la minificación de forma similar a uglify. En modo avanzado, transforma el AST (Sintaxis abstracta del árbol) de nuestro programa de forma agresiva para poder realizar optimizaciones aún más sofisticadas. También tiene una [versión JavaScript](https://www.npmjs.com/package/google-closure-compiler-js) que puedes [encontrar aquí](https://www.npmjs.com/package/google-closure-compiler-js). GCC también soporta *la sintaxis de la mayoría de módulos ES2015* por lo que puede [implementar tree-shaking](#tree-shaking).
+- [Google Closure Compiler](https://github.com/google/closure-compiler) - Realiza la minificación de forma similar a uglify. En modo avanzado, transforma el AST (Sintaxis abstracta del árbol) de nuestro programa de forma agresiva para poder realizar optimizaciones aún más sofisticadas. También tiene una [versión JavaScript](https://www.npmjs.com/package/google-closure-compiler) que puedes [encontrar aquí](https://www.npmjs.com/package/google-closure-compiler). GCC también soporta *la sintaxis de la mayoría de módulos ES2015* por lo que puede [implementar tree-shaking](#tree-shaking).
 
 **Recursos**
 
@@ -142,9 +142,9 @@ Esto significa que la exportación `bar` no utilizada no estará incluida en el 
 
 - [Webpack](https://webpack.js.org) - Proporciona un bundling eficiente mediante el [tree-shaking](#tree-shaking). Una vez la aplicación ha sido empaquetada, ésta no exporta el código no utilizado con lo que podremos considerar de manera segura la eliminación de código no utilizado con Uglify.
 - [Rollup](https://github.com/rollup/rollup) - Ofrece un bundle eficiente haciendo uso de "tree-shaking", aprovechando la naturaleza estática de los módulos ES2015.
-- [Google Closure Compiler](https://github.com/google/closure-compiler) - realiza un montón de optimizaciones y proporciona soporte para el bundle. Originalmente escrito en Java, desde hace poco también tiene una [version JavaScript](https://www.npmjs.com/package/google-closure-compiler-js) la cual puede encontrarse [aquí](https://www.npmjs.com/package/google-closure-compiler-js).
+- [Google Closure Compiler](https://github.com/google/closure-compiler) - realiza un montón de optimizaciones y proporciona soporte para el bundle. Originalmente escrito en Java, desde hace poco también tiene una [version JavaScript](https://www.npmjs.com/package/google-closure-compiler) la cual puede encontrarse [aquí](https://www.npmjs.com/package/google-closure-compiler).
 
-*Note:* GCC todavía no sporta `export *` , el cual es fundamental para la construcción de aplicaciones angular por el amplío uso del patrón "barrel".
+*Nota:* GCC todavía no sporta `export *` , el cual es fundamental para la construcción de aplicaciones angular por el amplío uso del patrón "barrel".
 
 **Recursos**
 
@@ -254,8 +254,7 @@ Las herramientas aquí no son específicas de Angular y dependen completamente d
 
 ### Precarga de recursos (Pre-fetching)
 
-Resource pre-fetching is a great way to improve the user experience. We can either pre-fetch assets (images, styles, modules intended to be [loaded lazily](#lazy-loading-of-resources), etc.) or data. There are different pre-fetching strategies but most of them depend on specifics of the application.
-La precarga de recursos es una gran manera de mejorar la experiencia de usuario. Podemos precargar assets (imágenes, estilos, modulos que serán cargados de [forma diferida](#lazy-loading-of-resources) (Lazy Load), etc.)
+La precarga de recursos es una gran manera de mejorar la experiencia de usuario. Podemos precargar assets (imágenes, estilos, modulos que serán cargados de [forma diferida](#lazy-loading-of-resources) (Lazy Load), etc.) o datos. Hay diferentes estrategias de precarga pero la mayoría de ellas dependen de cada aplicación.
 
 ### Carga diferida de recursos (Lazy load)
 
@@ -282,9 +281,7 @@ const routes: Routes = [
 ];
 ```
 
-LA primera vez que el usuario abre la aplicación usando la url: https://example.com/ será redirigido hacia `/dashboard` la cual disparará la carga diferida (lazy-route) con la ruta `dashboard`. Para que Angular renderice el componente del módulo, deberá descargar el fichero `dashboard.module` y todas sus dependencias. Después, el archivo será parseado por la JavaScript VM y será evaluado.
-
-Triggering extra HTTP requests and performing unnecessary computations during the initial page load is a bad practice since it slows down the initial page rendering. Consider declaring the default page route as non-lazy.
+La primera vez que el usuario abre la aplicación usando la url: https://example.com/ será redirigido hacia `/dashboard` la cual disparará la carga diferida (lazy-route) con la ruta `dashboard`. Para que Angular renderice el componente del módulo, deberá descargar el fichero `dashboard.module` y todas sus dependencias. Después, el archivo será parseado por la JavaScript VM y será evaluado.
 
 Disparar solicitudes HTTP extra y ejecutar cálculos innecesarios durante la carga inicial es una mala práctica y ralentizará el renderizado de la página inicial. Considere declarar la ruta de la página predeterminada como no diferida (non-lazy).
 
@@ -315,8 +312,7 @@ El shell de la aplicación es la interfaz de usuario mínima que mostramos a los
 
 Podemos pensar de los Service Worker como un proxy HTTP que está en el navegador. Todas las peticiones enviadas desde el cliente son interceptadas primero por el Service Worker el cual puede procesarlas o enviarlas a través de la red.
 
-Puedes añadir un Service Worker a tu proyecto Angular ejecutando
-``` ng add @angular/pwa ```
+Puedes añadir un Service Worker a tu proyecto Angular ejecutando ``` ng add @angular/pwa ```
 
 **Herramientas**
 
@@ -330,12 +326,11 @@ Puedes añadir un Service Worker a tu proyecto Angular ejecutando
 
 ## Optimizaciones en ejecución
 
-This section includes practices which can be applied in order to provide smoother user experience with 60 frames per second (fps).
 Esta sección incluye prácticas que podrán ser aplicadas con el fin de proporcionar una experiencia de usuario más suave con 60fps (Frames por segundo).
 
 ### Utilizar `enableProdMode`
 
-En el modo de desarrollo, Angular realiza algunas comprobaciones adicionales para verificar que la detección del cambio no produce ninguna diferencia para alguno de los bindings. De esta manera el framework garantiza que el flujo unidireccional de los datos ha sido seguido.
+En el ambiente de desarrollo, Angular realiza algunas comprobaciones adicionales para verificar que la detección del cambio no produce ninguna diferencia para alguno de los bindings. De esta manera el framework garantiza que el flujo unidireccional de los datos ha sido seguido.
 
 Para deshabilitar estos cambios para producción no olvide habilitar `enableProdMode`:
 
@@ -348,8 +343,6 @@ if (ENV === 'production') {
 ```
 
 ### Compilación Ahead-of-Time
-
-AoT can be helpful not only for achieving more efficient bundling by performing tree-shaking, but also for improving the runtime performance of our applications. The alternative of AoT is Just-in-Time compilation (JiT) which is performed runtime, therefore we can reduce the amount of computations required for rendering of our application by performing the compilation as part of our build process.
 
 Aot puede ser beneficioso no solo para asegurarnos bundles más eficientes aplicando "tree-shaking", sino también para mejorar el rendimiento en tiempo de ejecución de nuestras aplicaciones. La alternativa de Aot es la compilación Just-in-Time (JiT) que se realiza en tiempo de ejecución, por lo tanto, podemos reducir la cantidad de cálculos necesarios para la representación de nuestra aplicación al realizar la compilación como parte de nuestro proceso de construcción.
 
