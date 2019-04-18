@@ -9,7 +9,7 @@
 
 ## Introducción
 
-Este documento contiene una lista de prácticas las cuales nos ayudarán a aumentar el rendimiento de nuestras aplicaciones Angular. "Angular performance Checklist" cubre diferentes temas - desde server-side pre-rendering y empaquetado de nuestras aplicaciones, hasta redimiento en ejecución y optimización de la detección del cambio realizada por el framework.
+Este documento contiene una lista de prácticas las cuales nos ayudarán a aumentar el rendimiento de nuestras aplicaciones Angular. "Angular performance Checklist" cubre diferentes temas - desde server-side pre-rendering y bundle de nuestras aplicaciones, hasta redimiento en ejecución y optimización de la detección del cambio realizada por el framework.
 
 El documento se divide en dos secciones principales:
 
@@ -28,7 +28,7 @@ Tenga en cuenta que la mayoría de prácticas son válidas para HTTP/1.1 y HTTP/
   - [Introducción](#Introducción)
   - [Índice](#Índice)
   - [Rendimiento de red](#rendimiento-de-red)
-    - [Bundling (Empaquetado)](#bundling-Empaquetado)
+    - [Bundling](#bundling)
     - [Minification and Dead code elimination](#minification-and-dead-code-elimination)
     - [Remove template whitespace](#remove-template-whitespace)
     - [Tree-shaking](#tree-shaking)
@@ -62,9 +62,9 @@ Tenga en cuenta que la mayoría de prácticas son válidas para HTTP/1.1 y HTTP/
 
 Algunas de las herramientas en esta sección están aún en desarrollo y sujetas a cambios. El equipo de "Angular core" está trabajando en automatizar el proceso de compilación de nuestras aplicaciones tanto como sea posible para que muchas cosas ocurran de forma transparente.
 
-### Bundling (Empaquetado)
+### Bundling
 
-Bundling o empaquetado es una práctica estándar que permite reducir el número de solicitudes que el navegador necesita para entregar la aplicación solicitada por el usuario. En esencia, el "bundler" recibe una lista de puntos de entrada y los junta en uno o más bundles (paquetes). De esta manera, el navegador puede obtener la aplicación completa realizando solo unas pocas solicitudes, en vez de ir solicitando de forma separada cada fichero.
+Bundling o empaquetado es una práctica estándar que permite reducir el número de solicitudes que el navegador necesita para entregar la aplicación solicitada por el usuario. En esencia, el "bundler" recibe una lista de puntos de entrada y los junta en uno o más bundles. De esta manera, el navegador puede obtener la aplicación completa realizando solo unas pocas solicitudes, en vez de ir solicitando de forma separada cada fichero.
 
 Así como crezca tu aplicación empaquetar todo en un único fichero puede ser contraproducente. Vea las técnicas de división de código usando Webpack.
 
@@ -74,11 +74,11 @@ Así como crezca tu aplicación empaquetar todo en un único fichero puede ser c
 
 Las herramientas que nos permiten empaquetar nuestras aplicaciones de forma eficiente son:
 
-- [Webpack](https://webpack.js.org) - Ofrece un empaquetado eficiente mediante la realización de [tree-shaking](#tree-shaking).
+- [Webpack](https://webpack.js.org) - Ofrece un bundle eficiente mediante la realización de [tree-shaking](#tree-shaking).
 - [Webpack Code Splitting](https://webpack.js.org/guides/code-splitting/) - Técnicas para dividir el código.
 - [Webpack & http2](https://medium.com/webpack/webpack-http-2-7083ec3f3ce6#.46idrz8kb) - Necesario para dividir el código usando http2.
-- [Rollup](https://github.com/rollup/rollup) - Ofrece un empaquetado eficiente haciendo uso de "tree-shaking", aprovechando la naturaleza estática de los módulos ES2015.
-- [Google Closure Compiler](https://github.com/google/closure-compiler) - realiza un montón de optimizaciones y proporciona soporte para el empaquetado. Originalmente escrito en Java, desde hace poco también tiene una [version JavaScript](https://www.npmjs.com/package/google-closure-compiler-js) la cual puede encontrarse [aquí](https://www.npmjs.com/package/google-closure-compiler-js).
+- [Rollup](https://github.com/rollup/rollup) - Ofrece un bundle eficiente haciendo uso de "tree-shaking", aprovechando la naturaleza estática de los módulos ES2015.
+- [Google Closure Compiler](https://github.com/google/closure-compiler) - realiza un montón de optimizaciones y proporciona soporte para el bundle. Originalmente escrito en Java, desde hace poco también tiene una [version JavaScript](https://www.npmjs.com/package/google-closure-compiler-js) la cual puede encontrarse [aquí](https://www.npmjs.com/package/google-closure-compiler-js).
 - [SystemJS Builder](https://github.com/systemjs/builder) - Proporciona la generación de un único archivo para módulos mixtos de inyección de dependencias de SystemJS.
 - [Browserify](http://browserify.org/).
 - [ngx-build-modern](https://github.com/manfredsteyer/ngx-build-plus/tree/master/ngx-build-modern) - plugin para Angular-CLI el cual genera paquetes de dos maneras:
@@ -101,7 +101,7 @@ Estas prácticas nos permiten minimizar el consumo de ancho de banda reduciendo 
 
 **Recursos**
 
-- ["Compilando una aplicación Angular para producción"](http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/)
+- ["Compilando una aplicación angular para producción"](http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/)
 - ["Aplicaciones 2.5 veces más pequeñas usando Google Closure Compiler"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
 
 ### Eliminar espacios en blanco de las plantillas
@@ -110,15 +110,15 @@ Aunque no veamos el carácter de espacio en blanco (Un caracter que coincida con
 
 Thankfully, we don't have to do this manually. The `ComponentMetadata` interface provides the property `preserveWhitespaces` which by default has value `false`, because removing the whitespace always may influence the DOM layout. In case we set the property to `false` Angular will trim the unnecessary whitespace which will lead to further reduction of the bundle size.
 
-Afortunadamente, no tenemos que hacer esto manualmente. La Interface `ComponentMetadata` ofrece la propiedad `preserveWhitespaces` la cual por defecto tiene valor `false`, porque eliminando los espacios en blanco siempre puede modificar la estructura del DOM. En el caso que cambiemos la propiedad a `true` Angular eliminará los espacios en blancos innecesarios, disminuyendo el tamaño final del empaquetado.
+Afortunadamente, no tenemos que hacer esto manualmente. La Interface `ComponentMetadata` ofrece la propiedad `preserveWhitespaces` la cual por defecto tiene valor `false`, porque eliminando los espacios en blanco siempre puede modificar la estructura del DOM. En el caso que cambiemos la propiedad a `true` Angular eliminará los espacios en blancos innecesarios, disminuyendo el tamaño final del bundle.
 
 - [preserveWhitespaces en la documentación de Angular](https://angular.io/api/core/Component#preserveWhitespaces)
 
 ### Tree-shaking
 
-For the final version of our applications we usually don't use the entire code which is provided by Angular and/or any third-party library, even the one that we've written. Thanks to the static nature of the ES2015 modules, we're able to get rid of the code which is not referenced in our apps.
+Para la versión final de nuestra aplicación normalmente no usaremos el código entero que ofrece Angular y/u otras librerías de terceros, o incluso el que hemos escrito nosotros. Gracias a la naturaleza estática de los módulos ES2015, tenemos la posibilidad de deshacernos del código que no usamos en nuestras aplicaciones.
 
-**Example**
+**Ejemplo**
 
 ```javascript
 // foo.js
@@ -129,36 +129,36 @@ export bar = () => 'bar';
 import { foo } from './foo';
 console.log(foo());
 ```
-Once we tree-shake and bundle `app.js` we'll get:
+Una vez aplicado "tree-shake" en el bundle `app.js` obtendremos:
 
 ```javascript
 let foo = () => 'foo';
 console.log(foo());
 ```
 
-This means that the unused export `bar` will not be included into the final bundle.
+Esto significa que la exportación `bar` no utilizada no estará incluida en el bundle final.
 
-**Tooling**
+**Herramientas**
 
-- [Webpack](https://webpack.js.org) - provides efficient bundling by performing [tree-shaking](#tree-shaking). Once the application has been bundled, it does not export the unused code so it can be safely considered as dead code and removed by Uglify.
-- [Rollup](https://github.com/rollup/rollup) - provides bundling by performing an efficient tree-shaking, taking advantage of the static nature of the ES2015 modules.
-- [Google Closure Compiler](https://github.com/google/closure-compiler) - performs plenty of optimizations and provides bundling support. Originally written in Java, since recently it has also a [JavaScript version](https://www.npmjs.com/package/google-closure-compiler-js) which can be [found here](https://www.npmjs.com/package/google-closure-compiler-js).
+- [Webpack](https://webpack.js.org) - Proporciona un bundling eficiente mediante el [tree-shaking](#tree-shaking). Una vez la aplicación ha sido empaquetada, ésta no exporta el código no utilizado con lo que podremos considerar de manera segura la eliminación de código no utilizado con Uglify.
+- [Rollup](https://github.com/rollup/rollup) - Ofrece un bundle eficiente haciendo uso de "tree-shaking", aprovechando la naturaleza estática de los módulos ES2015.
+- [Google Closure Compiler](https://github.com/google/closure-compiler) - realiza un montón de optimizaciones y proporciona soporte para el bundle. Originalmente escrito en Java, desde hace poco también tiene una [version JavaScript](https://www.npmjs.com/package/google-closure-compiler-js) la cual puede encontrarse [aquí](https://www.npmjs.com/package/google-closure-compiler-js).
 
-*Note:* GCC does not support `export *` yet, which is essential for building Angular applications because of the heavy usage of the "barrel" pattern.
+*Note:* GCC todavía no sporta `export *` , el cual es fundamental para la construcción de aplicaciones angular por el amplío uso del patrón "barrel".
 
-**Resources**
+**Recursos**
 
-- ["Building an Angular Application for Production"](http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/)
-- ["2.5X Smaller Angular Applications with Google Closure Compiler"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
-- ["Using pipeable operators in RxJS"](https://github.com/ReactiveX/rxjs/blob/master/doc/pipeable-operators.md)
+- ["Compilando una aplicación angular para producción"](http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/)
+- ["Aplicaciones 2.5 veces más pequeñas usando Google Closure Compiler"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
+- ["Uso de operadores encadenados (pipeable) en RxJS"](https://github.com/ReactiveX/rxjs/blob/master/doc/pipeable-operators.md)
 
 ### Tree-Shakeable Providers
 
-Since the release of Angular version 6, The angular team provided a new feature to allow services to be tree-shakeable, meaning that your services will not be included in the final bundle unless they're being used by other services or components. This can help reduce the bundle size by removing unused code from the bundle.
+Desde el lanzamiento de la versión 6 de Angular, el equipo de angular ofrece una nueva característica la cual nos permite que los servicios sean "tree-shakeable", esto significa que los servicios no estarán incluidos en la versión final de nuestro bundle a no ser que estén siendo utilizados por otros servicios o componentes. Esto puede ayudar a reducir el tamaño del bundle eliminando el código no utilizado en el bundle.
 
-You can make your services tree-shakeable by using the `providedIn` attribute to define where the service should be initialized when using the `@Injectable()` decorator. Then you should remove it from the `providers` attribute of your `NgModule` declaration as well as its import statement as follows.
+Puedes hacer tus servicios "tree-shakeables" utilizando el atributo `provideIn` para definir donde el servicio debe ser inicializado utilizando el decorador `@Injectable()`. De esta forma debes eliminar los servicios del atributo `providers` de la declaración de tu `ngModule` de la siguiente forma:
 
-Before:
+Antes:
 
 ```ts
 // app.module.ts
@@ -189,7 +189,7 @@ import { Injectable } from '@angular/core'
 export class MyService { }
 ```
 
-After:
+Después:
 
 ```ts
 // app.module.ts
@@ -221,54 +221,57 @@ import { Injectable } from '@angular/core'
 export class MyService { }
 ```
 
-If `MyService` is not injected in any component/service, then it will not be included in the bundle.
+Si `MyService` no está incluido en ningún componente/servicio, entonces no estará incluido en el bundle.
 
-**Resources**
+**Recursos**
 
 - [Angular Providers](https://angular.io/guide/providers)
 
-### Ahead-of-Time (AoT) Compilation
+### Compilación Ahead-of-Time (AoT)
 
-A challenge for the available in the wild tools (such as GCC, Rollup, etc.) are the HTML-like templates of the Angular components, which cannot be analyzed with their capabilities. This makes their tree-shaking support less efficient because they're not sure which directives are referenced within the templates. The AoT compiler transpiles the Angular HTML-like templates to JavaScript or TypeScript with ES2015 module imports. This way we are able to efficiently tree-shake during bundling and remove all the unused directives defined by Angular, third-party libraries or by ourselves.
+El desafío para las herramientas existentes (como GCC, Rollup, etc.) son las plantillas tipo-HTML de los componentes de Angular, las cuales no pueden ser analizadas con sus capacidades. Esto hace que el soporte para "tree-shaking" sea menos eficiente porque éstas no están seguras de qué directivas son utilizadas dentro de sus plantillas. El compilador AoT transpila las plantillas de Angular para JavaScript o TypeScript con el sistema de importación de los módulos ES2015. De esta manera somos capaces de aplicar "tree-shake" eficientemente durante el proceso de compilación y eliminar todas las directivas no utilizadas definidas por Angular, librerías de terceros o por nosotros mismos.
 
-**Resources**
+**Recursos**
 
-- ["Ahead-of-Time Compilation in Angular"](http://blog.mgechev.com/2016/08/14/ahead-of-time-compilation-angular-offline-precompilation/)
+- ["Compilación Ahead-of-Time en Angular"](http://blog.mgechev.com/2016/08/14/ahead-of-time-compilation-angular-offline-precompilation/)
 
-### Compression
+### Compresión
 
-Compression of the responses' payload is a standard practice for bandwidth usage reduction. By specifying the value of the header `Accept-Encoding`, the browser hints the server which compression algorithms are available on the client's machine. On the other hand, the server sets value for the `Content-Encoding` header of the response in order to tell the browser which algorithm has been chosen for compressing the response.
+Comprimir las respuestas del servidor es una práctica estándar para reducir el uso de ancho de banda. Al especificar el valor de la cabecera `Accept-Encoding`, el navegador sugiere al servidor qué algoritmos de compresión están disponibles en la máquina del cliente. Por otro lado, el servidor establece el valor de la cabecera `Content-Encoding` de la respuesta para indicar al navegador qué algoritmo se ha elegido para comprimir la respuesta.
 
-**Tooling**
+**Herramientas**
 
-The tooling here is not Angular-specific and entirely depends on the web/application server that we're using. Typical compression algorithms are:
+Las herramientas aquí no son específicas de Angular y dependen completamente del servidor web / de aplicaciones que estamos usando. Algoritmos típicos de compresión son:
 
-- deflate - a data compression algorithm and associated file format that uses a combination of the LZ77 algorithm and Huffman coding.
-- [brotli](https://github.com/google/brotli) - a generic-purpose lossless compression algorithm that compresses data using a combination of a modern variant of the LZ77 algorithm, Huffman coding and 2nd order context modeling, with a compression ratio comparable to the best currently available general-purpose compression methods. It is similar in speed with deflate but offers more dense compression.
 
-**Resources**
+- deflate - un algoritmo de compresión de datos y un formato de archivo asociado que utiliza una combinación del algoritmo LZ77 y la codificación de Huffman.
+- [brotli](https://github.com/google/brotli) - un algoritmo de compresión sin pérdida de propósito genérico que comprime datos usando una combinación de una variante moderna del algoritmo LZ77, codificación de Huffman y modelado de contexto de segundo orden, con una relación de compresión comparable a la de los mejores métodos de compresión de propósito general actualmente disponibles. Es similar en velocidad a deflate pero ofrece una compresión más densa.
 
-- ["Better than Gzip Compression with Brotli"](https://hacks.mozilla.org/2015/11/better-than-gzip-compression-with-brotli/)
-- ["2.5X Smaller Angular Applications with Google Closure Compiler"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
+**Recursos**
 
-### Pre-fetching Resources
+- ["Mejor compresión que Gzip con Brotli"](https://hacks.mozilla.org/2015/11/better-than-gzip-compression-with-brotli/)
+- ["Aplicaciones 2.5 veces más pequeñas usando Google Closure Compiler"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
+
+### Precarga de recursos (Pre-fetching)
 
 Resource pre-fetching is a great way to improve the user experience. We can either pre-fetch assets (images, styles, modules intended to be [loaded lazily](#lazy-loading-of-resources), etc.) or data. There are different pre-fetching strategies but most of them depend on specifics of the application.
+La precarga de recursos es una gran manera de mejorar la experiencia de usuario. Podemos precargar assets (imágenes, estilos, modulos que serán cargados de [forma diferida](#lazy-loading-of-resources) (Lazy Load), etc.)
 
-### Lazy-Loading of Resources
+### Carga diferida de recursos (Lazy load)
 
-In case the target application has a huge code base with hundreds of dependencies, the practices listed above may not help us reduce the bundle to a reasonable size (reasonable might be 100K or 2M, it again, completely depends on the business goals).
+En caso de que la aplicación tenga una cantidad de código enorme con cientos de dependencias, es posible que las prácticas enumeradas anteriormente no nos ayuden a reducir el bundle a un tamaño razonable (razonable debe ser entre 100K o 2M, de nuevo, depende completamente de los requisitos de negocio.)
 
-In such cases a good solution might be to load some of the application's modules lazily. For instance, lets suppose we're building an e-commerce system. In this case we might want to load the admin panel independently from the user-facing UI. Once the administrator has to add a new product we'd want to provide the UI required for that. This could be either only the "Add product page" or the entire admin panel, depending on our use case/business requirements.
+En tales casos, una buena solución podría ser cargar algunos de los módulos de la aplicación de forma diferida (lazy). Por ejemplo, supongamos que estamos construyendo un sistema de comercio electrónico. En este caso, podríamos querer cargar el panel de administración independientemente de la interfaz de usuario orientada al usuario. Una vez que el administrador tenga que agregar un nuevo producto, querremos proporcionar la interfaz requerida para eso. Esto podría ser solo la "Página de añadir producto" o el panel de administración completo, dependiendo de nuestro caso de uso / requisitos de negocio.
 
-**Tooling**
+**Herramientas**
 
-- [Webpack](https://github.com/webpack/webpack) - allows asynchronous module loading.
+- [Webpack](https://github.com/webpack/webpack) - permite la carga de módulos de forma asíncrona.
 - [ngx-quicklink](https://github.com/mgechev/ngx-quicklink) - router preloading strategy which automatically downloads the lazy-loaded modules associated with all the visible links on the screen
+- [ngx-quicklink](https://github.com/mgechev/ngx-quicklink) - Estrategía de precarga basada en el enrutado la cual descarga de forma diferida (lazy load) los módulos asociados a los links visibles en pantalla.
 
-### Don't Lazy-Load the Default Route
+### No cargar de forma diferida la ruta por defecto
 
-Lets suppose we have the following routing configuration:
+Supongamos que tenemos la siguiente configuración de enrutado:
 
 ```ts
 // Bad practice
@@ -279,57 +282,62 @@ const routes: Routes = [
 ];
 ```
 
-The first time the user opens the application using the url: https://example.com/ they will be redirected to `/dashboard` which will trigger the lazy-route with path `dashboard`. In order Angular to render the bootstrap component of the module, it will has to download the file `dashboard.module` and all of its dependencies. Later, the file needs to be parsed by the JavaScript VM and evaluated.
+LA primera vez que el usuario abre la aplicación usando la url: https://example.com/ será redirigido hacia `/dashboard` la cual disparará la carga diferida (lazy-route) con la ruta `dashboard`. Para que Angular renderice el componente del módulo, deberá descargar el fichero `dashboard.module` y todas sus dependencias. Después, el archivo será parseado por la JavaScript VM y será evaluado.
 
 Triggering extra HTTP requests and performing unnecessary computations during the initial page load is a bad practice since it slows down the initial page rendering. Consider declaring the default page route as non-lazy.
 
-### Caching
+Disparar solicitudes HTTP extra y ejecutar cálculos innecesarios durante la carga inicial es una mala práctica y ralentizará el renderizado de la página inicial. Considere declarar la ruta de la página predeterminada como no diferida (non-lazy).
 
-Caching is another common practice intending to speed-up our application by taking advantage of the heuristic that if one resource was recently been requested, it might be requested again in near future.
+### Caché
 
-For caching data we usually use a custom caching mechanism. For caching static assets we can either use the standard browser caching or Service Workers with the [CacheStorage API](https://developer.mozilla.org/en-US/docs/Web/API/Cache).
+El almacenamiento en caché es otra práctica común que pretende acelerar nuestra aplicación aprovechando la heurística de que si se solicitó un recurso recientemente, podría solicitarse nuevamente en un futuro próximo.
 
-### Use Application Shell
+Para almacenar datos en caché normalmente usamos un mecanismo de almacenamiento en caché personalizado. Para el almacenamiento en caché de assets, podemos utilizar el almacenamiento en caché estándar del navegador o el uso de Service Workers con el [API CacheStorage](https://developer.mozilla.org/en-US/docs/Web/API/Cache).
 
-To make the perceived performance of your application faster, use an [Application Shell](https://developers.google.com/web/updates/2015/11/app-shell).
+### Shell de la Aplicación
+
+Para hacer más rápido el rendimiento percibido de su aplicación, usar una [Application Shell](https://developers.google.com/web/updates/2015/11/app-shell).
 
 The application shell is the minimum user interface that we show to the users in order to indicate them that the application will be delivered soon. For generating an application shell dynamically you can use Angular Universal with custom directives which conditionally show elements depending on the used rendering platform (i.e. hide everything except the App Shell when using `platform-server`).
 
-**Tooling**
+El shell de la aplicación es la interfaz de usuario mínima que mostramos a los usuarios para indicarles que la aplicación se entregará pronto. Para la generación dinámica del shell de la aplicación puedes utilizar Angular Universal con directivas personalizadas que de forma condicional mostrarán elementos dependiendo de la plataforma de renderizado (por ejemplo, ocultar todo excepto el shell cuando usemos `patform-server`).
 
-- [Angular Service Worker](https://angular.io/guide/service-worker-intro) - aims to automate the process of managing Service Workers. It also contains Service Worker for caching static assets, and one for [generating application shell](https://developers.google.com/web/updates/2015/11/app-shell?hl=en).
+**Herramientas**
+
+- [Angular Service Worker](https://angular.io/guide/service-worker-intro) - Tiene como objetivo automatizar el proceso de gestión de los Service Workers. También contiene Service Workers para el almacenamiento en caché de assets, y uno [para generar el shell de la aplicación](https://developers.google.com/web/updates/2015/11/app-shell?hl=es).
 - [Angular Universal](https://github.com/angular/angular/tree/master/packages/platform-server) - Universal (isomorphic) JavaScript support for Angular.
 
-**Resources**
+**Recursos**
 
 - ["Instant Loading Web Apps with an Application Shell Architecture"](https://developers.google.com/web/updates/2015/11/app-shell)
 
-### Use Service Workers
+### Service Workers
 
-We can think of the Service Worker as an HTTP proxy which is located in the browser. All requests sent from the client are first intercepted by the Service Worker which can either handle them or pass them through the network.
+Podemos pensar de los Service Worker como un proxy HTTP que está en el navegador. Todas las peticiones enviadas desde el cliente son interceptadas primero por el Service Worker el cual puede procesarlas o enviarlas a través de la red.
 
-You can add a Service Worker to your Angular project by running
+Puedes añadir un Service Worker a tu proyecto Angular ejecutando
 ``` ng add @angular/pwa ```
 
-**Tooling**
+**Herramientas**
 
-- [Angular Service Worker](https://angular.io/guide/service-worker-intro) - aims to automate the process of managing Service Workers. It also contains Service Worker for caching static assets, and one for [generating application shell](https://developers.google.com/web/updates/2015/11/app-shell?hl=en).
-- [Offline Plugin for Webpack](https://github.com/NekR/offline-plugin) - Webpack plugin that adds support for Service Worker with a fall-back to AppCache.
+- [Angular Service Worker](https://angular.io/guide/service-worker-intro) - Tiene como objetivo automatizar el proceso de gestión de los Service Workers. También contiene Service Workers para el almacenamiento en caché de assets, y uno [para generar el shell de la aplicación](https://developers.google.com/web/updates/2015/11/app-shell?hl=es).
+- [Offline Plugin for Webpack](https://github.com/NekR/offline-plugin) - Plugin para Webpack que añade soporte para el Service Worker con soporte alternativo para AppCache.
 
-**Resources**
+**Recursos**
 
 - ["The offline cookbook"](https://jakearchibald.com/2014/offline-cookbook/)
-- ["Getting started with service workers"](https://angular.io/guide/service-worker-getting-started)
+- ["Empezando con service workers"](https://angular.io/guide/service-worker-getting-started)
 
-## Runtime Optimizations
+## Optimizaciones en ejecución
 
 This section includes practices which can be applied in order to provide smoother user experience with 60 frames per second (fps).
+Esta sección incluye prácticas que podrán ser aplicadas con el fin de proporcionar una experiencia de usuario más suave con 60fps (Frames por segundo).
 
-### Use `enableProdMode`
+### `enableProdMode`
 
-In development mode Angular performs some extra checks in order to verify that performing change detection does not result to any additional changes to any of the bindings. This way the frameworks assures that the unidirectional data flow has been followed.
+En el modo de desarrollo, Angular realiza algunas comprobaciones adicionales para verificar que la detección del cambio no produce ninguna diferencia para alguno de los bindings. De esta manera el framework garantiza que el flujo unidireccional de los datos ha sido seguido.
 
-In order to disable these changes for production do not forget to invoke `enableProdMode`:
+Para deshabilitar estos cambios para producción no olvide habilitar `enableProdMode`:
 
 ```typescript
 import { enableProdMode } from '@angular/core';
@@ -339,79 +347,81 @@ if (ENV === 'production') {
 }
 ```
 
-### Ahead-of-Time Compilation
+### Compilación Ahead-of-Time
 
 AoT can be helpful not only for achieving more efficient bundling by performing tree-shaking, but also for improving the runtime performance of our applications. The alternative of AoT is Just-in-Time compilation (JiT) which is performed runtime, therefore we can reduce the amount of computations required for rendering of our application by performing the compilation as part of our build process.
 
-**Tooling**
+Aot puede ser beneficioso no solo para asegurarnos bundles más eficientes aplicando "tree-shaking", sino también para mejorar el rendimiento en tiempo de ejecución de nuestras aplicaciones. La alternativa de Aot es la compilación Just-in-Time (JiT) que se realiza en tiempo de ejecución, por lo tanto, podemos reducir la cantidad de cálculos necesarios para la representación de nuestra aplicación al realizar la compilación como parte de nuestro proceso de construcción.
 
-- [angular2-seed](https://github.com/mgechev/angular2-seed) - a starter project which includes support for AoT compilation.
-- [angular-cli](https://cli.angular.io) Using the `ng serve --prod`
+**Herramientas**
 
-**Resources**
+- [angular2-seed](https://github.com/mgechev/angular2-seed) - Proyecto inicial que incluye soporte para la compilación AoT.
+- [angular-cli](https://cli.angular.io) Utilizando `ng serve --prod`
 
-- ["Ahead-of-Time Compilation in Angular"](http://blog.mgechev.com/2016/08/14/ahead-of-time-compilation-angular-offline-precompilation/)
+**Recursos**
+
+- ["Compilación Ahead-of-Time en Angular"](http://blog.mgechev.com/2016/08/14/ahead-of-time-compilation-angular-offline-precompilation/)
 
 ### Web Workers
 
-Usual problem in the typical single-page application (SPA) is that our code is usually run in a single thread. This means that if we want to achieve smooth user experience with 60fps we have **at most 16ms** for execution between the individual frames are being rendered, otherwise they'll drop by half.
+El problema habitual de las aplicaciones Single-Page-Applicattion (SPA) es que nuestro código generalmente se ejecuta en un solo hilo. Esto significa que si queremos lograr una experiencia de usuario fluida con 60 fps tenemos **a lo sumo 16ms** para la ejecución entre los frames individuales que se están procesando, de lo contrario, se reducirán a la mitad.
 
-In complex application with huge component tree, where the change detection needs to perform millions of check each second it will not be hard to start dropping frames. Thanks to the platform agnosticism of Angular and it being decoupled from DOM architecture it's possible to run our entire application (including change detection) in a Web Worker and leave the main UI thread responsible only for rendering.
+En aplicaciones complejas con un gran arbolado de componentes, donde la detección de cambios necesita realizar millones de verificaciones por segundo, no será difícil comenzar a eliminar frames. Gracias al agnosticismo de la plataforma de Angular y su desacoplamiento de la arquitectura DOM, es posible ejecutar toda nuestra aplicación (incluida la detección de cambios) en un Trabajador web y dejar el hilo principal de la UI responsable solo de la renderización
 
-**Tooling**
+**Herramientas**
 
-- The module which allows us to run our application in a Web Worker is supported by the core team. Examples how it can be used, can be [found here](https://github.com/angular/angular/tree/master/modules/playground/src/web_workers).
+- El módulo que nos permite ejecutar nuestra aplicación en un Web Worker es apoyado por el equipo do Angular Core. Ejemplos de cómo puede ser utilizado, pueden [encontrarse aquí](https://github.com/angular/angular/tree/master/modules/playground/src/web_workers).
 - [Webpack Web Worker Loader](https://github.com/webpack/worker-loader) - A Web Worker Loader for webpack.
 
-**Resources**
+**Recursos**
 
-- ["Using Web Workers for more responsive apps"](https://www.youtube.com/watch?v=Kz_zKXiNGSE)
+- ["Utilizando Web Workers para aplicaciones más responsive"](https://www.youtube.com/watch?v=Kz_zKXiNGSE)
 
 ### Server-Side Rendering
 
-A big issue of the traditional SPA is that they cannot be rendered until the entire JavaScript required for their initial rendering is available. This leads to two big problems:
+Un gran problema para las tracidionales SPA es que no pueden ser renderizadas hasta que esté disponible todo el código JavaScript solicitado. Esto lleva a dos grandes problemas:
 
-- Not all search engines are running the JavaScript associated to the page so they are not able to index the content of dynamic apps properly.
-- Poor user experience, since the user will see nothing more than a blank/loading screen until the JavaScript associated with the page is downloaded, parsed and executed.
+- No todos los motores de búsqueda ejecutan el JavaScript asociado a la página, por lo que no pueden indexar correctamente el contenido de las aplicaciones dinámicas.
+- Mala experiencia del usuario, ya que el usuario no verá más que una pantalla en blanco / cargando hasta que se descargue, analice y ejecute el JavaScript asociado con la página.
 
-Server-side rendering solves this issue by pre-rendering the requested page on the server and providing the markup of the rendered page during the initial page load.
+Server-side rendering soluciona estos problemas pre-renderizando la página requerida en el servidor y proporcionando el marcado de la página durante la carga incial de la página.
 
-**Tooling**
+**Herramientas**
 
 - [Angular Universal](https://github.com/angular/angular/tree/master/packages/platform-server) - Universal (isomorphic) JavaScript support for Angular.
 - [Preboot](https://github.com/angular/preboot) - Library to help manage the transition of state (i.e. events, focus, data) from a server-generated web view to a client-generated web view.
 
-**Resources**
+**Recursos**
 
 - ["Angular Server Rendering"](https://www.youtube.com/watch?v=0wvZ7gakqV4)
 - ["Angular Universal Patterns"](https://www.youtube.com/watch?v=TCj_oC3m6_U)
 
-### Change Detection
+### Detección del cambio
 
-On each asynchronous event Angular performs change detection over the entire component tree. Although the code which detects for changes is optimized for [inline-caching](http://mrale.ph/blog/2012/06/03/explaining-js-vms-in-js-inline-caches.html), this still can be a heavy computation in complex applications. A way to improve the performance of the change detection is to not perform it for subtrees which are not supposed to be changed based on the recent actions.
+En cada evento asíncrono, Angular realiza la detección de cambios en todo el árbol de componentes. Aunque el código que detecta cambios está optimizado por [inline-caching](http://mrale.ph/blog/2012/06/03/explaining-js-vms-in-js-inline-caches.html), Esto puede ser un cálculo pesado en aplicaciones complejas. Una forma de mejorar el rendimiento de la detección de cambios es no realizarla en subárboles que no deben modificarse en función de las acciones recientes.
 
 #### `ChangeDetectionStrategy.OnPush`
 
-The `OnPush` change detection strategy allows us to disable the change detection mechanism for subtrees of the component tree. By setting the change detection strategy to any component to the value `ChangeDetectionStrategy.OnPush`, will make the change detection perform **only** when the component have received different inputs. Angular will consider inputs as different when it compares them with the previous inputs by reference, and the result of the reference check is `false`. In combination with [immutable data structures](https://facebook.github.io/immutable-js/) `OnPush` can bring great performance implications for such "pure" components.
+La estrategia de detección de cambios `OnPush` nos permite deshabilitar el mecanismo de detección de cambios para subárboles del árbol de componentes. Al establecer la estrategia de detección de cambios en cualquier componente con el valor `ChangeDetectionStrategy.OnPush`, hará que la detección de cambios se realice **solo** cuando el componente haya recibido diferentes entradas. Angular considerará las entradas como diferentes cuando las compare con las entradas anteriores por referencia, y el resultado de la verificación de referencia es `false`. En combinación con [estructuras de datos inmutables](https://facebook.github.io/immutable-js/) `OnPush` puede traer grandes implicaciones de rendimiento para tales componentes "puros".
 
-**Resources**
+**Recursos**
 
-- ["Change Detection in Angular"](https://vsavkin.com/change-detection-in-angular-2-4f216b855d4c)
-- ["Everything you need to know about change detection in Angular"](https://blog.angularindepth.com/everything-you-need-to-know-about-change-detection-in-angular-8006c51d206f)
+- ["Detección del cambio en Angular"](https://vsavkin.com/change-detection-in-angular-2-4f216b855d4c)
+- ["Todo lo que necesitas saber sobre la detección del cambio en Angular"](https://blog.angularindepth.com/everything-you-need-to-know-about-change-detection-in-angular-8006c51d206f)
 
-#### Detaching the Change Detector
+#### Desacoplando el detector de cambios
 
-Another way of implementing a custom change detection mechanism is by `detach`ing and `reattach`ing the change detector (CD) for given component. Once we `detach` the CD Angular will not perform check for the entire component subtree.
+Otra forma de implementar un mecanismo de detección de cambios personalizado es mediante la separación (detach) y la reinserción (reattach) del detector de cambios (CD) para un componente determinado. Una vez que 'separemos' (`detach`) el CD Angular no realizará la verificación de todo el subárbol de componentes.
 
-This practice is typically used when user actions or interactions with an external services trigger the change detection more often than required. In such cases we may want to consider detaching the change detector and reattaching it only when performing change detection is required.
+Esta práctica se usa normalmente cuando las acciones del usuario o las interacciones con servicios externos activan la detección de cambios con más frecuencia de la necesaria. En tales casos, es posible que desee considerar separar el detector de cambios y volver a instalarlo solo cuando se requiere la detección de cambios.
 
-#### Run outside Angular
+#### Ejecución fuera de Angular
 
-The Angular's change detection mechanism is being triggered thanks to [zone.js](https://github.com/angular/zone.js). Zone.js monkey patches all asynchronous APIs in the browser and triggers the change detection in the end of the execution of any async callback. In **rare cases** we may want given code to be executed outside the context of the Angular Zone and thus, without running change detection mechanism. In such cases we can use the method `runOutsideAngular` of the `NgZone` instance.
+El mecanismo de detección de cambios de Angular se dispara gracias a [zone.js](https://github.com/angular/zone.js). Zone.js monkey parchea todas las API asíncronas en el navegador y activa la detección de cambios al final de la ejecución de cualquier devolución de llamada asíncrona. En **casos raros** podemos querer que un código dado se ejecute fuera del contexto Angular Zone y, por lo tanto, sin ejecutar el mecanismo de detección de cambios. En tales casos, podemos usar el método `runOutsideAngular` de la instancia de 'NgZone`.
 
 **Example**
 
-In the snippet below, you can see an example for a component which uses this practice. When the `_incrementPoints` method is called the component will start incrementing the `_points` property every 10ms (by default). The incrementation will make the illusion of an animation. Since in this case we don't want to trigger the change detection mechanism for the entire component tree, every 10ms, we can run `_incrementPoints` outside the context of the Angular's zone and update the DOM manually (see the `points` setter).
+En el ejemplo de abajo, puede ver un componente que utiliza esta práctica. Cuando el método `_incrementPoints` es llamado el componente comenzará a incrementar la propiedad `_points` cada 10ms (por defecto). Al incrementar tendremos la ilusión de una animación. Ya que en este caso no queremos activar el mecanismo de detección de cambios para todo el árbol de componentes, cada 10ms, podemos ejecutar `_incrementPoints` fuera del contexto de Angular´s Zone y actualizar el DOM manualmente (ver método set de `points`).
 
 ```ts
 @Component({
@@ -470,11 +480,11 @@ class PointAnimationComponent {
 }
 ```
 
-**Warning**: Use this practice **very carefully only when you're sure what you are doing** because if not used properly it can lead to an inconsistent state of the DOM. Also note that the code above is not going to run in WebWorkers. In order to make it WebWorker-compatible, you need to set the label's value by using the Angular's renderer.
+**Warning**: Use esta práctica **con mucho cuidado solo cuando esté seguro de lo que está haciendo** porque, si no se usa correctamente, puede llevar a un estado inconsistente del DOM. También tenga en cuenta que el código anterior no se ejecutará en WebWorkers. Para que sea compatible con WebWorker, debe establecer el valor de la etiqueta `label` utilizando el renderizador de Angular.
 
-### Use pure pipes
+### Use pipes puros
 
-As argument the `@Pipe` decorator accepts an object literal with the following format:
+El decorador `@Pipe` acepta como argumento un objeto utilizando el siguiente formato:
 
 ```typescript
 interface PipeMetadata {
@@ -483,21 +493,22 @@ interface PipeMetadata {
 }
 ```
 
-The pure flag indicates that the pipe is not dependent on any global state and does not produce side-effects. This means that the pipe will return the same output when invoked with the same input. This way Angular can cache the outputs for all the input parameters the pipe has been invoked with, and reuse them in order to not have to recompute them on each evaluation.
+El flag "pure" indica que el Pipe no depende de ningún estado global y no producirá efectos colaterales (side-effects). Esto significa que el Pipe devolverá el mismo resultado cuando sea llamada con la misma entrada. De esta manera, Angular puede almacenar en caché las salidas de todos los parámetros de entrada con los que se ha invocado el Pipe y reutilizarlos para no tener que volver a calcularlos en cada evaluación.
 
-The default value of the `pure` property is `true`.
+El valor por defecto de la propiedad `pure` es `true`.
 
-### `*ngFor` directive
+### Directiva `*ngFor`
 
-The `*ngFor` directive is used for rendering a collection.
+La directiva `*ngFor` es utilizada para renderizar una colección.
 
-#### Use `trackBy` option
+#### Utilizar opción `trackBy`
 
-By default `*ngFor` identifies object uniqueness by reference.
+Por defecto `*ngFor` identifica objetos únicos por referencia.
 
-Which means when developer breaks reference to object during updating item's content Angular treats it as removal of the old object and addition of the new object. This effects in destroying old DOM node in the list and adding new DOM node on its place.
+Lo que significa que cuando el desarrollador rompe la referencia al objeto durante la actualización del contenido del elemento, Angular lo trata como la eliminación del objeto anterior y la agregación del nuevo objeto. Esto afecta a la destrucción del antiguo nodo DOM en la lista y la agregación de un nuevo nodo DOM en su lugar.
 
-Developer can provide a hint for angular how to identify object uniqueness: custom tracking function as the `trackBy` option for the `*ngFor` directive. Tracking function takes two arguments: `index` and `item`. Angular uses the value returned from tracking function to track items identity. It is very common to use ID of the particular record as the unique key.
+El desarrollador puede ofrecer una pista a Angular sobre cómo identificar de forma única el objeto: función de seguimiento personalizado  como la opción `trackBy` para la directiva` * ngFor`. La función trackBy recibe dos argumentos: `índice` (index) y `elemento` (item). Angular utiliza el valor devuelto por la función para llevar un seguimiento
+ Tracking function takes two arguments: `index` and `item`. Angular usa el valor devuelto por la función de seguimiento para rastrear la identidad de los elementos. Es muy común usar la ID del registro particular como clave única.
 
 **Example**
 
@@ -526,39 +537,41 @@ export class YtFeedComponent {
 }
 ```
 
-#### Minimize DOM elements
+#### Minimizar elementos del DOM
 
-Rendering the DOM elements is usually the most expensive operation when adding elements to the UI. The main work is usually caused by inserting the element into the DOM and applying the styles. If `*ngFor` renders a lot of elements, browsers (especially older ones) may slow down and need more time to finish rendering of all elements. This is not specific to Angular.
+La representación de los elementos DOM suele ser la operación más costosa al agregar elementos a la interfaz de usuario. El trabajo principal generalmente se debe al insertar el elemento en el DOM y aplicar los estilos. Si `*ngFor` renderiza muchos elementos, los navegadores (especialmente antiguos) pueden disminuir la velocidad y necesitar más tiempo para finalizar la representación de todos los elementos. Esto no es específico para Angular.
 
-To reduce rendering time, try the following:
-- Apply virtual scrolling via [CDK](https://material.angular.io/cdk/scrolling/overview) or [ngx-virtual-scroller](https://github.com/rintoj/ngx-virtual-scroller)
-- Reducing the amount of DOM elements rendered in `*ngFor` section of your template. Usually unneeded/unused DOM elements arise from extending the template again and again. Rethinking its structure probably makes things much easier.
-- Use [`ng-container`](https://angular.io/guide/structural-directives#ngcontainer) where possible
+Para reducir el tiempo de renderizado, prueba lo siguiente:
+- Aplicar scroll virtual a través de [CDK](https://material.angular.io/cdk/scrolling/overview) o [ngx-virtual-scroller](https://github.com/rintoj/ngx-virtual-scroller)
+- Reducir la cantidad de elementos DOM representados en la sección `* ngFor` de su plantilla. Por lo general, los elementos DOM innecesarios / no utilizados surgen al ampliar la plantilla una y otra vez. Volviendo a pensar su estructura probablemente hará las cosas más fáciles.
+- Utilizar [`ng-container`](https://angular.io/guide/structural-directives#ngcontainer) cuando sea posible.
 
-**Resources**
+**Recursos**
 
-- ["NgFor directive"](https://angular.io/docs/ts/latest/api/common/index/NgFor-directive.html) - official documentation for `*ngFor`
-- ["Angular — Improve performance with trackBy"](https://netbasal.com/angular-2-improve-performance-with-trackby-cc147b5104e5) - shows gif demonstration of the approach
+- ["directiva NgFor"](https://angular.io/docs/ts/latest/api/common/index/NgFor-directive.html) - official documentation for `*ngFor`
+- ["Mejorar rendimiento de Angular utilizando trackBy"](https://netbasal.com/angular-2-improve-performance-with-trackby-cc147b5104e5) - muestra algunos GIFs con esta práctica.
 - [Component Dev Kit (CDK) Virtual Scrolling](https://material.angular.io/cdk/scrolling/overview) - API description
-- [ngx-virtual-scroller](https://github.com/rintoj/ngx-virtual-scroller) - displays a virtual, "infinite" list
+- [ngx-virtual-scroller](https://github.com/rintoj/ngx-virtual-scroller) - Muestra una lista "virtual" infinita.
 
-### Optimize template expressions
+### Optimizar expresiones en plantilla (Template expressions)
 
-Angular executes template expressions after every change detection cycle. Change detection cycles are triggered by many asynchronous activities such as promise resolutions, http results, timer events, keypresses and mouse moves.
+Angular ejecuta expresiones de plantilla después de cada ciclo de detección de cambios. Los ciclos de detección de cambios se activan mediante muchas actividades asíncronas, como resoluciones de promesa (promise), resultados http, eventos de temporizador (timer), pulsaciones de teclas y movimientos del ratón.
 
-Expressions should finish quickly or the user experience may drag, especially on slower devices. Consider caching values when their computation is expensive.
+Las expresiones deben terminar rápidamente o la experiencia de usuario puede empeorar, especialmente en dispositivos más lentos. Considere cachear los valores cuando su cálculo es costoso.
 
-**Resources**
-- [quick-execution](https://angular.io/guide/template-syntax#quick-execution) - official documentation for template expressions
+**Recursos**
+- [quick-execution](https://angular.io/guide/template-syntax#quick-execution) - Documentación oficial para expresiones en plantilla (template expressions)
 - [Increasing Performance - more than a pipe dream](https://youtu.be/I6ZvpdRM1eQ) - ng-conf video in youtube. Using pipe instead of function in interpolation expression
+- [Increasing Performance - more than a pipe dream](https://youtu.be/I6ZvpdRM1eQ) - Vídeo en youtube de ng-conf. Usando Pipe en vez de funciones de interpolación.
 
 # Conclusion
 
-The list of practices will dynamically evolve over time with new/updated practices. In case you notice something missing or you think that any of the practices can be improved do not hesitate to fire an issue and/or a PR. For more information please take a look at the "[Contributing](#contributing)" section below.
+La lista de prácticas evolucionará dinámicamente a lo largo del tiempo con prácticas nuevas / actualizadas. En caso de que note que falta algo o si cree que se puede mejorar cualquiera de las prácticas, no dude en reportar un problema y/o un PR. Para más información, por favor, eche un vistazo a la sección inferior "[Contribuyendo](#contributing)".
 
 # Contributing
 
-In case you notice something missing, incomplete or incorrect, a pull request will be greatly appreciated. For discussion of practices which are not included in the document please [open an issue](https://github.com/mgechev/angular2-performance-checklist/issues).
+En caso de que note que falta algo, incompleto o incorrecto, una "pull request" será muy apreciada. For discussion of practices which are not included in the document please [open an issue](https://github.com/mgechev/angular2-performance-checklist/issues).
+En caso de que note que falta algo, incompleto o incorrecto, una "pull request" será muy apreciada. Para comentar las prácticas que no están incluidas en el documento, por favor  [abra una issue](https://github.com/mgechev/angular2-performance-checklist/issues).
 
 # License
 
