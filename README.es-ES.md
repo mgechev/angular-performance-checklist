@@ -18,7 +18,7 @@ El documento se divide en dos secciones principales:
 
 Algunas prácticas impactan en ambas categorías por lo que podría haber un ligero punto de encuentro, sin embargo, la diferencia en los casos de uso y las implicaciones serán explícitamente mencionadas.
 
-La mayoría de subsecciones enumeran herramientas, relacionadas a la práctica específica, que nos harán más eficiente la automatización de nuestro entorno de desarrollo.
+La mayoría de las subsecciones enumeran herramientas, relacionadas a la práctica específica que harán más eficiente la automatización de nuestro entorno de desarrollo.
 
 Tenga en cuenta que la mayoría de prácticas son válidas para HTTP/1.1 y HTTP/2. Se mencionarán las prácticas que sean la excepción especificando a qué versión del protocolo podrían aplicarse.
 
