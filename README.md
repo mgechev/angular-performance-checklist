@@ -107,7 +107,7 @@ These practices allow us to minimize the bandwidth consumption by reducing the p
 
 Although we don't see the whitespace character (a character matching the `\s` regex) it is still represented by bytes which are transfered over the network. If we reduce the whitespace from our templates to minimum we will be respectively able to drop the bundle size of the AoT code even further.
 
-Thankfully, we don't have to do this manually. The `ComponentMetadata` interface provides the property `preserveWhitespaces` which by default has value `false`, because removing the whitespace always may influence the DOM layout. In case we set the property to `false` Angular will trim the unnecessary whitespace which will lead to further reduction of the bundle size.
+Thankfully, we don't have to do this manually. The `ComponentMetadata` interface provides the property `preserveWhitespaces` which by default has value `false`, because removing the whitespace always may influence the DOM layout. In case we set the property to `true` Angular will trim the unnecessary whitespace which will lead to further reduction of the bundle size.
 
 - [preserveWhitespaces in the Angular docs](https://angular.io/api/core/Component#preserveWhitespaces)
 
@@ -179,7 +179,7 @@ export class AppModule { }
 ```
 
 ```ts
-// my-service.service.ts 
+// my-service.service.ts
 import { Injectable } from '@angular/core'
 
 @Injectable()
