@@ -555,7 +555,7 @@ Las expresiones deben terminar rápidamente o la experiencia de usuario puede em
 
 # Conclusión
 
-La lista de prácticas evolucionará dinámicamente a lo largo del tiempo con prácticas nuevas / actualizadas. En caso de que note que falta algo o si cree que se puede mejorar cualquiera de las prácticas, no dude en reportar un problema y/o un PR. Para más información, por favor, eche un vistazo a la sección inferior "[Contribuyendo](#contributing)".
+La lista de prácticas evolucionará dinámicamente a lo largo del tiempo con prácticas nuevas / actualizadas. En caso de que note que falta algo o si cree que se puede mejorar cualquiera de las prácticas, no dude en abrir un issue y/o una PR. Para más información, por favor, eche un vistazo a la sección inferior "[Contribuyendo](#contributing)".
 
 # Contribuyendo
 
