@@ -2,7 +2,7 @@
 
 <img src="./assets/flash.png" width="1000">
 
-[中文版](./README.zh-CN.md) [Русский](./README.ru-RU.md) [Português](./README.pt-BR.md)
+[中文版](./README.zh-CN.md) [Русский](./README.ru-RU.md) [Português](./README.pt-BR.md) [Español](./readme-es-ES.md)
 
 ## Introdução
 
@@ -182,7 +182,7 @@ export class AppModule { }
 ```
 
 ```ts
-// minha-service.service.ts 
+// minha-service.service.ts
 import { Injectable } from '@angular/core'
 
 @Injectable()
@@ -334,7 +334,7 @@ Essa seção inclui práticas que podem ser aplicadas para fornecer uma experien
 
 No modo de desenvolvimento, o Angular faz algumas checagens extras para verificar se o sistema de detecção de mudança não resultou em nenhuma diferença para nenhum dos bindings. Dessa forma, a framework garante que o fluxo unidirecional dos dados está sendo seguido.
 
-Para desabilitar essas checagens adicionais em produção, não se esqueça de executar `enableProdMode`: 
+Para desabilitar essas checagens adicionais em produção, não se esqueça de executar `enableProdMode`:
 
 ```typescript
 import { enableProdMode } from '@angular/core';
@@ -537,7 +537,7 @@ export class YtFeedComponent {
 #### Reduza a quantidade de elementos no DOM
 
 Normalmente renderizar os elementos do DOM é a operação mais pesadas ao adicionar elementos à interface. A maior parte do trabalho é causada por inserir elementos no dom aplicando novos estilos. Se um `*ngFor` renderiza vários elementos, os navegadores (especialmente os antigos) podem ficar lentos e precisar de mais tempo para renderizar todos os elementos. Isso não é específico do Angular.
-Rendering the DOM elements is usually the most expensive operation when adding elements to the UI. 
+Rendering the DOM elements is usually the most expensive operation when adding elements to the UI.
 
 Para reduzir o tempo de renderização, tente o seguinte
 
