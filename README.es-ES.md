@@ -16,7 +16,7 @@ El documento se divide en dos secciones principales:
 - Rendimiento de la red - lista de prácticas que mejorarán principalmente el tiempo de carga de nuestra aplicación. Incluyen métodos de latencia y reducción de ancho de banda.
 - Rendimiento en ejecución - Prácticas que mejoran el rendimiento en ejecución de nuestra aplicación. Incluyen principalmente optimizaciones en la detección del cambio y relacionadas con el renderizado.
 
-Algunas prácticas impactan en ambas categorías por lo que podría haber un ligero punto de encuentro, sin embargo, la diferencia en los casos de uso y las implicaciones serán explícitamente mencionados.
+Algunas prácticas impactan en ambas categorías por lo que podría haber un ligero punto de encuentro, sin embargo, la diferencia en los casos de uso y las implicaciones serán explícitamente mencionadas.
 
 La mayoría de subsecciones enumeran herramientas, relacionadas a la práctica específica, que nos harán más eficiente la automatización de nuestro entorno de desarrollo.
 
@@ -29,34 +29,34 @@ Tenga en cuenta que la mayoría de prácticas son válidas para HTTP/1.1 y HTTP/
   - [Índice](#Índice)
   - [Rendimiento de red](#rendimiento-de-red)
     - [Bundling](#bundling)
-    - [Minification and Dead code elimination](#minification-and-dead-code-elimination)
-    - [Remove template whitespace](#remove-template-whitespace)
+    - [Minification and Dead code elimination](#minificación-y-eliminación-de-código-no-utilizado-Dead-code)
+    - [Remove template whitespace](#eliminar-espacios-en-blanco-de-las-plantillas)
     - [Tree-shaking](#tree-shaking)
     - [Tree-shakeable providers](#tree-shakeable-providers)
-    - [Ahead-of-Time (AoT) Compilation](#ahead-of-time-aot-compilation)
-    - [Compression](#compression)
-    - [Pre-fetching Resources](#pre-fetching-resources)
-    - [Lazy-Loading of Resources](#lazy-loading-of-resources)
-    - [Don't lazy-load default route](#dont-lazy-load-the-default-route)
-    - [Caching](#caching)
-    - [Use Application Shell](#use-application-shell)
-    - [Use Service Workers](#use-service-workers)
-  - [Runtime Optimizations](#runtime-optimizations)
-    - [Use `enableProdMode`](#use-enableprodmode)
-    - [Ahead-of-Time Compilation](#ahead-of-time-compilation)
+    - [Ahead-of-Time (AoT) Compilation](#compilación-Ahead-of-Time-AoT)
+    - [Compression](#compresión)
+    - [Pre-fetching Resources](#precarga-de-recursos-Pre-fetching)
+    - [Lazy-Loading of Resources](#carga-diferida-de-recursos-Lazy-load)
+    - [Don't lazy-load default route](#no-cargar-de-forma-diferida-la-ruta-por-defecto)
+    - [Caching](#caché)
+    - [Use Application Shell](#shell-de-la-aplicación)
+    - [Use Service Workers](#service-workers)
+  - [Optimizaciones en ejecución](#optimizaciones-en-ejecución)
+    - [Utilizar `enableProdMode`](#enableProdMode)
+    - [Compilación Ahead-of-Time](#compilación-ahead-of-time)
     - [Web Workers](#web-workers)
     - [Server-Side Rendering](#server-side-rendering)
-    - [Change Detection](#change-detection)
+    - [Detección del cambio](#detección-del-cambio)
       - [`ChangeDetectionStrategy.OnPush`](#changedetectionstrategyonpush)
-      - [Detaching the Change Detector](#detaching-the-change-detector)
-      - [Run outside Angular](#run-outside-angular)
-    - [Use pure pipes](#use-pure-pipes)
-    - [`*ngFor` directive](#ngfor-directive)
-      - [Use `trackBy` option](#use-trackby-option)
-      - [Minimize DOM elements](#minimize-dom-elements)
-    - [Optimize template expressions](#optimize-template-expressions)
-- [Conclusion](#conclusion)
-- [Contributing](#contributing)
+      - [Desacoplando el detector de cambios](#desacoplando-el-detector-de-cambios)
+      - [Ejecución fuera de Angular](#ejecución-fuera-de-Angular)
+    - [Pipes puros](#pipes-puros)
+    - [Directiva `*ngFor`](#directiva-ngFor)
+      - [Utilizar opción `trackBy`](#utilizar-opción-trackBy)
+      - [Minimizar elementos del DOM](#minimizar-elementos-del-DOM)
+    - [Optimizar expresiones en plantilla](#optimizar-expresiones-en-plantilla-Template-expressions)
+- [Conclusión](#conclusión)
+- [Contribuyendo](#contribuyendo)
 
 ## Rendimiento de red
 
@@ -333,7 +333,7 @@ Puedes añadir un Service Worker a tu proyecto Angular ejecutando
 This section includes practices which can be applied in order to provide smoother user experience with 60 frames per second (fps).
 Esta sección incluye prácticas que podrán ser aplicadas con el fin de proporcionar una experiencia de usuario más suave con 60fps (Frames por segundo).
 
-### `enableProdMode`
+### Utilizar `enableProdMode`
 
 En el modo de desarrollo, Angular realiza algunas comprobaciones adicionales para verificar que la detección del cambio no produce ninguna diferencia para alguno de los bindings. De esta manera el framework garantiza que el flujo unidireccional de los datos ha sido seguido.
 
@@ -482,7 +482,7 @@ class PointAnimationComponent {
 
 **Warning**: Use esta práctica **con mucho cuidado solo cuando esté seguro de lo que está haciendo** porque, si no se usa correctamente, puede llevar a un estado inconsistente del DOM. También tenga en cuenta que el código anterior no se ejecutará en WebWorkers. Para que sea compatible con WebWorker, debe establecer el valor de la etiqueta `label` utilizando el renderizador de Angular.
 
-### Use pipes puros
+### Pipes puros
 
 El decorador `@Pipe` acepta como argumento un objeto utilizando el siguiente formato:
 
@@ -564,11 +564,11 @@ Las expresiones deben terminar rápidamente o la experiencia de usuario puede em
 - [Increasing Performance - more than a pipe dream](https://youtu.be/I6ZvpdRM1eQ) - ng-conf video in youtube. Using pipe instead of function in interpolation expression
 - [Increasing Performance - more than a pipe dream](https://youtu.be/I6ZvpdRM1eQ) - Vídeo en youtube de ng-conf. Usando Pipe en vez de funciones de interpolación.
 
-# Conclusion
+# Conclusión
 
 La lista de prácticas evolucionará dinámicamente a lo largo del tiempo con prácticas nuevas / actualizadas. En caso de que note que falta algo o si cree que se puede mejorar cualquiera de las prácticas, no dude en reportar un problema y/o un PR. Para más información, por favor, eche un vistazo a la sección inferior "[Contribuyendo](#contributing)".
 
-# Contributing
+# Contribuyendo
 
 En caso de que note que falta algo, incompleto o incorrecto, una "pull request" será muy apreciada. For discussion of practices which are not included in the document please [open an issue](https://github.com/mgechev/angular2-performance-checklist/issues).
 En caso de que note que falta algo, incompleto o incorrecto, una "pull request" será muy apreciada. Para comentar las prácticas que no están incluidas en el documento, por favor  [abra una issue](https://github.com/mgechev/angular2-performance-checklist/issues).
