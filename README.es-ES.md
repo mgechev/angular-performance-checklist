@@ -9,7 +9,7 @@
 
 ## Introducción
 
-Este documento contiene una lista de prácticas las cuales nos ayudarán a aumentar el rendimiento de nuestras aplicaciones Angular. "Angular performance Checklist" cubre diferentes temas - desde server-side pre-rendering y bundle de nuestras aplicaciones, hasta redimiento en ejecución y optimización de la detección del cambio realizada por el framework.
+Este documento contiene una lista de prácticas las cuales nos ayudarán a aumentar el rendimiento de nuestras aplicaciones Angular. "Angular performance Checklist" cubre diferentes temas - desde server-side pre-rendering y bundle de nuestras aplicaciones, hasta rendimiento en ejecución y optimización de la detección del cambio realizada por el framework.
 
 El documento se divide en dos secciones principales:
 
@@ -107,8 +107,6 @@ Estas prácticas nos permiten minimizar el consumo de ancho de banda reduciendo 
 ### Eliminar espacios en blanco de las plantillas
 
 Aunque no veamos el carácter de espacio en blanco (Un caracter que coincida con la expresión regular `\s`) todavía está representado por bytes que son transferidos a través de la red. Si reducimos los espacios en blanco de nuestras plantillas al mínimo podremos reducir el tamaño de nuestro código AoT aún más.
-
-Thankfully, we don't have to do this manually. The `ComponentMetadata` interface provides the property `preserveWhitespaces` which by default has value `false`, because removing the whitespace always may influence the DOM layout. In case we set the property to `false` Angular will trim the unnecessary whitespace which will lead to further reduction of the bundle size.
 
 Afortunadamente, no tenemos que hacer esto manualmente. La Interface `ComponentMetadata` ofrece la propiedad `preserveWhitespaces` la cual por defecto tiene valor `false`, porque eliminando los espacios en blanco siempre puede modificar la estructura del DOM. En el caso que cambiemos la propiedad a `true` Angular eliminará los espacios en blancos innecesarios, disminuyendo el tamaño final del bundle.
 
@@ -295,8 +293,6 @@ Para almacenar datos en caché normalmente usamos un mecanismo de almacenamiento
 
 Para hacer más rápido el rendimiento percibido de su aplicación, usar una [Application Shell](https://developers.google.com/web/updates/2015/11/app-shell).
 
-The application shell is the minimum user interface that we show to the users in order to indicate them that the application will be delivered soon. For generating an application shell dynamically you can use Angular Universal with custom directives which conditionally show elements depending on the used rendering platform (i.e. hide everything except the App Shell when using `platform-server`).
-
 El shell de la aplicación es la interfaz de usuario mínima que mostramos a los usuarios para indicarles que la aplicación se entregará pronto. Para la generación dinámica del shell de la aplicación puedes utilizar Angular Universal con directivas personalizadas que de forma condicional mostrarán elementos dependiendo de la plataforma de renderizado (por ejemplo, ocultar todo excepto el shell cuando usemos `patform-server`).
 
 **Herramientas**
@@ -359,7 +355,7 @@ Aot puede ser beneficioso no solo para asegurarnos bundles más eficientes aplic
 
 El problema habitual de las aplicaciones Single-Page-Applicattion (SPA) es que nuestro código generalmente se ejecuta en un solo hilo. Esto significa que si queremos lograr una experiencia de usuario fluida con 60 fps tenemos **a lo sumo 16ms** para la ejecución entre los frames individuales que se están procesando, de lo contrario, se reducirán a la mitad.
 
-En aplicaciones complejas con un gran arbolado de componentes, donde la detección de cambios necesita realizar millones de verificaciones por segundo, no será difícil comenzar a eliminar frames. Gracias al agnosticismo de la plataforma de Angular y su desacoplamiento de la arquitectura DOM, es posible ejecutar toda nuestra aplicación (incluida la detección de cambios) en un Trabajador web y dejar el hilo principal de la UI responsable solo de la renderización
+En aplicaciones complejas con un gran arbolado de componentes, donde la detección de cambios necesita realizar millones de verificaciones por segundo, no será difícil comenzar a eliminar frames. Gracias al agnosticismo de la plataforma de Angular y su desacoplamiento de la arquitectura DOM, es posible ejecutar toda nuestra aplicación (incluida la detección de cambios) en un Service Worker y dejar el hilo principal de la UI responsable solo de la renderización
 
 **Herramientas**
 
