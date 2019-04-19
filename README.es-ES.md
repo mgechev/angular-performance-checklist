@@ -76,7 +76,7 @@ Las herramientas que nos permiten empaquetar nuestras aplicaciones de forma efic
 
 - [Webpack](https://webpack.js.org) - Ofrece un bundle eficiente mediante la realización de [tree-shaking](#tree-shaking).
 - [Webpack Code Splitting](https://webpack.js.org/guides/code-splitting/) - Técnicas para dividir el código.
-- [Webpack & http2](https://medium.com/webpack/webpack-http-2-7083ec3f3ce6#.46idrz8kb) - Necesario para dividir el código usando http2.
+- [Webpack & http2](https://medium.com/webpack/webpack-http-2-7083ec3f3ce6#.46idrz8kb) - Necesario para dividir el código usando HTTP/2.
 - [Rollup](https://github.com/rollup/rollup) - Ofrece un bundle eficiente haciendo uso de "tree-shaking", aprovechando la naturaleza estática de los módulos ES2015.
 - [Google Closure Compiler](https://github.com/google/closure-compiler) - realiza un montón de optimizaciones y proporciona soporte para el bundle. Originalmente escrito en Java, desde hace poco también tiene una [version JavaScript](https://www.npmjs.com/package/google-closure-compiler) la cual puede encontrarse [aquí](https://www.npmjs.com/package/google-closure-compiler).
 - [SystemJS Builder](https://github.com/systemjs/builder) - Proporciona la generación de un único archivo para módulos mixtos de inyección de dependencias de SystemJS.
