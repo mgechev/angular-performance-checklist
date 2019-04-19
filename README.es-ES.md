@@ -68,7 +68,7 @@ Bundling o empaquetado es una práctica estándar que permite reducir el número
 
 Así como crezca tu aplicación, empaquetar todo en un único fichero puede ser contraproducente. Vea las técnicas de división de código usando Webpack.
 
-**Las solicitudes http adicionales no serán una preocupación con HTTP/2 gracias a la característica [server push](https://http2.github.io/faq/#whats-the-benefit-of-server-push)**
+**Las solicitudes HTTP adicionales no serán una preocupación con HTTP/2 gracias a la característica [server push](https://http2.github.io/faq/#whats-the-benefit-of-server-push)**
 
 **Herramientas**
 
