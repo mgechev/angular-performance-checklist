@@ -66,7 +66,7 @@ Algunas de las herramientas en esta sección están aún en desarrollo y sujetas
 
 Bundling o empaquetado es una práctica estándar que permite reducir el número de solicitudes que el navegador necesita para entregar la aplicación solicitada por el usuario. En esencia, el "bundler" recibe una lista de puntos de entrada y los junta en uno o más bundles. De esta manera, el navegador puede obtener la aplicación completa realizando solo unas pocas solicitudes, en vez de ir solicitando de forma separada cada fichero.
 
-Así como crezca tu aplicación empaquetar todo en un único fichero puede ser contraproducente. Vea las técnicas de división de código usando Webpack.
+Así como crezca tu aplicación, empaquetar todo en un único fichero puede ser contraproducente. Vea las técnicas de división de código usando Webpack.
 
 **Las solicitudes http adicionales no serán una preocupación con HTTP/2 gracias a la característica [server push](https://http2.github.io/faq/#whats-the-benefit-of-server-push)**
 
