@@ -293,7 +293,7 @@ Para almacenar datos en caché normalmente usamos un mecanismo de almacenamiento
 
 Para hacer más rápido el rendimiento percibido de su aplicación, usar una [Application Shell](https://developers.google.com/web/updates/2015/11/app-shell).
 
-El shell de la aplicación es la interfaz de usuario mínima que mostramos a los usuarios para indicarles que la aplicación se entregará pronto. Para la generación dinámica del shell de la aplicación puedes utilizar Angular Universal con directivas personalizadas que de forma condicional mostrarán elementos dependiendo de la plataforma de renderizado (por ejemplo, ocultar todo excepto el shell cuando usemos `patform-server`).
+El shell de la aplicación es la interfaz de usuario mínima que mostramos a los usuarios para indicarles que la aplicación se entregará pronto. Para la generación dinámica del shell de la aplicación puedes utilizar Angular Universal con directivas personalizadas que de forma condicional mostrarán elementos dependiendo de la plataforma de renderizado (por ejemplo, ocultar todo excepto el shell cuando usemos `platform-server`).
 
 **Herramientas**
 
