@@ -4,8 +4,8 @@
 
 - [中文版](./README.zh-CN.md)
 - [Русский](./README.ru-RU.md)
-- [Português](./readme-pt-BR.md)
-- [Español](./readme-es-ES.md)
+- [Português](./README.pt-BR.md)
+- [Español](./README.es-ES.md)
 
 ## Introduction
 
