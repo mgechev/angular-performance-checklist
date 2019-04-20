@@ -298,7 +298,7 @@ El shell de la aplicación es la interfaz de usuario mínima que mostramos a los
 **Herramientas**
 
 - [Angular Service Worker](https://angular.io/guide/service-worker-intro) - Tiene como objetivo automatizar el proceso de gestión de los Service Workers. También contiene Service Workers para el almacenamiento en caché de assets, y uno [para generar el shell de la aplicación](https://developers.google.com/web/updates/2015/11/app-shell?hl=es).
-- [Angular Universal](https://github.com/angular/angular/tree/master/packages/platform-server) - Universal (isomorphic) JavaScript support for Angular.
+- [Angular Universal](https://github.com/angular/angular/tree/master/packages/platform-server) - Soporte universal (isomórfico) para Angular.
 
 **Recursos**
 
@@ -377,8 +377,8 @@ Server-side rendering soluciona estos problemas pre-renderizando la página requ
 
 **Herramientas**
 
-- [Angular Universal](https://github.com/angular/angular/tree/master/packages/platform-server) - Universal (isomorphic) JavaScript support for Angular.
-- [Preboot](https://github.com/angular/preboot) - Library to help manage the transition of state (i.e. events, focus, data) from a server-generated web view to a client-generated web view.
+- [Angular Universal](https://github.com/angular/angular/tree/master/packages/platform-server) - Soporte universal (isomórfico) para Angular.
+- [Preboot](https://github.com/angular/preboot) - Librería para ayudar a gestionar la transición del estado (por ej. eventos, focus, datos) desde un servidor-generado web view a un cliente-generado web view.
 
 **Recursos**
 
