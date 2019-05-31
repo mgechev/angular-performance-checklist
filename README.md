@@ -6,6 +6,7 @@
 - [Русский](./README.ru-RU.md)
 - [Português](./README.pt-BR.md)
 - [Español](./README.es-ES.md)
+- [日本語](./README.ja-JP.md)
 
 ## Introduction
 
