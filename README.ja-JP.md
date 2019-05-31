@@ -18,7 +18,7 @@
 - ネットワークパフォーマンス - 主に私たちのアプリケーションのロード時間を改善するための習慣一覧です。これは待機時間と帯域幅を削減するための方法が含まれています。
 - 実行時のパフォーマンス - アプリケーション実行時のパフォーマンスを向上させる習慣です。主に変更の検出とレンダリング関連の最適化が含まれます。
 
-いくつかの習慣は両方に影響を与えるため、多少被っている可能性がありますが、ユースケースの違いと理由については明示的に言及します。
+いくつかの習慣は両方に影響するため、多少被っている可能性がありますが、ユースケースの違いと理由については明確に言及します。
 
 ほとんどの節では、特定の習慣に関連したツール一覧を書いています、それにより開発フローを自動化し、効率を良くします。
 
@@ -35,7 +35,7 @@
     - [ミニファイと不要コードの削除](#minification-and-dead-code-elimination)
     - [テンプレート中の空白を削除](#remove-template-whitespace)
     - [ツリーシェイキング](#tree-shaking)
-    - [ツリーシェイク可能なプロバイダ](#tree-shakeable-providers)
+    - [ツリーシェイキング可能なプロバイダ](#tree-shakeable-providers)
     - [Ahead-of-Time (AoT) コンパイル](#ahead-of-time-aot-compilation)
     - [圧縮](#compression)
     - [リソースの事前読込み](#pre-fetching-resources)
@@ -70,7 +70,7 @@ Angularコアチームは、可能な限りアプリケーションのビルド�
 
 バンドリングは、ユーザーへアプリケーションを配信する時、ブラウザが実行するリクエストの数を減らすことを目的とした標準的な方法です。
 本質的に、バンドラーは入力としてエントリーポイントの一覧を受け取り、1つ以上のバンドルを生成します。
-このように、ブラウザは個々のリソースを個別に要求するのではなく、少しのリクエストでアプリケーション全体を取得することができます。
+そうすることで、ブラウザが個々のリソースを個別に要求するのではなく、少ないリクエストでアプリケーション全体を取得することを可能にします。
 
 アプリケーションが大きくなるにつれ、すべてを1つバンドルに纏めていくのは逆効果になる可能性があります。
 その場合、Webpackを使ったコード分割を行う必要が出てきます。
@@ -81,23 +81,23 @@ Angularコアチームは、可能な限りアプリケーションのビルド�
 
 アプリケーションを効率的にバンドルできるツールは次のようなものがあります:
 
-- [Webpack](https://webpack.js.org) - [ツリーシェイク](#tree-shaking)を行うことによって効率的なバンドリングを提供します。
+- [Webpack](https://webpack.js.org) - [ツリーシェイキング](#tree-shaking)を行うことによって効率的なバンドリングを提供します。
 - [Webpack Code Splitting](https://webpack.js.org/guides/code-splitting/) - コード分割のためのテクニック。
-- [Webpack & http2](https://medium.com/webpack/webpack-http-2-7083ec3f3ce6#.46idrz8kb) - http2を使って分割する時に必要です。
-- [Rollup](https://github.com/rollup/rollup) - ES2015モジュールの静的な性質を利用し、効率的なツリーシェイクによりバンドルを提供します。
+- [Webpack & http2](https://medium.com/webpack/webpack-http-2-7083ec3f3ce6#.46idrz8kb) - http2を使った分割する時に必要です。
+- [Rollup](https://github.com/rollup/rollup) - ES2015モジュールの静的な性質を利用し、効率的なツリーシェイキングによるバンドルを提供します。
 - [Google Closure Compiler](https://github.com/google/closure-compiler) - 十分な最適化と、バンドルのサポートを提供します。
-元となるJavaで書かれたものがあり、最近[ここ](https://www.npmjs.com/package/google-closure-compiler)で[JavaScriptで書かれたバージョン](https://www.npmjs.com/package/google-closure-compiler)もあります。
-- [SystemJS Builder](https://github.com/systemjs/builder) - 依存関係が混在したモジュールツリーの、SystemJS用シングルファイルビルド構成を提供します。
+元となるJavaで書かれたものがあり、[ここ](https://www.npmjs.com/package/google-closure-compiler)には最近[JavaScriptで書かれたバージョン](https://www.npmjs.com/package/google-closure-compiler)もあります。
+- [SystemJS Builder](https://github.com/systemjs/builder) - 依存関係の混在したモジュールツリーとなる、SystemJSベースとなる単一ファイルのビルド構成を提供します。
 - [Browserify](http://browserify.org/).
-- [ngx-build-modern](https://github.com/manfredsteyer/ngx-build-plus/tree/master/ngx-build-modern) - Angular-CLI用のプラグインで、アプリケーションのバンドルを2つのバージョンにビルドできます:
+- [ngx-build-modern](https://github.com/manfredsteyer/ngx-build-plus/tree/master/ngx-build-modern) - Angular-CLI用のプラグインで、アプリケーションのバンドルを2種類にビルドできます:
 
-  1. ES2015モジュールと、必要となる明確なpolyfillだけを搭載した、最新のブラウザで動作するバンドルが小さい構成。
-  2. 色々なpolyfillとコンパイラターゲットを使用する、追加のレガシーバージョン構成（デフォルトの設定）。
+  1. ES2015モジュールと、必要となるpolyfillだけを搭載した、最新のブラウザでのみ動作するバンドルが小さい構成。
+  2. 多くのpolyfillと幅広いコンパイラターゲットを使用する、追加のレガシーバージョン構成（基本の設定）。
 
 **参考文献**
 
 - ["プロダクション用Angularアプリケーション構築"](http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/)
-- ["2.5倍小さいGoogle Closure Compilerを利用したアプリケーション"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
+- ["Google Closure Compilerを利用した2.5倍小さいアプリケーション"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
 
 ### <a name="minification-and-dead-code-elimination"></a>ミニファイと不要コードの削除
 
@@ -105,28 +105,29 @@ Angularコアチームは、可能な限りアプリケーションのビルド�
 
 **ツール一覧**
 
-- [Uglify](https://github.com/mishoo/UglifyJS) - 変数の名前修飾(mangling)、コメントと空白の削除、不要なコードの削除などの縮小を実行します。すべてJavaScriptで書かれており、ほとんどのタスクランナーのためのプラグインが用意されています。
-- [Google Closure Compiler](https://github.com/google/closure-compiler) - uglifyの縮小化と動作が似ています。高度な利用方法には洗練された最適化を実行できるように、プログラムのASTを積極的に変換します。[JavaScriptのバージョン](https://www.npmjs.com/package/google-closure-compiler)が存在し、[ここで](https://www.npmjs.com/package/google-closure-compiler)詳細を見ることができます。
-GCCはほとんどのES2015モジュール構文をサポートしているため、[ツリーシェイクで実行](#tree-shaking)ができます。
+- [Uglify](https://github.com/mishoo/UglifyJS) - 変数の名前修飾(mangling)、コメントと空白の削除、不要なコードの削除などでファイルサイズの縮小を実行します。すべてJavaScriptで書かれており、ほとんどのタスクランナーのためのプラグインが用意されています。
+- [Google Closure Compiler](https://github.com/google/closure-compiler) - uglifyによるファイルサイズの縮小と動作が似ています。高度な利用方法には洗練された最適化を実行できるように、プログラムのASTを積極的に変換します。[JavaScriptのバージョン](https://www.npmjs.com/package/google-closure-compiler)が存在し、[ここで](https://www.npmjs.com/package/google-closure-compiler)詳細を見ることができます。
+GCCはほとんどのES2015モジュール構文をサポートしているため、[ツリーシェイキングで実行](#tree-shaking)ができます。
 
 **参考文献**
 
 - ["プロダクション用Angularアプリケーション構築"](http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/)
-- ["2.5倍小さいGoogle Closure Compilerを利用したアプリケーション"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
+- ["Google Closure Compilerを利用した2.5倍小さいアプリケーション"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
 
 ### <a name="remove-template-whitespace"></a>テンプレート中の空白を削除
 
-空白文字（正規表現で`\s`のような文字）は見えませんが、それはネットワーク上で転送されるバイト数として数えられます。空白をテンプレートからなるべく減らすことで、AoTコードのバンドルサイズをさらに減らすことが可能になります。
+空白文字（正規表現の`\s`と言った文字）は見えませんが、ネットワーク上で転送されるバイト数として数えられます。空白をテンプレートからなるべく減らすことで、AoTコードのバンドルサイズをさらに減らすことが可能になります。
 
-幸いなことに、これを手動で行う必要はありません。
-`ComponentMetadata`インターフェースはデフォルトで`false`を持つプロパティ`preserveWhitespaces`を提供します。空白を取り除くことは常にDOM側のレイアウトに影響するかもしれないからです。
+幸いなことに、これは手動で行う必要はありません。
+`ComponentMetadata`インターフェースは初期値として`false`を持つプロパティ`preserveWhitespaces`を提供します。空白を取り除くことは常にDOM側のレイアウトに影響するかもしれないからです。
 このプロパティを `true`に設定した場合、Angularは不要な空白を削除してバンドルサイズをさらに縮小します。
 
 - [AngularドキュメントのpreserveWhitespaces](https://angular.io/api/core/Component#preserveWhitespaces)
 
 ### <a name="tree-shaking"></a>ツリーシェイキング
 
-私たちのアプリケーションの最終版では、Angularやサードパーティのライブラリ、そして私たちが書いたものでさえコード全体を使うことは通常ありません。ES2015モジュールの静的な性質のおかげで、私達のアプリで参照されていないコードを取り除くことができます。
+私たちのアプリケーションの最終版では、Angularやサードパーティのライブラリ、そして私たちが書いたものでさえ全てのコードを使うことは通常ありません。
+ES2015モジュールの静的な性質のおかげで、アプリで参照のないコードを取り除くことができます。
 
 **サンプルコード**
 
@@ -139,7 +140,8 @@ export bar = () => 'bar';
 import { foo } from './foo';
 console.log(foo());
 ```
-`app.js`をツリーシェイクでバンドルすると、以下のようになります。
+
+`app.js`をツリーシェイキングでバンドルすると、以下のようになります。
 
 ```javascript
 let foo = () => 'foo';
@@ -150,25 +152,26 @@ console.log(foo());
 
 **ツール一覧**
 
-- [Webpack](https://webpack.js.org) - [ツリーシェイキング](#tree-shaking)を実行することで効率的なバンドリングを提供します。 アプリケーションがバンドルされると、未使用のコードはエクスポートされないため、安全に不要なコードと見なされ、Uglifyによって削除されます。
-- [Rollup](https://github.com/rollup/rollup) - ES2015モジュールの静的な性質を利用して、効率的なツリーシェイクを実行してバンドルを提供します。
+- [Webpack](https://webpack.js.org) - [ツリーシェイキング](#tree-shaking)を実行することで効率的なバンドリングを提供します。 アプリケーションがバンドルされる時に、未使用のコードはエクスポートされず不要なコードと見なされ、結果としてUglifyによって削除されます。
+- [Rollup](https://github.com/rollup/rollup) - ES2015モジュールの静的な性質を利用して、効率的なツリーシェイキングを実行したバンドルを提供します。
 - [Google Closure Compiler](https://github.com/google/closure-compiler) - 十分な最適化と、バンドルのサポートを提供します。
-元となるJavaで書かれたものがあり、最近[ここ](https://www.npmjs.com/package/google-closure-compiler)で[JavaScriptで書かれたバージョン](https://www.npmjs.com/package/google-closure-compiler)もあります。
+元となるJavaで書かれたものがあり、[ここ](https://www.npmjs.com/package/google-closure-compiler)には最近[JavaScriptで書かれたバージョン](https://www.npmjs.com/package/google-closure-compiler)もあります。
 
-**注意:** GCCはまたexport * をサポートしていません。これは"バレル"パターンが多用されるAngularアプリケーションの構築には重要な要素です。
+**注意:** GCCはまだ export * をサポートしていません。これは"バレル"パターンが多用されるAngularアプリケーションの構築には重要な要素です。
 
 **参考文献**
 
 - ["プロダクション用Angularアプリケーション構築"](http://blog.mgechev.com/2016/06/26/tree-shaking-angular2-production-build-rollup-javascript/)
-- ["2.5倍小さいGoogle Closure Compilerを利用したアプリケーション"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
+- ["Google Closure Compilerを利用した2.5倍小さいアプリケーション"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
 - ["RxJSでパイプ可能演算子を使用する"](https://github.com/ReactiveX/rxjs/blob/master/doc/pipeable-operators.md)
 
-### <a name="tree-shakeable-providers"></a>ツリーシェイク可能なプロバイダ
+### <a name="tree-shakeable-providers"></a>ツリーシェイキング可能なプロバイダ
 
-Angular version 6 以降のリリースで、Angularチームはサービスをツリーシェイク可能にするための新機能を提供しました。つまり、他のサービスまたはコンポーネントによって使用されていない限り、そのサービスは最終的なバンドルに含まれません。
+Angularのバージョン 6 以降のリリースでは、Angularチームはサービスをツリーシェイキング可能にするための新機能を提供しました。
+つまり、他のサービスまたはコンポーネントによって使用されていない限り、そのサービスは最終的なバンドルに含まれません。
 これは、バンドルから未使用のコードを削除することによってバンドルサイズを減らすのに役立ちます。
 
-`providedIn`属性を使ってサービスをツリーシェイク可能にするには、`@Injectable()`デコレータを使う時にサービスをどこに初期化するかを定義します。
+`providedIn`属性を使ってサービスをツリーシェイキング可能にするには、`@Injectable()`デコレータを使う時にサービスをどこに初期化するかを定義します。
 次に、 `NgModule`宣言の`provider`属性とimport文から以下のように削除します。
 
 修正前:
@@ -245,7 +248,7 @@ export class MyService { }
 既存のツール（GCC、Rollupなど）に対する課題は、コンポーネント中にあるHTMLテンプレートです。これらは既存ツールの機能では分析できません。
 そしてこれは、どのディレクティブがテンプレート内で参照されているのかわからないため、ツリーシェイキングのサポートを非効率にしてしまいます。
 AoTコンパイラは、AngularのHTMLテンプレートをES2015モジュールのインポートを利用しJavaScriptまたはTypeScriptに変換します。
-このようにして、バンドル中に効率的にツリーシェイクを行い、Angularのサードパーティ製ライブラリや自分たちの未使用ディレクティブを削除することができます。
+このようにして、バンドル中に効率的にツリーシェイキングを行い、Angularのサードパーティ製ライブラリや自分たちの未使用ディレクティブを削除することができます。
 
 **参考文献**
 
@@ -259,32 +262,36 @@ AoTコンパイラは、AngularのHTMLテンプレートをES2015モジュール
 
 **ツール一覧**
 
-このツールはAngular固有のものではなく、私たちが使用しているWebサーバー/アプリケーションサーバーに完全に依存します。 典型的な圧縮アルゴリズムは次のとおりです:
+このツールはAngular固有のものではなく、私たちが使用しているWeb/アプリケーションサーバーに完全に依存します。
+代表的な圧縮アルゴリズムは次のとおりです:
 
 - deflate - LZ77アルゴリズムとハフマン符号化の組み合わせを使用するデータ圧縮アルゴリズムおよび関連ファイル形式。
-- [brotli](https://github.com/google/brotli) - 最新のLZ77アルゴリズムの変種、ハフマン符号化、および2次コンテキストモデリングの組み合わせを使用して、現在利用可能な最善の汎用圧縮方法に匹敵する圧縮率でデータを圧縮する汎用目的の可逆圧縮アルゴリズム。 それはdeflateと速度が似ていますが、より高密度の圧縮を提供します。
+- [brotli](https://github.com/google/brotli) - 最新のLZ77アルゴリズムの変種、ハフマン符号化、および2次コンテキストモデリングの組み合わせを使用して、現在利用可能な最善の汎用圧縮方法に匹敵する圧縮率でデータを圧縮できる汎用目的の可逆圧縮アルゴリズム。 それはdeflateと同じくらいの速度だが、より高密度な圧縮を提供します。
 
 **参考文献**
 
 - ["Gzip圧縮より優れているBrotli"](https://hacks.mozilla.org/2015/11/better-than-gzip-compression-with-brotli/)
-- ["2.5倍小さいGoogle Closure Compilerを利用したアプリケーション"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
+- ["Google Closure Compilerを利用した2.5倍小さいアプリケーション"](http://blog.mgechev.com/2016/07/21/even-smaller-angular2-applications-closure-tree-shaking/)
 
 ### <a name="pre-fetching-resources"></a>リソースの事前読込み
 
 リソースの事前読込みは、ユーザーエクスペリエンスを向上させるための優れた方法です。
 アセット（画像、スタイル、[遅延読み込み](#lazy-loading-of-resources)されるモジュールなど）やデータは事前読み込みすることができます。
-さまざまな事前読み戦略がありますが、それらのほとんどはアプリケーションの仕様に依存します。
+さまざまな事前読みの戦略がありますが、それらのほとんどはアプリケーションの仕様に依存します。
 
 ### <a name="lazy-loading-of-resources"></a>リソースの遅延読み込み
 
-ターゲットのアプリケーションが数百の依存関係を持つ巨大なコードベースを持っている場合、上記のプラクティスは私たちがバンドルを合理的なサイズにバンドルするのを助けることができないかもしれません。（妥当サイズは100K~2M辺りですが、これも完全にビジネスの目標に依存します）
+ターゲットのアプリケーションが数百の依存関係を持つ巨大なコードベースを持っている場合、上記のプラクティスは私たちのバンドルを合理的なサイズにするのを助けることができないかもしれません。（妥当サイズは100K~2M辺りですが、これも完全にビジネス目標に依存します）
 
-そのような場合の良い解決策はアプリケーションのモジュールのいくつかを遅延してロードすることです。たとえば、電子商取引システムを構築しているとします。この時にユーザー向けのUIとは別に管理パネルをロードできるようにします。管理者が新しい製品を追加する必要が生じたら必要なUIを提供したいと思います。 私達の要件に応じて、「製品ページの追加」または管理パネル全体のいずれかになります。
+そのような場合の良い解決策はアプリケーションのモジュールのいくつかを遅延してロードすることです。
+たとえば、電子商取引システムを構築しているとします。
+この時にユーザー向けのUIとは別に管理パネルをロードできるようにておくことで、管理者が新しい製品を追加する必要なときだけに必要なUIを提供できます。
+この提供する内容は要件次第で「製品ページの追加」か「管理パネル全体」のいずれかになるでしょう。
 
 **ツール一覧**
 
 - [Webpack](https://github.com/webpack/webpack) - 非同期モジュールの読み込みを可能にします。
-- [ngx-quicklink](https://github.com/mgechev/ngx-quicklink) - 面に表示されているリンクに関連付けられている遅延ロードモジュールを自動的にダウンロードするルータープリロード戦略
+- [ngx-quicklink](https://github.com/mgechev/ngx-quicklink) - 画面に表示されているリンクに関連付けられている遅延ロードモジュールを自動的にダウンロードするルーター事前ロード戦略
 
 ### <a name="dont-lazy-load-the-default-route"></a>デフォルトのルートを遅延読み込みにしない
 
@@ -306,7 +313,7 @@ const routes: Routes = [
 
 ### <a name="caching"></a>キャッシング
 
-キャッシングとは、あるリソースが最近要求された場合に近い将来再び要求される可能性があるという推測に基づいてアプリケーションを高速化する、一般的な方法です。
+キャッシングとは、あるリソースが最近要求された場合、近い将来また要求される可能性があるという推測に基づいてアプリケーションを高速化する一般的な方法です。
 
 データをキャッシュするためには、一般的に独自のキャッシュの仕組みを使います。
 静的資産のキャッシュには、標準のブラウザキャッシュまたはService Workersと[CacheStorage API](https://developer.mozilla.org/en-US/docs/Web/API/Cache)を使用することができます。
@@ -315,13 +322,13 @@ const routes: Routes = [
 
 アプリケーションのパフォーマンスをより速くするためには、[アプリケーションシェル](https://developers.google.com/web/updates/2015/11/app-shell)を使用してください。
 
-アプリケーションシェルは、ユーザーにアプリケーションが間もなく動作しはじめる事を伝えるための最小のユーザーインターフェイスです。
+アプリケーションシェルは、ユーザーにアプリケーションがもう間もなく動作しはじめる事を伝えるための最小のユーザーインターフェイスです。
 アプリケーションシェルを動的に生成するため、使用するレンダリングプラットフォーム毎に要素の表示を切り替えるカスタムディレクティブを付けてAngular Universalを使用できます。（つまり、`platform-server`を使うときはApp Shell以外のものはすべて隠蔽してください）
 
 **ツール一覧**
 
-- [Angular Service Worker](https://angular.io/guide/service-worker-intro) - サービスワーカーの管理プロセスを自動化することを目指しており、静的な資産をキャッシュするためのサービスワーカーと、[アプリケーションシェルをの生成](https://developers.google.com/web/updates/2015/11/app-shell?hl=ja)も行います。
-- [Angular Universal](https://github.com/angular/angular/tree/master/packages/platform-server) - Angularに対する Universal (isomorphic)  JavaScriptをサポートします。
+- [Angular Service Worker](https://angular.io/guide/service-worker-intro) - サービスワーカーの管理プロセスを自動化することを目指しており、静的な資産をキャッシュするためのサービスワーカーと、[アプリケーションシェルの生成](https://developers.google.com/web/updates/2015/11/app-shell?hl=ja)も行います。
+- [Angular Universal](https://github.com/angular/angular/tree/master/packages/platform-server) - Angularに対する Universal (isomorphic) JavaScriptをサポートします。
 
 **参考文献**
 
@@ -331,12 +338,12 @@ const routes: Routes = [
 
 サービスワーカーは、ブラウザ内にあるHTTPプロキシのようなものです。クライアントから送信されたすべての要求は最初にサービスワーカーによって傍受され、サービスワーカーは受け取ったデータを処理、またはネットワークを介して引き渡します。
 
-次のコマンドを実行すれば、Angularプロジェクトにサービスワーカーを追加できます。
+次のコマンドを実行するだけで、Angularプロジェクトにサービスワーカーを追加できます。
 ```ng add @angular/pwa```
 
 **ツール一覧**
 
-- [Angular Service Worker](https://angular.io/guide/service-worker-intro) - サービスワーカーの管理プロセスを自動化することを目指しており、静的な資産をキャッシュするためのサービスワーカーと、[アプリケーションシェルをの生成](https://developers.google.com/web/updates/2015/11/app-shell?hl=ja)も行います。
+- [Angular Service Worker](https://angular.io/guide/service-worker-intro) - サービスワーカーの管理プロセスを自動化することを目指しており、静的な資産をキャッシュするためのサービスワーカーと、[アプリケーションシェルの生成](https://developers.google.com/web/updates/2015/11/app-shell?hl=ja)も行います。
 - [Offline Plugin for Webpack](https://github.com/NekR/offline-plugin) - AppCacheにフォールバックしてサービスワーカーのサポートを追加するWebpack用のプラグイン。
 
 **参考文献**
@@ -364,8 +371,8 @@ if (ENV === 'production') {
 
 ### <a name="ahead-of-time-compilation"></a>Ahead-of-Time コンパイル
 
-AoTは、ツリーシェイクを実行してより効率的なバンドリングを実現するだけでなく、アプリケーション実行時のパフォーマンスを向上させます。
-AoTではない時に実行されているのはジャストインタイムコンパイル（JiT）です。
+AoTは、ツリーシェイキングを実行してより効率的なバンドリングを実現するだけでなく、アプリケーション実行時のパフォーマンスを向上させます。
+AoTではない時に実行されているのはJust-in-Timeコンパイル（JiT）です。
 つまり、ビルドプロセスの一部としてコンパイルを実行することで、アプリケーションのレンダリングに必要な計算量を減らすことができます。
 
 **ツール一覧**
@@ -379,8 +386,8 @@ AoTではない時に実行されているのはジャストインタイムコ�
 
 ### <a name="web-workers"></a>Webワーカー
 
-一般的なシングルページアプリケーション(SPA)の問題は、通常コードがシングルスレッドで動作することにあります。
-つまり、60fpsのスムーズなユーザーエクスペリエンスを実現したい場合は、個々のフレームの間隔である最大**16ms**の間に処理しなければならず、出来ない場合は半減してしまうでしょう。
+一般的なシングルページアプリケーション(SPA)の問題は、通常のコードがシングルスレッドで動作することにあります。
+つまり、60fpsのスムーズなユーザーエクスペリエンスを実現したい場合は、個々のフレームの間隔である最大**16ms**の間に処理を完了しなければならず、出来ない場合ユーザーエクスペリエンスは悪くなってしまうでしょう。
 
 巨大なコンポーネントツリーを使用した複雑なアプリケーションでは、変更検出で毎秒数百万のチェックをしているので、フレームを減らし始めるのは難しくありません。
 DOMアーキテクチャーはAngularのプラットフォームにより切り離されているため、Webワーカーでアプリケーション全体（変更検出を含む）を実行し、レンダリングのみをメインのUIスレッドに任せることができます。
@@ -396,16 +403,16 @@ DOMアーキテクチャーはAngularのプラットフォームにより切り�
 
 ### <a name="server-side-rendering"></a>サーバーサイドレンダリング
 
-従来からあるSPAの大きな問題として、最初のレンダリングに必要なJavaScriptを読み込み終わるまで、画面の表示ができませんでした。 これは2つの大きな問題を引き起こします。
+従来からあるSPAの大きな問題として、最初のレンダリングに必要なJavaScriptを読み込み終わるまで画面の表示ができませんでした。 これは2つの大きな問題を引き起こします:
 
 - すべての検索エンジンがそのページ内のJavaScriptを実行しているわけではないので、アプリケーションの動的コンテンツに適切にインデックスを付けることはできません。
-- ページ内のJavaScriptをダウンロード、解析、実行されるまで、ユーザーには空白/ロード中の画面しか表示されないので、ユーザーエクスペリエンスが低下します。
+- ページ内のJavaScriptをダウンロード、解析、実行されるまで、ユーザーには空白/ロード中の画面しか表示されず、ユーザーエクスペリエンスが低下します。
 
 サーバーサイドレンダリングは、要求されたページをサーバー上で事前にレンダリングし、最初のページの読み込み時に描画が完了したマークアップを提供することによってこの問題を解決します。
 
 **ツール一覧**
 
-- [Angular Universal](https://github.com/angular/angular/tree/master/packages/platform-server) -  Angularに対する Universal (isomorphic)  JavaScriptをサポートします。
+- [Angular Universal](https://github.com/angular/angular/tree/master/packages/platform-server) - Angularに対する Universal (isomorphic) JavaScriptをサポートします。
 - [Preboot](https://github.com/angular/preboot) - サーバーで生成されたWebビューからクライアントで生成されたWebビューへの状態（イベント、フォーカス、データ）の移行を管理するのに役立つライブラリ。
 
 **参考文献**
@@ -430,24 +437,24 @@ DOMアーキテクチャーはAngularのプラットフォームにより切り�
 
 #### <a name="detaching-the-change-detector"></a>Change Detectorの切り離し
 
-カスタム変化検出メカニズムを実装するもう一つの方法として、 特定のコンポーネントの変化検出の機能(CD)の`切り離し` と`再接続`で行うことができます。AngularのCDが一度`切り離される`と、コンポーネントサブツリー全体のチェックは実行されません。
+カスタム変化検出メカニズムを実装するもう一つの方法として、 特定のコンポーネントの変化検出の機能(CD)の`切り離し`と`再接続`を行うことができます。AngularのCDが一度`切り離される`と、コンポーネントサブツリー全体のチェックは実行されません。
 
 この方法は一般的に、ユーザーの操作や外部サービスとのやり取りによって、必要以上の変更検出が行われる場合に使用します。
 この場合、必要な変更検出を実行する必要がある場合にだけ変更検出機能を再接続することを検討してください。
 
 #### <a name="run-outside-angular"></a>Run outside Angular
 
-Angularの変化検出メカニズムはzone.jsによって実行されます。
-Zone.jsのモンキーパッチは、ブラウザ内のすべての非同期APIにパッチを適用し、非同期コールバックの実行終了時に変更の検出が引き起こされます。
+Angularの変化検出メカニズムは[zone.js](https://github.com/angular/zone.js)によって実行されます。
+Zone.jsのモンキーパッチは、ブラウザ内のすべての非同期APIにパッチを適用し、非同期コールバックの実行終了時に変更の検出が引き起します。
 **レアケースとして**、変更検出メカニズムを実行したくないために、Angular Zoneのコンテキスト外で特定のコードを実行したい場合があります。
 そんな時は、`NgZone`インスタンスのメソッド`runOutsideAngular`を使うことができます。
 
 **例**
 
-以下の小さなコードで、このやり方を使ったコンポーネントの例を見ることができます。
-`_incrementPoints`メソッドが呼ばれると、コンポーネントは（デフォルトで）10ms毎に`_points`プロパティ値の増加を始めていきます。
+以下の小さなコードサンプルで、この方法を使ったコンポーネントの具体例を見ることができます。
+`_incrementPoints`メソッドが呼ばれると、コンポーネントは（基本的に）10ms毎に`_points`プロパティの増加を始めていきます。
 値の増加はアニメーションのような錯覚をさせるでしょう。
-この時に、10msごとにコンポーネントツリー全体の変更検出メカニズムを起動したくないので、Angular Zoneのコンテキスト外で `_incrementPoints`を実行してDOMを手動で更新することができます。（`points`セッターを参照）
+この時に、10msごとにコンポーネントツリー全体の変更検出メカニズムを起動したくないので、Angular Zoneのコンテキスト外で `_incrementPoints`を実行してDOMを手動で更新することができます。（`points` setter を参照）
 
 ```ts
 @Component({
@@ -506,13 +513,13 @@ class PointAnimationComponent {
 }
 ```
 
-**警告**: 正確に実行されないとDOMの状態に矛盾が生じる可能性があるため、**自分が何をしているか確実に理解できるときだけ**、この習慣を使用してください。
+**警告**: 正確に実行されないとDOMの状態に矛盾が生じる可能性があります、**自分が何をしているか確実に理解できるときだけ**この習慣を使用してください。
 また、上記のコードはウェブワーカーでは実行できません。
-ウェブワーカー互換のようにするためには、Angularのレンダラを使用して表示するラベルの値を設定する必要があります。
+ウェブワーカー互換にするためには、Angularのレンダラを使用して表示するラベルの値を設定する必要があります。
 
 ### <a name="use-pure-pipes"></a>純粋なpipeを使う
 
-`@Pipe`デコレータは引数に以下フォーマットのオブジェクトリテラルを受け取ります。
+`@Pipe`デコレータは引数に以下のような形式のオブジェクトリテラルを受け取れます。
 
 ```typescript
 interface PipeMetadata {
@@ -522,10 +529,10 @@ interface PipeMetadata {
 ```
 
 pureフラグは、パイプがどのグローバルの状態にも依存してなく、副作用を引き起こさないことを示します。
-つまり、同じ入力で呼び出された場合、どんな時もパイプは同じ出力を返します。 
+つまり、同じ入力で呼び出された場合、どんな時もパイプは同じ出力を返します。
 こうすることでAngularはパイプが呼び出されたすべての入力パラメータの出力をキャッシュすることができ、それぞれの評価時に再計算するせず再利用を可能にしています。
 
-`pure`プロパティのデフォルト値は` true`です。
+`pure`プロパティの初期値は`true`です。
 
 ### <a name="ngfor-directive"></a>`*ngFor` ディレクティブ
 
@@ -533,7 +540,7 @@ pureフラグは、パイプがどのグローバルの状態にも依存して�
 
 #### <a name="use-trackby-option"></a>`trackBy` オプションを使う
 
-デフォルトの動作では`*ngFor`は参照によってオブジェクトの一意性を識別します。
+基本的なふるまいとして`*ngFor`は参照によってオブジェクトの一意性を識別します。
 
 つまり、開発者がアイテムのコンテンツ更新中にオブジェクトへの参照を破棄した場合、Angularは古いオブジェクトが削除されて別のオブジェクトが生成されたと判断します。
 これは、一覧にある古いDOMノードを破棄し、その場所に新しいDOMノードを追加するといった影響として現れます。
@@ -574,7 +581,8 @@ export class YtFeedComponent {
 
 DOMのレンダリングは、要素をUIに追加する時に最もコストのかかる操作です。
 よくある操作は、DOMに要素を挿入しスタイルを適用することによって起こります。
-`*ngFor`で大量の要素を描画する時、ブラウザ（特に古いもの）は遅くなり、すべての要素の表示に多くの時間が必要となってしまうかもしれません。 そしてこれはAngularに固有の現象ではありません。
+`*ngFor`で大量の要素を描画する時、ブラウザ（特に古いもの）は遅くなり、すべての要素の表示に多くの時間が必要となってしまうかもしれません。
+そしてこれはAngularに限った話ではありません。
 
 描画時間を短くするために、次のことを試してください:
 
@@ -594,7 +602,7 @@ DOMのレンダリングは、要素をUIに追加する時に最もコストの
 Angularは全ての変更検知サイクルを実行した後、テンプレートの式を評価します。
 変更検知サイクルは、promiseの解決、httpの結果、タイマーイベント、キー操作、マウスの動きなどの様々な非同期となる動作によって引き起こされます。
 
-式はすぐに終了する必要があります。そうでなければ、特に遅いデバイスではユーザーエクスペリエンスが悪化する可能性があります。
+式はすぐに終了する必要があります。そうしないと、特に遅いデバイスではユーザーエクスペリエンスが悪化する可能性があります。
 計算にコストがかかる場合は値をキャッシュすることを検討してください。
 
 **参考文献**
@@ -604,7 +612,7 @@ Angularは全ての変更検知サイクルを実行した後、テンプレー�
 
 # <a name="conclusion"></a>終わりに
 
-習慣の一覧は、新しい/更新される習慣や時間でダイナミックに進化します。
+習慣の一覧は、新たな/更新され、時間が経つにつれてダイナミックに進化します。
 何かが足りない事に気付いた場合や、慣習のいずれかを改善できると思えた場合は、躊躇わずissuesやPRをしてください。
 詳細については、次の「[貢献する](#contributing)」セクションをご覧ください。
 
