@@ -103,7 +103,7 @@
 
 虽然我们看不到空白字符（与`\s` RegExp 匹配的字符），但它仍然由通过网络传输的字节表示。如果我们将模板中的空白减少到最小，我们将能够分别进一步减少 AOT 代码的包大小。
 
-好在，“componentmetadata” 接口提供属性 “preserveWhitespaces”，默认值为“false”，因为删除空白可能会影响 DOM 布局。如果我们将属性设置为“false”，那么 Angular 将修剪不必要的空白，从而进一步减小构建体积的大小。
+好在，“componentmetadata” 接口提供属性 “preserveWhitespaces”，默认值为“false”，因为删除空白可能会影响 DOM 布局。如果我们将属性设置为“true”，那么 Angular 将修剪不必要的空白，从而进一步减小构建体积的大小。
 
 - [preserveWhitespaces in the Angular docs](https://angular.io/api/core/Component#preserveWhitespaces)
 
