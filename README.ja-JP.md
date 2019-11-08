@@ -301,8 +301,8 @@ AoTコンパイラは、AngularのHTMLテンプレートをES2015モジュール
 // 良くない例
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-  { path: 'dashboard',  loadChildren: './dashboard.module#DashboardModule' },
-  { path: 'heroes', loadChildren: './heroes.module#HeroesModule' }
+  { path: 'dashboard',  loadChildren: () => import('./dashboard.module').then(mod => mod.DashboardModule) },
+  { path: 'heroes', loadChildren: () => import('./heroes.module').then(mod => mod.HeroesModule) }
 ];
 ```
 
