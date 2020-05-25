@@ -370,11 +370,13 @@ Server-side rendering решает эту проблему пре-рендери
 
 - [Angular Universal](https://github.com/angular/angular/tree/master/packages/platform-server) - Universal (изоморфная) JavaScript поддержка для Angular.
 - [Preboot](https://github.com/angular/preboot) - Библиотека для управления переноса состояния страницы (т.е. events, focus, data), которые были сгенерированы на сервере, на страницу, отображаемую в браузере
+- [Scully](https://github.com/scullyio/scully) - Генератор статических сайтов для проектов использующий концепцию JAMStack.
 
 **Полезные материалы**
 
 - ["Angular Server Rendering"](https://www.youtube.com/watch?v=0wvZ7gakqV4)
 - ["Angular Universal Patterns"](https://www.youtube.com/watch?v=TCj_oC3m6_U)
+- ["Create a Static Site Using Angular & Scully"](https://www.youtube.com/watch?v=ugTx-14jRrI)
 
 ### Change Detection
 
