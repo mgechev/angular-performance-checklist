@@ -166,7 +166,7 @@ import { NgModule } from '@angular/core'
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
 import { environment } from '../environments/environment'
-import { MyService } from './app.service'
+import { MinhaService } from './app.service'
 
 @NgModule({
   declarations: [
