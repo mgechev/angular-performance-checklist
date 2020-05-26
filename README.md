@@ -379,11 +379,13 @@ Server-side rendering solves this issue by pre-rendering the requested page on t
 
 - [Angular Universal](https://github.com/angular/angular/tree/master/packages/platform-server) - Universal (isomorphic) JavaScript support for Angular.
 - [Preboot](https://github.com/angular/preboot) - Library to help manage the transition of state (i.e. events, focus, data) from a server-generated web view to a client-generated web view.
+- [Scully](https://github.com/scullyio/scully) - Static site generator for Angular projects looking to embrace the JAMStack.
 
 **Resources**
 
 - ["Angular Server Rendering"](https://www.youtube.com/watch?v=0wvZ7gakqV4)
 - ["Angular Universal Patterns"](https://www.youtube.com/watch?v=TCj_oC3m6_U)
+- ["Create a Static Site Using Angular & Scully"](https://www.youtube.com/watch?v=ugTx-14jRrI)
 
 ### Change Detection
 
