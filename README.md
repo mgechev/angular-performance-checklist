@@ -82,9 +82,6 @@ Tools which allows us to bundle our applications efficiently are:
 - [Google Closure Compiler](https://github.com/google/closure-compiler) - performs plenty of optimizations and provides bundling support. Originally written in Java, since recently it also has a [JavaScript version](https://www.npmjs.com/package/google-closure-compiler) that can be [found here](https://www.npmjs.com/package/google-closure-compiler).
 - [SystemJS Builder](https://github.com/systemjs/builder) - provides a single-file build for SystemJS of mixed-dependency module trees.
 - [Browserify](http://browserify.org/).
-- [ngx-build-modern](https://github.com/manfredsteyer/ngx-build-plus/tree/master/ngx-build-modern) - plugin for Angular-CLI which builds the application bundle in two variants:
-  1. For modern browsers with ES2015 modules and specific polyfills resulting in a smaller bundle.
-  2. Additional legacy version using different polyfills and compiler target (as it is by default).
 
 **Resources**
 
