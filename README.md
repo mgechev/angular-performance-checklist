@@ -82,6 +82,7 @@ Tools which allows us to bundle our applications efficiently are:
 - [Google Closure Compiler](https://github.com/google/closure-compiler) - performs plenty of optimizations and provides bundling support. Originally written in Java, since recently it also has a [JavaScript version](https://www.npmjs.com/package/google-closure-compiler) that can be [found here](https://www.npmjs.com/package/google-closure-compiler).
 - [SystemJS Builder](https://github.com/systemjs/builder) - provides a single-file build for SystemJS of mixed-dependency module trees.
 - [Browserify](http://browserify.org/).
+- [Bazel](https://bazel.build/) - Bazel and fast and scalable build tool, it only builds what is necessary. Refer [Angular Example] (https://github.com/bazelbuild/rules_nodejs/tree/master/examples/angular) 
 
 **Resources**
 
