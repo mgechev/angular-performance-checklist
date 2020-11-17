@@ -550,6 +550,24 @@ Expressions should finish quickly or the user experience may drag, especially on
 - [quick-execution](https://angular.io/guide/template-syntax#quick-execution) - official documentation for template expressions
 - [Increasing Performance - more than a pipe dream](https://youtu.be/I6ZvpdRM1eQ) - ng-conf video on youtube. Using pipe instead of function in interpolation expression
 
+### Coalescing event change detections
+
+Angular uses ZoneJS to intercept events that occurred in the application and run a change detection cycle automatically, also Angular runs change detection every time when the microtask queue is empty.
+From V9, Angular provides a way to coalesce event change detections by turning `ngZoneEventCoalescing` on, i.e
+```
+platformBrowser()
+  .bootstrapModule(AppModule, { ngZoneEventCoalescing: true });
+```
+which will schedule running change detection with `requestAnimationFrame`.
+
+> Warning: **ngZoneEventCoalescing: true** may break existing apps that relay on consistently running change detection. 
+
+
+**Resources**
+- [ngZoneEventCoalescing BootstrapOption](https://github.com/angular/angular/blob/master/packages/core/src/application_ref.ts#L268) - source code for BootstrapOptions interface
+- [Reduce Change Detection Cycles with Event Coalescing in Angular](https://netbasal.com/reduce-change-detection-cycles-with-event-coalescing-in-angular-c4037199859f)
+- [Simple Angular context help component or how global event listener can affect your perfomance](https://medium.com/@a.yurich.zuev/simple-angular-context-help-component-or-how-global-event-listener-can-affect-your-perfomance-75b67dba197f)
+
 # Conclusion
 
 The list of practices will dynamically evolve over time with new/updated practices. In case you notice something missing or you think that any of the practices can be improved do not hesitate to fire an issue and/or a PR. For more information please take a look at the "[Contributing](#contributing)" section below.
