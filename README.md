@@ -553,7 +553,7 @@ Expressions should finish quickly or the user experience may drag, especially on
 ### Coalescing event change detections
 
 Angular uses ZoneJS to intercept events that occurred in the application and run a change detection cycle automatically, also Angular runs change detection every time when the microtask queue is empty.
-From V9, Angular provides a way to coalesce event change detections by turning `ngZoneEventCoalescing` on, i.e
+From v9, Angular provides a way to coalesce event change detections by turning `ngZoneEventCoalescing` on, i.e
 ```
 platformBrowser()
   .bootstrapModule(AppModule, { ngZoneEventCoalescing: true });
