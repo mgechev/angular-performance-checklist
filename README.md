@@ -558,7 +558,7 @@ From v9, Angular provides a way to coalesce event change detections by turning `
 platformBrowser()
   .bootstrapModule(AppModule, { ngZoneEventCoalescing: true });
 ```
-which will schedule running change detection with `requestAnimationFrame`.
+The above configuration will schedule change detection with `requestAnimationFrame`, instead of plugging into the microtask queue, which will run checks less frequently and consume fewer computational cycles.
 
 > Warning: **ngZoneEventCoalescing: true** may break existing apps that relay on consistently running change detection. 
 
