@@ -51,6 +51,7 @@ Note that most practices are valid for both HTTP/1.1 and HTTP/2. Practices which
       - [`ChangeDetectionStrategy.OnPush`](#changedetectionstrategyonpush)
       - [Detaching the Change Detector](#detaching-the-change-detector)
       - [Run outside Angular](#run-outside-angular)
+      - [Coalescing event change detections](#coalescing-event-change-detections)
     - [Use pure pipes](#use-pure-pipes)
     - [`*ngFor` directive](#ngfor-directive)
       - [Use `trackBy` option](#use-trackby-option)
@@ -470,6 +471,24 @@ class PointAnimationComponent {
 
 **Warning**: Use this practice **very carefully only when you're sure what you are doing** because if not used properly it can lead to an inconsistent state of the DOM. Also, note that the code above is not going to run in WebWorkers. In order to make it WebWorker-compatible, you need to set the label's value by using the Angular's renderer.
 
+#### Coalescing event change detections
+
+Angular uses zone.js to intercept events that occurred in the application and runs a change detection automatically. By default this happens when the [microtask queue](https://www.youtube.com/watch?v=cCOL7MC4Pl0) of the browser is empty, which in some cases may call redundant cycles.
+From v9, Angular provides a way to coalesce event change detections by turning `ngZoneEventCoalescing` on, i.e
+```typescript
+platformBrowser()
+  .bootstrapModule(AppModule, { ngZoneEventCoalescing: true });
+```
+The above configuration will schedule change detection with `requestAnimationFrame`, instead of plugging into the microtask queue, which will run checks less frequently and consume fewer computational cycles.
+
+> Warning: **ngZoneEventCoalescing: true** may break existing apps that relay on consistently running change detection. 
+
+
+**Resources**
+- [ngZoneEventCoalescing BootstrapOption](https://github.com/angular/angular/blob/master/packages/core/src/application_ref.ts#L268) - source code for BootstrapOptions interface
+- [Reduce Change Detection Cycles with Event Coalescing in Angular](https://netbasal.com/reduce-change-detection-cycles-with-event-coalescing-in-angular-c4037199859f)
+- [Simple Angular context help component or how global event listener can affect your perfomance](https://medium.com/@a.yurich.zuev/simple-angular-context-help-component-or-how-global-event-listener-can-affect-your-perfomance-75b67dba197f)
+
 ### Use pure pipes
 
 As argument the `@Pipe` decorator accepts an object literal with the following format:
@@ -549,24 +568,6 @@ Expressions should finish quickly or the user experience may drag, especially on
 **Resources**
 - [quick-execution](https://angular.io/guide/template-syntax#quick-execution) - official documentation for template expressions
 - [Increasing Performance - more than a pipe dream](https://youtu.be/I6ZvpdRM1eQ) - ng-conf video on youtube. Using pipe instead of function in interpolation expression
-
-### Coalescing event change detections
-
-Angular uses zone.js to intercept events that occurred in the application and runs a change detection automatically. By default this happens when the [microtask queue](https://www.youtube.com/watch?v=cCOL7MC4Pl0) of the browser is empty, which in some cases may call redundant cycles.
-From v9, Angular provides a way to coalesce event change detections by turning `ngZoneEventCoalescing` on, i.e
-```typescript
-platformBrowser()
-  .bootstrapModule(AppModule, { ngZoneEventCoalescing: true });
-```
-The above configuration will schedule change detection with `requestAnimationFrame`, instead of plugging into the microtask queue, which will run checks less frequently and consume fewer computational cycles.
-
-> Warning: **ngZoneEventCoalescing: true** may break existing apps that relay on consistently running change detection. 
-
-
-**Resources**
-- [ngZoneEventCoalescing BootstrapOption](https://github.com/angular/angular/blob/master/packages/core/src/application_ref.ts#L268) - source code for BootstrapOptions interface
-- [Reduce Change Detection Cycles with Event Coalescing in Angular](https://netbasal.com/reduce-change-detection-cycles-with-event-coalescing-in-angular-c4037199859f)
-- [Simple Angular context help component or how global event listener can affect your perfomance](https://medium.com/@a.yurich.zuev/simple-angular-context-help-component-or-how-global-event-listener-can-affect-your-perfomance-75b67dba197f)
 
 # Conclusion
 
