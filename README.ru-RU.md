@@ -384,7 +384,7 @@ Server-side rendering решает эту проблему пре-рендери
 
 #### `ChangeDetectionStrategy.OnPush`
 
-`ChangeDetectionStrategy.OnPush` позволяет нам отключить механизм change detection для дерева компонентов. Указав для change detection strategy в компоненте значение `ChangeDetectionStrategy.OnPush`, изменения будут срабатывать **только** тогда, когда компонент получил inputs, отличающиеся от предыдущих. Angular сравнивает предыдущие и текущие inputs по ссылке, и когда результат проверки равен `false`, то inputs помечаются как изменившиеся. В сочетании с [иммутабельными структурами данных](https://facebook.github.io/immutable-js/), `OnPush` улучшает производительность для "чистых" компонентов.
+`ChangeDetectionStrategy.OnPush` позволяет нам отключить механизм change detection для дерева компонентов. Указав для change detection strategy в компоненте значение `ChangeDetectionStrategy.OnPush`, изменения будут срабатывать **только** тогда, когда компонент получил inputs, отличающиеся от предыдущих, или испустило значение Observable, отслеживаемое внутри компонента. Angular сравнивает предыдущие и текущие inputs по ссылке, и когда результат проверки равен `false`, то inputs помечаются как изменившиеся. В сочетании с [иммутабельными структурами данных](https://facebook.github.io/immutable-js/), `OnPush` улучшает производительность для "чистых" компонентов.
 
 **Полезные материалы**
 
