@@ -396,7 +396,7 @@ The `OnPush` change detection strategy allows us to disable the change detection
 **Resources**
 
 - ["Change Detection in Angular"](https://vsavkin.com/change-detection-in-angular-2-4f216b855d4c)
-- ["Everything you need to know about change detection in Angular"](https://blog.angularindepth.com/everything-you-need-to-know-about-change-detection-in-angular-8006c51d206f)
+- ["Everything you need to know about change detection in Angular"](https://indepth.dev/posts/1053/everything-you-need-to-know-about-change-detection-in-angular)
 
 #### Detaching the Change Detector
 
