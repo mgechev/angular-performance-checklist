@@ -435,7 +435,7 @@ class PointAnimationComponent {
   private _incrementInterval: any;
   private _points: number = 0;
 
-  constructor(private _zone: NgZone, private _pipe: DecimalPipe) {}
+  constructor(private _ngZone: NgZone, private _pipe: DecimalPipe) {}
 
   ngOnChanges(changes: any) {
     const change = changes.points;
