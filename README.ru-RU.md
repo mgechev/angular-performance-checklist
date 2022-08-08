@@ -403,7 +403,7 @@ Server-side rendering решает эту проблему пре-рендери
 
 **Пример**
 
-В отрывке кода далее, вы можете увидеть пример компонента с использованием данной практики. Когда метод `_incrementPoints` вызван, компонент начнет инкрементировать свойство `_points` каждые 10 мс (по умолчанию). Инкрементация создаст иллюзию анимации. Т.к. в данной ситуации мы не хотим вызывать проверку изменений для всего древа компонентов каждые 10 секунд, мы можем вызвать `_incrementPoints` вне контекста Angular Zone и обновить DOM вручную (`points` сеттер метод).
+В отрывке кода далее, вы можете увидеть пример компонента с использованием данной практики. Когда метод `#incrementPoints` вызван, компонент начнет инкрементировать свойство `#points` каждые 10 мс (по умолчанию). Инкрементация создаст иллюзию анимации. Т.к. в данной ситуации мы не хотим вызывать проверку изменений для всего древа компонентов каждые 10 секунд, мы можем вызвать `#incrementPoints` вне контекста Angular Zone и обновить DOM вручную (`points` сеттер метод).
 
 ```ts
 @Component({
@@ -413,22 +413,22 @@ class PointAnimationComponent {
 
   @Input() duration = 1000;
   @Input() stepDuration = 10;
-  @ViewChild('label') label: ElementRef;
+  @ViewChild('label') label!: ElementRef;
 
   @Input() set points(val: number) {
-    this._points = val;
+    this.#points = val;
     if (this.label) {
       this.label.nativeElement.innerText = this._pipe.transform(this.points, '1.0-0');
     }
   }
   get points() {
-    return this._points;
+    return this.#points;
   }
 
-  private _incrementInterval: any;
-  private _points: number = 0;
+   #incrementInterval: any;
+   #points: number = 0;
 
-  constructor(private _zone: NgZone, private _pipe: DecimalPipe) {}
+  constructor(private _ngZone: NgZone, private _pipe: DecimalPipe) {}
 
   ngOnChanges(changes: any) {
     const change = changes.points;
@@ -440,20 +440,20 @@ class PointAnimationComponent {
     } else {
       this.points = change.previousValue;
       this._ngZone.runOutsideAngular(() => {
-        this._incrementPoints(change.currentValue);
+        this.#incrementPoints(change.currentValue);
       });
     }
   }
 
-  private _incrementPoints(newVal: number) {
+  #incrementPoints(newVal: number) {
     const diff = newVal - this.points;
     const step = this.stepDuration * (diff / this.duration);
     const initialPoints = this.points;
-    this._incrementInterval = setInterval(() => {
+    this.#incrementInterval = setInterval(() => {
       let nextPoints = Math.ceil(initialPoints + diff);
       if (this.points >= nextPoints) {
         this.points = initialPoints + diff;
-        clearInterval(this._incrementInterval);
+        clearInterval(this.#incrementInterval);
       } else {
         this.points += step;
       }

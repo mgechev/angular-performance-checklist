@@ -404,7 +404,7 @@ Zone.js 通过猴子补丁的方法代理了所有浏览器的异步 APIs，并�
 在**极少情况**下，我们希望代码在 Angular 之外的上下文运行，所以不需要变更检测机制进行检查。这种情况下我们可以在组件中注入 `zone: NgZone` 服务，并且调用这个实例的 `runOutsizeAngular` 方法即可。
 
 **例子**
-在下面的代码片段中，您可以看到使用此实践的组件的示例。当调用 `_incrementPoints` 方法时，组件将开始每 10 ms 递增一次 `_points` 属性（默认情况下）。递增会造成动画的假象。因为在这种情况下，我们不希望触发整个组件树的更改检测机制，所以每 10 ms，我们可以在 Angular 区域的上下文之外运行 `incrementpoints`，并手动更新 DOM（请参见 `points` setter 访问器）。
+在下面的代码片段中，您可以看到使用此实践的组件的示例。当调用 `#incrementPoints` 方法时，组件将开始每 10 ms 递增一次 `#points` 属性（默认情况下）。递增会造成动画的假象。因为在这种情况下，我们不希望触发整个组件树的更改检测机制，所以每 10 ms，我们可以在 Angular 区域的上下文之外运行 `#incrementpoints`，并手动更新 DOM（请参见 `points` setter 访问器）。
 
 
 ```ts
@@ -415,22 +415,22 @@ class PointAnimationComponent {
 
   @Input() duration = 1000;
   @Input() stepDuration = 10;
-  @ViewChild('label') label: ElementRef;
+  @ViewChild('label') label!: ElementRef;
 
   @Input() set points(val: number) {
-    this._points = val;
+    this.#points = val;
     if (this.label) {
       this.label.nativeElement.innerText = this._pipe.transform(this.points, '1.0-0');
     }
   }
   get points() {
-    return this._points;
+    return this.#points;
   }
 
-  private _incrementInterval: any;
-  private _points: number = 0;
+   #incrementInterval: any;
+   #points: number = 0;
 
-  constructor(private _zone: NgZone, private _pipe: DecimalPipe) {}
+  constructor(private _ngZone: NgZone, private _pipe: DecimalPipe) {}
 
   ngOnChanges(changes: any) {
     const change = changes.points;
@@ -442,20 +442,20 @@ class PointAnimationComponent {
     } else {
       this.points = change.previousValue;
       this._ngZone.runOutsideAngular(() => {
-        this._incrementPoints(change.currentValue);
+        this.#incrementPoints(change.currentValue);
       });
     }
   }
 
-  private _incrementPoints(newVal: number) {
+  #incrementPoints(newVal: number) {
     const diff = newVal - this.points;
     const step = this.stepDuration * (diff / this.duration);
     const initialPoints = this.points;
-    this._incrementInterval = setInterval(() => {
+    this.#incrementInterval = setInterval(() => {
       let nextPoints = Math.ceil(initialPoints + diff);
       if (this.points >= nextPoints) {
         this.points = initialPoints + diff;
-        clearInterval(this._incrementInterval);
+        clearInterval(this.#incrementInterval);
       } else {
         this.points += step;
       }

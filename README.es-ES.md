@@ -410,7 +410,7 @@ El mecanismo de detección de cambios de Angular se dispara gracias a [zone.js](
 
 **Example**
 
-En el ejemplo de abajo, puede ver un componente que utiliza esta práctica. Cuando el método `_incrementPoints` es llamado el componente comenzará a incrementar la propiedad `_points` cada 10ms (por defecto). Al incrementar tendremos la ilusión de una animación. Ya que en este caso no queremos activar el mecanismo de detección de cambios para todo el árbol de componentes, cada 10ms, podemos ejecutar `_incrementPoints` fuera del contexto de Angular´s Zone y actualizar el DOM manualmente (ver método set de `points`).
+En el ejemplo de abajo, puede ver un componente que utiliza esta práctica. Cuando el método `#incrementPoints` es llamado el componente comenzará a incrementar la propiedad `#points` cada 10ms (por defecto). Al incrementar tendremos la ilusión de una animación. Ya que en este caso no queremos activar el mecanismo de detección de cambios para todo el árbol de componentes, cada 10ms, podemos ejecutar `#incrementPoints` fuera del contexto de Angular´s Zone y actualizar el DOM manualmente (ver método set de `points`).
 
 ```ts
 @Component({
@@ -420,22 +420,22 @@ class PointAnimationComponent {
 
   @Input() duration = 1000;
   @Input() stepDuration = 10;
-  @ViewChild('label') label: ElementRef;
+  @ViewChild('label') label!: ElementRef;
 
   @Input() set points(val: number) {
-    this._points = val;
+    this.#points = val;
     if (this.label) {
       this.label.nativeElement.innerText = this._pipe.transform(this.points, '1.0-0');
     }
   }
   get points() {
-    return this._points;
+    return this.#points;
   }
 
-  private _incrementInterval: any;
-  private _points: number = 0;
+   #incrementInterval: any;
+   #points: number = 0;
 
-  constructor(private _zone: NgZone, private _pipe: DecimalPipe) {}
+  constructor(private _ngZone: NgZone, private _pipe: DecimalPipe) {}
 
   ngOnChanges(changes: any) {
     const change = changes.points;
@@ -447,22 +447,22 @@ class PointAnimationComponent {
     } else {
       this.points = change.previousValue;
       this._ngZone.runOutsideAngular(() => {
-	this._incrementPoints(change.currentValue);
+        this.#incrementPoints(change.currentValue);
       });
     }
   }
 
-  private _incrementPoints(newVal: number) {
+  #incrementPoints(newVal: number) {
     const diff = newVal - this.points;
     const step = this.stepDuration * (diff / this.duration);
     const initialPoints = this.points;
-    this._incrementInterval = setInterval(() => {
+    this.#incrementInterval = setInterval(() => {
       let nextPoints = Math.ceil(initialPoints + diff);
       if (this.points >= nextPoints) {
-	this.points = initialPoints + diff;
-	clearInterval(this._incrementInterval);
+        this.points = initialPoints + diff;
+        clearInterval(this.#incrementInterval);
       } else {
-	this.points += step;
+        this.points += step;
       }
     }, this.stepDuration);
   }
