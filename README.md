@@ -410,7 +410,7 @@ The Angular's change detection mechanism is being triggered thanks to [zone.js](
 
 **Example**
 
-In the snippet below, you can see an example for a component that uses this practice. When the `_incrementPoints` method is called the component will start incrementing the `_points` property every 10ms (by default). The incrementation will make the illusion of an animation. Since in this case, we don't want to trigger the change detection mechanism for the entire component tree, every 10ms, we can run `_incrementPoints` outside the context of the Angular's zone and update the DOM manually (see the `points` setter).
+In the snippet below, you can see an example for a component that uses this practice. When the `#incrementPoints` method is called the component will start incrementing the `#points` property every 10ms (by default). The incrementation will make the illusion of an animation. Since in this case, we don't want to trigger the change detection mechanism for the entire component tree, every 10ms, we can run `#incrementPoints` outside the context of the Angular's zone and update the DOM manually (see the `points` setter).
 
 ```ts
 @Component({
@@ -420,20 +420,20 @@ class PointAnimationComponent {
 
   @Input() duration = 1000;
   @Input() stepDuration = 10;
-  @ViewChild('label') label: ElementRef;
+  @ViewChild('label') label!: ElementRef;
 
   @Input() set points(val: number) {
-    this._points = val;
+    this.#points = val;
     if (this.label) {
       this.label.nativeElement.innerText = this._pipe.transform(this.points, '1.0-0');
     }
   }
   get points() {
-    return this._points;
+    return this.#points;
   }
 
-  private _incrementInterval: any;
-  private _points: number = 0;
+   #incrementInterval: any;
+   #points: number = 0;
 
   constructor(private _ngZone: NgZone, private _pipe: DecimalPipe) {}
 
@@ -447,20 +447,20 @@ class PointAnimationComponent {
     } else {
       this.points = change.previousValue;
       this._ngZone.runOutsideAngular(() => {
-        this._incrementPoints(change.currentValue);
+        this.#incrementPoints(change.currentValue);
       });
     }
   }
 
-  private _incrementPoints(newVal: number) {
+  #incrementPoints(newVal: number) {
     const diff = newVal - this.points;
     const step = this.stepDuration * (diff / this.duration);
     const initialPoints = this.points;
-    this._incrementInterval = setInterval(() => {
+    this.#incrementInterval = setInterval(() => {
       let nextPoints = Math.ceil(initialPoints + diff);
       if (this.points >= nextPoints) {
         this.points = initialPoints + diff;
-        clearInterval(this._incrementInterval);
+        clearInterval(this.#incrementInterval);
       } else {
         this.points += step;
       }

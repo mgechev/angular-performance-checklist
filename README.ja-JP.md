@@ -452,9 +452,9 @@ Zone.jsのモンキーパッチは、ブラウザ内のすべての非同期API�
 **例**
 
 以下の小さなコードサンプルで、この方法を使ったコンポーネントの具体例を見ることができます。
-`_incrementPoints`メソッドが呼ばれると、コンポーネントは（基本的に）10ms毎に`_points`プロパティの増加を始めていきます。
+`#incrementPoints`メソッドが呼ばれると、コンポーネントは（基本的に）10ms毎に`#points`プロパティの増加を始めていきます。
 値の増加はアニメーションのような錯覚をさせるでしょう。
-この時に、10msごとにコンポーネントツリー全体の変更検出メカニズムを起動したくないので、Angular Zoneのコンテキスト外で `_incrementPoints`を実行してDOMを手動で更新することができます。（`points` setter を参照）
+この時に、10msごとにコンポーネントツリー全体の変更検出メカニズムを起動したくないので、Angular Zoneのコンテキスト外で `#incrementPoints`を実行してDOMを手動で更新することができます。（`points` setter を参照）
 
 ```ts
 @Component({
@@ -464,22 +464,22 @@ class PointAnimationComponent {
 
   @Input() duration = 1000;
   @Input() stepDuration = 10;
-  @ViewChild('label') label: ElementRef;
+  @ViewChild('label') label!: ElementRef;
 
   @Input() set points(val: number) {
-    this._points = val;
+    this.#points = val;
     if (this.label) {
       this.label.nativeElement.innerText = this._pipe.transform(this.points, '1.0-0');
     }
   }
   get points() {
-    return this._points;
+    return this.#points;
   }
 
-  private _incrementInterval: any;
-  private _points: number = 0;
+   #incrementInterval: any;
+   #points: number = 0;
 
-  constructor(private _zone: NgZone, private _pipe: DecimalPipe) {}
+  constructor(private _ngZone: NgZone, private _pipe: DecimalPipe) {}
 
   ngOnChanges(changes: any) {
     const change = changes.points;
@@ -491,20 +491,20 @@ class PointAnimationComponent {
     } else {
       this.points = change.previousValue;
       this._ngZone.runOutsideAngular(() => {
-        this._incrementPoints(change.currentValue);
+        this.#incrementPoints(change.currentValue);
       });
     }
   }
 
-  private _incrementPoints(newVal: number) {
+  #incrementPoints(newVal: number) {
     const diff = newVal - this.points;
     const step = this.stepDuration * (diff / this.duration);
     const initialPoints = this.points;
-    this._incrementInterval = setInterval(() => {
+    this.#incrementInterval = setInterval(() => {
       let nextPoints = Math.ceil(initialPoints + diff);
       if (this.points >= nextPoints) {
         this.points = initialPoints + diff;
-        clearInterval(this._incrementInterval);
+        clearInterval(this.#incrementInterval);
       } else {
         this.points += step;
       }
